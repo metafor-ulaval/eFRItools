@@ -7,8 +7,15 @@
 get_mode(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{A vector}
+}
+\value{
+The mode
 }
 \description{
 Title
+}
+\examples{
+  x <- c("a", "b", "c", "a")
+  get_mode(x)
 }
