@@ -1,4 +1,13 @@
+#' Title
+#'
+#' @param x
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 get_mode <- function(x){
   unique_val <- unique(x)
-  unique_val[which.max(tabulate(match(x, unique_val)))]
+  mode_val <- unique_val[which.max(tabulate(match(x, unique_val)))]
+  return(mode_val)
 }
