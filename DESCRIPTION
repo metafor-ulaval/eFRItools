@@ -1,9 +1,11 @@
 Package: eFRItools
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Title: Automated creation of enhanced ecoforestry inventories based on high-resolution data
+Version: 1.0.0
+Authors@R: c(
+    person("Ethan", "Berman", email = "", role = c("aut","cph")),
+    person("Jean-Romain", "Roussel", email = "jean-romain.roussel.1@ulaval.ca", role = c("aut", "cre"))
+    person("Francis", "Lessard", , "francis.lessard.3@ulaval.ca", role = c("aut", "cre"))
+Description: Automatically generates enhanced ecoforestry inventories from raster data. Raster data should mainly come from airborne LiDAR data and satellite imagery. Allows to segment stands and then populate the attribute table with relevant forest attributes.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -13,3 +15,8 @@ BugReports: https://github.com/metafor-ulaval/eFRItools/issues
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Depends: 
+    R (>= 3.5)
+LazyData: true
+Imports: 
+    dplyr
