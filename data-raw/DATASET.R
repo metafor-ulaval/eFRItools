@@ -7,6 +7,13 @@ usethis::use_data(DATASET, overwrite = TRUE)
 
 
 
+# Library ----
+library(tidyverse)
+
+
+
+
+
 # Parameters ----
 epsg <- "EPSG:2958"
 otb_dir <- "D:/00_Ontario_eFRI/logiciels/OTB-9.1.0-Win64/bin"
@@ -35,6 +42,8 @@ sf::st_read(paste0(wd, "/ctg/ctg.shp")) %>%
   sf::st_as_sf() -> subset_area
 
 usethis::use_data(subset_area, overwrite = TRUE)
+
+
 
 
 
@@ -86,8 +95,8 @@ tibble::tibble(path = list.files(paste0(wd, "/metrics/lidar"), pattern = "\\.tif
   dplyr::mutate(name = list.files(paste0(wd, "/metrics/lidar"), pattern = "\\.tif$") %>% gsub(".tif", "", .),
                 desc = lidar_metrics_desc[name],
                 res = path %>%
-                  purrr::map(rast) %>%
-                  purrr::map(res) %>%
+                  purrr::map(terra::rast) %>%
+                  purrr::map(terra::res) %>%
                   purrr::map(1) %>%
                   unlist(),
                 type = "lidar") -> lidar_metrics_infos
@@ -119,8 +128,8 @@ tibble::tibble(path = list.files(paste0(wd, "/metrics/sentinel2"), pattern = "\\
   dplyr::mutate(name = list.files(paste0(wd, "/metrics/sentinel2"), pattern = "\\.tif$") %>% gsub(".tif", "", .),
                 desc = sentinel2_metrics_desc[name],
                 res = path %>%
-                  purrr::map(rast) %>%
-                  purrr::map(res) %>%
+                  purrr::map(terra::rast) %>%
+                  purrr::map(terra::res) %>%
                   purrr::map(1) %>%
                   unlist(),
                 type = "sentinel_2") -> sentinel2_metrics_infos
@@ -148,8 +157,8 @@ tibble::tibble(path = list.files(paste0(wd, "/metrics/dendro"), pattern = "\\.ti
   dplyr::mutate(name = list.files(paste0(wd, "/metrics/dendro"), pattern = "\\.tif$") %>% gsub(".tif", "", .), # CA NE MARCHERA PAS POUR OVF, RENOMMER PLUS SIMPLEMENT
                 desc = dendro_metrics_desc[name],
                 res = path %>%
-                  purrr::map(rast) %>%
-                  purrr::map(res) %>%
+                  purrr::map(terra::rast) %>%
+                  purrr::map(terra::res) %>%
                   purrr::map(1) %>%
                   unlist(),
                 type = "dendrometric") %>%
@@ -170,6 +179,8 @@ usethis::use_data(metrics_infos, overwrite = TRUE)
 
 
 
+
+
 # Metrics ----
 metrics_infos %>%
   dplyr::filter(name %in% c(best_models_variables,
@@ -178,25 +189,33 @@ metrics_infos %>%
                             "z_p95", "z_above2", "fractional_cover_05_2", "slope", "sagawi")) %T>%
   {dplyr::pull(.,name) ->> metrics_names} %>% # Extract metrics names in the right order
   dplyr::pull(path) %>%
-  purrr::map(rast) %>%
-  purrr::map(project, epsg, method = "bilinear") %>%
-  purrr::map(resample, .[[1]]) %>%
+  purrr::map(terra::rast) %>%
+  purrr::map(terra::project, epsg, method = "bilinear") %>%
+  purrr::map(terra::resample, .[[1]]) %>%
   terra::rast() %>%
   terra::crop(subset_area) -> metrics
 
 names(metrics) <- metrics_names # Assign metrics names
 
+metrics %>%
+  terra::wrap() -> metrics
+
 usethis::use_data(metrics, overwrite = TRUE)
 
 
 
+
+
 # Masks ----
-list(vect(paste0(wd, "/shp/roads.shp")),
-     vect(paste0(wd, "/shp/waterbodies.shp"))) %>%
-  purrr::map(project, epsg) %>%
-  purrr::map(crop, subset_area) -> masks
+list(terra::vect(paste0(wd, "/shp/roads.shp")),
+     terra::vect(paste0(wd, "/shp/waterbodies.shp"))) %>%
+  purrr::map(terra::project, epsg) %>%
+  purrr::map(terra::crop, subset_area) %>%
+  purrr::map(terra::wrap) -> masks
 
 usethis::use_data(masks, overwrite = TRUE)
+
+
 
 
 
@@ -208,6 +227,8 @@ sf::st_read(paste0(wd, "/shp/PolygonForest.shp")) %>%
   rmapshaper::ms_clip(subset_area) -> fri_polygons
 
 usethis::use_data(fri_polygons, overwrite = TRUE)
+
+
 
 
 
@@ -249,13 +270,21 @@ landcover_codes <- c(`1` = "Clear_Open_Water",
 levels(landcover) <- data.frame(value = as.integer(names(landcover_codes)),
                                 class = unname(landcover_codes))
 
+landcover %>%
+  terra::wrap() -> landcover
+
 usethis::use_data(landcover, overwrite = TRUE)
+
+
 
 
 
 # Forest age in 2019 ----
 terra::rast(paste0(wd, "/metrics/other/forest_age_2019.tif")) %>%
   terra::crop(subset_area) -> forest_age_2019
+
+forest_age_2019 %>%
+  terra::wrap() -> forest_age_2019
 
 usethis::use_data(forest_age_2019, overwrite = TRUE)
 
@@ -265,6 +294,9 @@ usethis::use_data(forest_age_2019, overwrite = TRUE)
 terra::rast(paste0(wd, "/metrics/other/forest_fire_1985_2020.tif")) %>%
   terra::crop(subset_area) -> forest_fire_1985_2020
 
+forest_fire_1985_2020 %>%
+  terra::wrap() -> forest_fire_1985_2020
+
 usethis::use_data(forest_fire_1985_2020, overwrite = TRUE)
 
 
@@ -272,5 +304,8 @@ usethis::use_data(forest_fire_1985_2020, overwrite = TRUE)
 # Forest harvest between 1985-2020 ----
 terra::rast(paste0(wd, "/metrics/other/forest_harvest_1985_2020.tif")) %>%
   terra::crop(subset_area) -> forest_harvest_1985_2020
+
+forest_harvest_1985_2020 %>%
+  terra::wrap() -> forest_harvest_1985_2020
 
 usethis::use_data(forest_harvest_1985_2020, overwrite = TRUE)
