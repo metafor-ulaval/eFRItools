@@ -13,8 +13,7 @@
 #' @param ofile string. The path where to save the output of GRM
 #' @return the raster produced by OTB
 #' @export
-#' @rdname segmentation
-#' @md
+#'
 #' @examples
 #' \dontrun{
 #' library(terra)
