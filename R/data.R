@@ -24,7 +24,7 @@
 
 #' Masks
 #'
-#' Masks used to perform segmentation : road ([[1]]) and waterbodies ([[2]])
+#' Masks used to perform segmentation : road and waterbodies
 #'
 #' @format A SpatVector [vect][terra::vect]
 #' @source Internal
@@ -48,7 +48,7 @@
 
 #' Forest age
 #'
-#' Landsat-derived forest age for Canada 2019 [https://opendata.nfis.org/downloads/forest_change/CA_forest_age_2019.zip]
+#' Landsat-derived forest age for Canada 2019
 #'
 #' @format A SpatRaster of Landsat-derived forest age for Canada 2019 [rast][terra::rast]
 #' @source Internal
@@ -56,7 +56,7 @@
 
 #' Forest fire
 #'
-#' Landsat-derived forest wildfire disturbances for Canada 1985-2020. [https://opendata.nfis.org/downloads/forest_change/CA_Forest_Fire_1985-2020.zip]
+#' Landsat-derived forest wildfire disturbances for Canada 1985-2020
 #'
 #' @format A SpatRaster of Landsat-derived forest wildfire disturbances for Canada 1985-2020 [rast][terra::rast]
 #' @source Internal
@@ -64,7 +64,7 @@
 
 #' Forest harvest
 #'
-#' Landsat-derived forest harvest disturbances for Canada 1985-2020 [https://opendata.nfis.org/downloads/forest_change/CA_Forest_Harvest_1985-2020.zip]
+#' Landsat-derived forest harvest disturbances for Canada 1985-2020
 #'
 #' @format A SpatRaster of Landsat-derived forest harvest disturbances for Canada 1985-2020 [rast][terra::rast]
 #' @source Internal
