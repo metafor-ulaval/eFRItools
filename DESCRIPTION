@@ -21,6 +21,7 @@ LazyData: true
 Imports: 
     dplyr,
     exactextractr,
+    purrr,
     sf,
     stringr,
     terra,
