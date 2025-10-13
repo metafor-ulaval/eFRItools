@@ -7,11 +7,11 @@
 #' @export
 #'
 #' @examples
-#'library(sf)
+#' library(sf)
 #'
-#'fri_polygons_centroids <- mutate_centroid(fri_polygons)
+#' fri_polygons_centroids <- mutate_centroid(fri_polygons)
 #'
-#'fri_polygons_centroids
+#' fri_polygons_centroids
 mutate_centroid <- function(x){
 
   x_geom <- sf::st_geometry(x)

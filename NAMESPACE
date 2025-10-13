@@ -3,3 +3,4 @@
 export(mutate_age)
 export(mutate_centroid)
 export(mutate_metrics)
+export(pre_processing)

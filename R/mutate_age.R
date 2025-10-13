@@ -11,12 +11,12 @@
 #' @export
 #'
 #' @examples
-#'library(sf)
-#'library(terra)
+#' library(sf)
+#' library(terra)
 #'
-#'fri_polygons_age <- mutate_age(fri_polygons, rast(forest_age_2019), 2019, 2025, "mean")
+#' fri_polygons_age <- mutate_age(fri_polygons, rast(forest_age_2019), 2019, 2025, "mean")
 #'
-#'fri_polygons_age
+#' fri_polygons_age
 mutate_age <- function(x,
                        y,
                        current_year,

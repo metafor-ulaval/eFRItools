@@ -9,12 +9,12 @@
 #' @export
 #'
 #' @examples
-#'library(sf)
-#'library(terra)
+#' library(sf)
+#' library(terra)
 #'
-#'fri_polygons_metrics <- mutate_metrics(fri_polygons, rast(metrics))
+#' fri_polygons_metrics <- mutate_metrics(fri_polygons, rast(metrics))
 #'
-#'fri_polygons_metrics
+#' fri_polygons_metrics
 mutate_metrics <- function(x,
                            y,
                            fun = "median"){
