@@ -18,9 +18,7 @@ Extract the X and Y coordinates of the polygon centroids
 \examples{
 library(sf)
 
-fri_polygons_geometry <- st_geometry(fri_polygons)
-
-fri_polygons_centroids <- mutate_centroid(fri_polygons_geometry)
+fri_polygons_centroids <- mutate_centroid(fri_polygons)
 
 fri_polygons_centroids
 }

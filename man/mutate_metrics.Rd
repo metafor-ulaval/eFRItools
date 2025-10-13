@@ -23,9 +23,7 @@ Extract one or multiple metrics from polygons
 library(sf)
 library(terra)
 
-fri_polygons_geometry <- st_geometry(fri_polygons)
-
-fri_polygons_metrics <- mutate_metrics(fri_polygons_geometry, rast(metrics))
+fri_polygons_metrics <- mutate_metrics(fri_polygons, rast(metrics))
 
 fri_polygons_metrics
 }

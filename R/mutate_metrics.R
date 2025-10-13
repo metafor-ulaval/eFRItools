@@ -12,9 +12,7 @@
 #'library(sf)
 #'library(terra)
 #'
-#'fri_polygons_geometry <- st_geometry(fri_polygons)
-#'
-#'fri_polygons_metrics <- mutate_metrics(fri_polygons_geometry, rast(metrics))
+#'fri_polygons_metrics <- mutate_metrics(fri_polygons, rast(metrics))
 #'
 #'fri_polygons_metrics
 mutate_metrics <- function(x,
@@ -22,12 +20,9 @@ mutate_metrics <- function(x,
                            fun = "median"){
 
   x_crs <- sf::st_transform(x, sf::st_crs(y))
-
-  exactextractr::exact_extract(y, x_crs, fun) -> metrics_extracted
-
-  names(metrics_extracted) = names(y)
-
-  dplyr::bind_cols(x, metrics_extracted) -> x_metrics
+  metrics_extracted <- exactextractr::exact_extract(y, x_crs, fun)
+  names(metrics_extracted) <- names(y)
+  x_metrics <- dplyr::bind_cols(x, metrics_extracted)
 
   return(x_metrics)
 }

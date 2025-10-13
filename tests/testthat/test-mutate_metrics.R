@@ -1,7 +1,5 @@
 test_that("metrics successfully extracted", {
   fri_polygons %>%
-    sf::st_geometry() %>%
-    sf::st_as_sf() %>%
     mutate_metrics(terra::rast(metrics)) %>%
     dplyr::pull(slope) %>%
     mean() %>%
@@ -12,8 +10,6 @@ test_that("metrics successfully extracted", {
 
 test_that("differents crs", {
   fri_polygons %>%
-    sf::st_geometry() %>%
-    sf::st_as_sf() %>%
     sf::st_transform(4326) %>%
     mutate_metrics(terra::rast(metrics)) %>%
     dplyr::pull(slope) %>%
