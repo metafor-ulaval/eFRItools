@@ -1,0 +1,7 @@
+test_that("species correctly extracted", {
+  fri_polygons_species <- mutate_species_prop(fri_polygons["SPCOMP"], "SPCOMP")
+
+  expect_equal(fri_polygons_species[1,]$BW, 40)
+  expect_equal(fri_polygons_species[1,]$SB, 40)
+  expect_equal(fri_polygons_species[1,]$PT, 20)
+})
