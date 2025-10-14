@@ -2,7 +2,7 @@
 % Please edit documentation in R/mutate_species_prop.R
 \name{mutate_species_prop}
 \alias{mutate_species_prop}
-\title{Separate a column of species composition into multiple columns}
+\title{Separate a column of species composition into proportions}
 \usage{
 mutate_species_prop(x, col_name)
 }
@@ -12,15 +12,15 @@ mutate_species_prop(x, col_name)
 \item{col_name}{character; name of the column that contains species and proportions}
 }
 \value{
-Polygons with extracted specie proportions as individuals columns
+Polygons with extracted species proportions as individuals columns
 }
 \description{
-Separate a column of species composition into multiple columns
+Separate a column of species composition into proportions
 }
 \examples{
 library(sf)
 
-fri_polygons_species <- mutate_species_prop(fri_polygons["SPCOMP"], "SPCOMP")
+fri_polygons_species_prop <- mutate_species_prop(fri_polygons["SPCOMP"], "SPCOMP")
 
-fri_polygons_species
+fri_polygons_species_prop
 }

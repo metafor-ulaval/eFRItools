@@ -1,4 +1,4 @@
-test_that("species correctly extracted", {
+test_that("species prop correctly extracted", {
   fri_polygons_species <- mutate_species_prop(fri_polygons["SPCOMP"], "SPCOMP")
 
   expect_equal(fri_polygons_species[1,]$BW, 40)
