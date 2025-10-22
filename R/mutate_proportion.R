@@ -1,7 +1,7 @@
 #' Extract the proportion of each class of a raster in specified polygons
 #'
 #' @param x spatial features; polygons of Forest Resources Inventory from the `sf` package.
-#' @param y raster; SpatRaster with one or more layers from the `terra` package.
+#' @param y raster; SpatRaster with categorical values from the `terra` package.
 #' @param prefix character; prefix use for created column for each class
 #' @param simplify logical; compute the most frequent class and its proportion
 #' @param keep_all logical; keep all column of individual class

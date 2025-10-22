@@ -9,7 +9,7 @@ mutate_proportion(x, y, prefix, simplify = TRUE, keep_all = TRUE)
 \arguments{
 \item{x}{spatial features; polygons of Forest Resources Inventory from the \code{sf} package.}
 
-\item{y}{raster; SpatRaster with one or more layers from the \code{terra} package.}
+\item{y}{raster; SpatRaster with categorical values from the \code{terra} package.}
 
 \item{prefix}{character; prefix use for created column for each class}
 
