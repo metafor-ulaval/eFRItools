@@ -25,6 +25,7 @@ Extract the proportion of each class of a raster in specified polygons
 }
 \examples{
 library(sf)
+library(terra)
 
 fri_polygons_landcover_prop <- mutate_proportion(fri_polygons, rast(landcover), "landcover")
 

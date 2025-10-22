@@ -12,6 +12,7 @@
 #'
 #' @examples
 #' library(sf)
+#' library(terra)
 #'
 #' fri_polygons_landcover_prop <- mutate_proportion(fri_polygons, rast(landcover), "landcover")
 #'
@@ -29,7 +30,7 @@ mutate_proportion <- function(x,
                                   sf::st_geometry(x_crs),
                                   function(xx,yy){
 
-                                    tibble(value = NA,
+                                    tibble::tibble(value = NA,
                                            class_area = sf::st_area(yy) - sum(xx$class_area)) |>
                                       dplyr::add_row(xx) |>
                                       dplyr::mutate(total_area = sf::st_area(yy)) |>
