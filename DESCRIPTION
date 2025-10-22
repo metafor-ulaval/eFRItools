@@ -22,7 +22,9 @@ Imports:
     dplyr,
     exactextractr,
     purrr,
+    rlang,
     sf,
     stringr,
     terra,
+    tibble,
     tidyr

@@ -27,7 +27,7 @@ mutate_species_prop <- function(x,
                  tidyr::pivot_wider(names_from = SP, values_from = PROP)}) |>
     dplyr::bind_rows() |>
     dplyr::select(-dplyr::any_of("NA")) |>
-    dplyr::mutate_all(~replace_na(.x, 0)) -> species_prop
+    dplyr::mutate_all(~tidyr::replace_na(.x, 0)) -> species_prop
 
   if(update_names == TRUE){
     x <- dplyr::select(x, -dplyr::any_of(names(species_prop)))

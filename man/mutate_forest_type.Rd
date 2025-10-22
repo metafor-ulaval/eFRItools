@@ -18,9 +18,9 @@ Extract forest type proportions from species proportion columns
 \examples{
 library(sf)
 
-fri_polygons_species <- mutate_species_prop(fri_polygons["SPCOMP"], "SPCOMP")
+fri_polygons_species_prop <- mutate_species_prop(fri_polygons["SPCOMP"], "SPCOMP")
 
-fri_polygons_forest_type <- mutate_forest_type(fri_polygons_species)
+fri_polygons_forest_type <- mutate_forest_type(fri_polygons_species_prop)
 
 fri_polygons_forest_type
 }

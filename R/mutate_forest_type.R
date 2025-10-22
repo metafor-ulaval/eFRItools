@@ -9,9 +9,9 @@
 #' @examples
 #' library(sf)
 #'
-#' fri_polygons_species <- mutate_species_prop(fri_polygons["SPCOMP"], "SPCOMP")
+#' fri_polygons_species_prop <- mutate_species_prop(fri_polygons["SPCOMP"], "SPCOMP")
 #'
-#' fri_polygons_forest_type <- mutate_forest_type(fri_polygons_species)
+#' fri_polygons_forest_type <- mutate_forest_type(fri_polygons_species_prop)
 #'
 #' fri_polygons_forest_type
 mutate_forest_type <- function(x){
@@ -33,8 +33,8 @@ mutate_forest_type <- function(x){
 
   deciduous <- names(dict[!stringr::str_detect(dict, pattern = "pine|spruce|fir|cedar|larch|conifers|hemlock")])
 
-  x %>%
-    dplyr::mutate(PROP_CONIFEROUS = rowSums(dplyr::across(dplyr::any_of(coniferous)))) %>%
+  x |>
+    dplyr::mutate(PROP_CONIFEROUS = rowSums(dplyr::across(dplyr::any_of(coniferous)))) |>
     dplyr::mutate(PROP_DECIDUOUS = rowSums(dplyr::across(dplyr::any_of(deciduous)))) -> x_forest_type
 
   return(x_forest_type)
