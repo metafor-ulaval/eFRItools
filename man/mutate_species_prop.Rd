@@ -4,12 +4,14 @@
 \alias{mutate_species_prop}
 \title{Separate a column of species composition into proportions}
 \usage{
-mutate_species_prop(x, col_name)
+mutate_species_prop(x, col_name, update_names = TRUE)
 }
 \arguments{
 \item{x}{spatial features; polygons of Forest Resources Inventory from the \code{sf} package.}
 
 \item{col_name}{character; name of the column that contains species and proportions}
+
+\item{update_names}{logical; if some propportions are already presents, duplicated columns will be updated}
 }
 \value{
 Polygons with extracted species proportions as individuals columns

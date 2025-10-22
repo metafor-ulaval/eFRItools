@@ -1,0 +1,42 @@
+#' Extract forest type proportions from species proportion columns
+#'
+#' @param x spatial features; polygons of Forest Resources Inventory from the `sf` package. species codes with proportion must be present before running the function. see [mutate_species_prop]
+#'
+#' @returns
+#' Polygons with extracted forest type proportions as two individuals columns : PROP_CONIFEROUS and PROP_DECIDUOUS
+#' @export
+#'
+#' @examples
+#' library(sf)
+#'
+#' fri_polygons_species <- mutate_species_prop(fri_polygons["SPCOMP"], "SPCOMP")
+#'
+#' fri_polygons_forest_type <- mutate_forest_type(fri_polygons_species)
+#'
+#' fri_polygons_forest_type
+mutate_forest_type <- function(x){
+
+  dict <- data.frame(SB = "black spruce",    LA = "eastern larch",       BW = "white birch",     BF = "balsam fir",
+                     CE = "cedar",           SW = "white spruce",        PT = "trembling aspen", PJ = "jack pine",
+                     PO = "poplar",          PB = "balsam poplar",       PR = "red pine",        PW = "white pine",
+                     SX = "spruce",          MR = "red maple",           AB = "black ash",       BY = "yellow birch",
+                     OR = 'red oak',         CW = 'eastern white cedar', MH = 'hard maple',      HE = 'eastern hemlock',
+                     BD = 'basswood',        CB = 'black cherry',        BE = 'american beech',  AW = 'white ash',
+                     PL = 'largetooth aspen',AG = 'red ash',             OW = 'white oak',       IW = 'ironwood',
+                     OB = 'bur oak',         EW = 'white elm',           MS = 'silver maple',    PS = 'scots pine',
+                     OH = 'other hardwoods', BG = 'grey birch',          AL = 'alder',           SR = 'red spruce',
+                     BB = 'blue beech',      MT = 'mountain maple',      MB = 'black maple',     OC = 'other conifers',
+                     SN = 'norway spruce',   PE = 'silver poplar',       HI = 'hickory',         AX = 'ash')
+
+
+  coniferous <- names(dict[stringr::str_detect(dict, pattern = "pine|spruce|fir|cedar|larch|conifers|hemlock")])
+
+  deciduous <- names(dict[!stringr::str_detect(dict, pattern = "pine|spruce|fir|cedar|larch|conifers|hemlock")])
+
+  x %>%
+    dplyr::mutate(PROP_CONIFEROUS = rowSums(dplyr::across(dplyr::any_of(coniferous)))) %>%
+    dplyr::mutate(PROP_DECIDUOUS = rowSums(dplyr::across(dplyr::any_of(deciduous)))) -> x_forest_type
+
+  return(x_forest_type)
+
+}
