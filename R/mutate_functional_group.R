@@ -21,28 +21,28 @@
 #'
 #' fri_polygons_functional_group
 mutate_functional_group <- function(x,
-                                      functional_group_3 = TRUE,
-                                      functional_group_5 = TRUE){
+                                    functional_group_3 = TRUE,
+                                    functional_group_5 = TRUE){
 
   x_functional_group <- x
 
   if(functional_group_3 == TRUE){
 
     x_functional_group <- dplyr::mutate(x_functional_group,
-                                          FUNCTIONAL_GROUP_3 = dplyr::case_when(PROP_CONIFEROUS >= 70 ~ "Softwood",
-                                                                                PROP_DECIDUOUS >= 70 ~ "Hardwood",
-                                                                                TRUE ~ "Mixedwood"))
+                                        FUNCTIONAL_GROUP_3 = dplyr::case_when(PROP_CONIFEROUS >= 70 ~ "Softwood",
+                                                                              PROP_DECIDUOUS >= 70 ~ "Hardwood",
+                                                                              TRUE ~ "Mixedwood"))
 
   }
 
   if(functional_group_5 == TRUE){
 
     x_functional_group <- dplyr::mutate(x_functional_group,
-                                          FUNCTIONAL_GROUP_5 = dplyr::case_when(SP_NO_1 == "PJ" & PJ >= 50 & PROP_CONIFEROUS >= 70 ~ "Jack Pine Dominated",
-                                                                                SP_NO_1 == "SB" & SB >= 50 & PROP_CONIFEROUS >= 70 ~ "Black Spruce Dominated",
-                                                                                PROP_DECIDUOUS >= 70 ~ "Hardwood",
-                                                                                PROP_DECIDUOUS >= 30 & PROP_DECIDUOUS <= 70 & PROP_CONIFEROUS >= 30 & PROP_CONIFEROUS <= 70 ~ "Mixedwood",
-                                                                                TRUE ~ "Mixed Conifer"))
+                                        FUNCTIONAL_GROUP_5 = dplyr::case_when(SP_NO_1 == "PJ" & PJ >= 50 & PROP_CONIFEROUS >= 70 ~ "Jack Pine Dominated",
+                                                                              SP_NO_1 == "SB" & SB >= 50 & PROP_CONIFEROUS >= 70 ~ "Black Spruce Dominated",
+                                                                              PROP_DECIDUOUS >= 70 ~ "Hardwood",
+                                                                              PROP_DECIDUOUS >= 30 & PROP_DECIDUOUS <= 70 & PROP_CONIFEROUS >= 30 & PROP_CONIFEROUS <= 70 ~ "Mixedwood",
+                                                                              TRUE ~ "Mixed Conifer"))
 
   }
 

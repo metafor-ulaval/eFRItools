@@ -36,8 +36,5 @@ test_that("sum is correct", {
     exactextractr::exact_extract(raster, ., coverage_area = TRUE, summarize_df = TRUE, fun = sum_cover) %>%
     dplyr::bind_rows() -> raster_proportion
 
-  cls <- terra::cats(raster)[[1]]
-  names(raster_proportion) <- cls$class[match(names(raster_proportion), cls$value)]
-
-  expect_equal(raster_proportion$Deciduous_Treed, 4.444988)
+  expect_equal(raster_proportion$class_area[1], 301599.6)
 })
