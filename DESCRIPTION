@@ -19,9 +19,11 @@ Depends:
     R (>= 3.5)
 LazyData: true
 Imports: 
+    data.table,
     dplyr,
     exactextractr,
     purrr,
+    RANN,
     rlang,
     sf,
     stringr,

@@ -30,5 +30,5 @@ table of the imputed variable of the same lenght as the target polygons
 Perform knn imputation
 }
 \examples{
-ex
+"ex"
 }

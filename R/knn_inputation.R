@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#' ex
+#' "ex"
 knn_inputation <- function(reference_polygons,
                            target_polygons,
                            knn_variables,

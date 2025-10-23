@@ -26,7 +26,7 @@ imputation <- function(reference_polygons,
     inputation_result <- apply(nn, MARGIN = 1, FUN = function(x){ mean(data[x]) })
   else if (is.factor(data) || is.character(data))
     # For categorical values, the mode of the k observations from reference data is used to impute value into the target polygon
-    inputation_result <- apply(nn, MARGIN = 1, FUN = function(x){ get.mode(data[x]) })
+    inputation_result <- apply(nn, MARGIN = 1, FUN = function(x){ get_mode(data[x]) })
   else
     stop(paste("Non supported column type", var))
 
