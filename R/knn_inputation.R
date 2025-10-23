@@ -1,3 +1,17 @@
+#' Perform knn imputation
+#'
+#' @param reference_polygons spatial features; reference polygons from the `sf` package.
+#' @param target_polygons spatial features; target polygons from the `sf` package.
+#' @param knn_variables Variables to use
+#' @param target_variables Variables to infer
+#' @param k The maximum number of nearest neighbours to compute
+#'
+#' @returns
+#' table of the imputed variable of the same lenght as the target polygons
+#' @export
+#'
+#' @examples
+#' ex
 knn_inputation <- function(reference_polygons,
                            target_polygons,
                            knn_variables,

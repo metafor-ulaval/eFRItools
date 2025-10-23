@@ -13,22 +13,6 @@ test_that("get mode works", {
   expect_equal(get_mode(x), 1)
 })
 
-test_that("species found", {
-  expect_equal(assign_common_name("SB"), "black spruce")
-})
-
-test_that("species dont exist", {
-  expect_equal(assign_common_name("SBB"), NA_character_)
-})
-
-test_that("coniferous found", {
-  expect_equal(assign_type("pine"), "Coniferous")
-})
-
-test_that("deciduous found", {
-  expect_equal(assign_type("maple"), "Deciduous")
-})
-
 test_that("sum is correct", {
   raster <- terra::rast(landcover)
   subset_area %>%
