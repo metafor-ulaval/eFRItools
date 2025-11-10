@@ -9,8 +9,11 @@
 #' @export
 #'
 #' @examples
-#' x <- fri_polygons %>%
-#'   mutate_proportion(rast(forest_fire_1985_2020), "forest_fire") %>%
+#' library(sf)
+#' library(terra)
+#'
+#' x <- fri_polygons |>
+#'   mutate_proportion(rast(forest_fire_1985_2020), "forest_fire") |>
 #'   mutate_proportion(rast(forest_harvest_1985_2020), "forest_harvest")
 #'
 #' col_name <- grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(x), value = TRUE)
