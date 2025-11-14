@@ -21,6 +21,7 @@
 #'
 #' @param segmentation param
 #' @param metrics param
+#' @param selected_dendrometrics param
 #' @param landcover param
 #' @param forest_fire param
 #' @param forest_harvest param
