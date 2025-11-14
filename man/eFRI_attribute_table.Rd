@@ -7,6 +7,7 @@
 eFRI_attribute_table(
   segmentation,
   metrics,
+  selected_dendrometrics,
   landcover,
   forest_fire,
   forest_harvest,

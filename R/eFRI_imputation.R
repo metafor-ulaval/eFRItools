@@ -87,7 +87,7 @@ eFRI_imputation <- function(segmentation,
   forest_polygon <- mutate_functional_group(forest_polygon)
 
   # Extract data for imputation into segmentation
-  cat("Extract data of segmentation/n")
+  cat("Extract data of segmentation\n")
   segmentation_data <- segmentation
   segmentation_data <- mutate_centroid(segmentation_data)
   segmentation_data <- mutate_metrics(segmentation_data, metrics, fun = "median")

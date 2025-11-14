@@ -25,7 +25,7 @@ mutate_proportion <- function(x,
                               simplify = TRUE,
                               keep_all = TRUE){
 
-  cat(paste0("Mutate proportion for ", nrow(x), " polygon(s) of raster :", names(y), "\n"))
+  cat(paste0("Mutate proportion for ", nrow(x), " polygon(s) of raster ", names(y), "\n"))
   x_crs <- sf::st_transform(x, sf::st_crs(y))
   x_sum_cover <- exactextractr::exact_extract(y, x_crs, coverage_area = TRUE, summarize_df = TRUE, fun = sum_cover)
 

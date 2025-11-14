@@ -34,6 +34,7 @@
 #' eFRI_attribute_table
 eFRI_attribute_table <- function(segmentation,
                                  metrics,
+                                 selected_dendrometrics,
                                  landcover,
                                  forest_fire,
                                  forest_harvest,
@@ -60,7 +61,7 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final$PROPFORESTED <- segmentation$PROPFORESTED
   segmentation_final$POLYTYPE <- segmentation$MOST_FREQUENT_LANDCOVER
   segmentation_final$POLYTYPEPROP <- segmentation$MOST_FREQUENT_LANDCOVER_PROPORTION
-  #segmentation_final$YRORG <- segmentation$
+  #segmentation_final$YRORG <- segmentation$ # On garde ca?
   segmentation_final$AGE <- segmentation$age_mean_2025
   segmentation_final$YRDEP <- segmentation$YRDEP
   segmentation_final$DEPTYPE <- segmentation$DEPTYPE
@@ -69,16 +70,16 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final$HARVESTPROP <- segmentation$MOST_FREQUENT_FOREST_HARVEST_PROPORTION
   segmentation_final$YRFIRE <- segmentation$MOST_FREQUENT_FOREST_FIRE
   segmentation_final$FIREPROP <- segmentation$MOST_FREQUENT_FOREST_FIRE_PROPORTION
-  #segmentation_final$selected_dendrometrics <- segmentation$
+  segmentation_final[toupper(selected_dendrometrics)] <- sf::st_drop_geometry(segmentation[,selected_dendrometrics])
   segmentation_final$HEIGHT <- segmentation$z_p95
   segmentation_final$CANOPY_COVER <- segmentation$z_above2
   segmentation_final$DENSITY <- segmentation$fractional_cover_05_2
   segmentation_final$SLOPE <- segmentation$slope
   segmentation_final$MOISTURE <- segmentation$sagawi
-  #segmentation_final$LEADSP <- segmentation$
-  #segmentation_final$SECSP <- segmentation$
-  #segmentation_final$FUNCTIONAL_GROUP_3 <- segmentation$
-  #segmentation_final$FUNCTIONAL_GROUP_5 <- segmentation$
+  segmentation_final$LEADSP <- segmentation$SP_NO_1
+  segmentation_final$SECSP <- segmentation$SP_NO_2
+  segmentation_final$FUNCTIONAL_GROUP_3 <- segmentation$FUNCTIONAL_GROUP_3
+  segmentation_final$FUNCTIONAL_GROUP_5 <- segmentation$FUNCTIONAL_GROUP_5
   sf::st_geometry(segmentation_final) <- "geometry"
 
   return(segmentation_final)
