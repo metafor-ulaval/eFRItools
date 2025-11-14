@@ -24,6 +24,7 @@ mutate_functional_group <- function(x,
                                     functional_group_3 = TRUE,
                                     functional_group_5 = TRUE){
 
+  cat(paste0("Mutate functional group for ", nrow(x), " polygon(s)\n"))
   x_functional_group <- x
 
   if(functional_group_3 == TRUE){

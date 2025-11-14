@@ -55,6 +55,7 @@ eFRI_imputation <- function(segmentation,
                             knn_var){
 
   # Remove forest polygon that have a perturbation between interpretation year and lidar year
+  cat("Remove forest polygon that have a perturbation between interpretation year and lidar year\n")
   forest_polygon <- forest_polygon[c(forest_year_field, forest_composition_field, forest_type_field)]
   forest_polygon <- mutate_proportion(forest_polygon, forest_fire, prefix = "forest_fire", simplify = FALSE, keep_all = TRUE)
   forest_polygon <- mutate_proportion(forest_polygon, forest_harvest, prefix = "forest_harvest", simplify = FALSE, keep_all = TRUE)
@@ -66,16 +67,19 @@ eFRI_imputation <- function(segmentation,
   forest_polygon <- forest_polygon[forest_polygon$is_perturbed != 0,]
 
   # Extract data for filtering
+  cat("Extract data of forest polygon\n")
   forest_polygon <- mutate_metrics(forest_polygon, metrics, fun = "median")
   forest_polygon <- mutate_prop_forested(forest_polygon, landcover)
 
   # Filter non forested forest polygon
+  cat("Filter non forested forest polygon\n")
   forest_polygon <- forest_polygon[forest_polygon[[forest_type_field]] == "FOR",]
   forest_polygon <- forest_polygon[forest_polygon$PROPFORESTED  >= 50,]
   forest_polygon <- forest_polygon[forest_polygon$z_p95 >= 5,]
   forest_polygon <- forest_polygon[forest_polygon$z_above2 >= 50,]
 
   # Extract data for imputation into forest polygon
+  cat("Extract data for imputation into forest polygon\n")
   forest_polygon <- mutate_centroid(forest_polygon)
   forest_polygon <- mutate_species_prop(forest_polygon, "SPCOMP")
   forest_polygon <- mutate_species_order(forest_polygon, "SPCOMP")
@@ -83,6 +87,7 @@ eFRI_imputation <- function(segmentation,
   forest_polygon <- mutate_functional_group(forest_polygon)
 
   # Extract data for imputation into segmentation
+  cat("Extract data of segmentation/n")
   segmentation_data <- segmentation
   segmentation_data <- mutate_centroid(segmentation_data)
   segmentation_data <- mutate_metrics(segmentation_data, metrics, fun = "median")

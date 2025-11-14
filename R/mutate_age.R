@@ -23,6 +23,7 @@ mutate_age <- function(x,
                        target_year,
                        fun){
 
+  cat(paste0("Mutate age for ", nrow(x), " polygon(s) for year ", target_year, " \n"))
   x_crs <- sf::st_transform(x, sf::st_crs(y))
   age_extracted <- exactextractr::exact_extract(y, x_crs, fun)
   age_corrected <- (round(age_extracted, 0) + (target_year - current_year))

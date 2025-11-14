@@ -24,7 +24,7 @@ knn_inputation <- function(reference_polygons,
 
   if (addr1 == addr2)
   {
-    print("Self search mode")
+    cat("Self search mode\n")
     k = k+1
   }
 

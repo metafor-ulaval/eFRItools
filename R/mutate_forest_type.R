@@ -16,6 +16,7 @@
 #' fri_polygons_forest_type
 mutate_forest_type <- function(x){
 
+  cat(paste0("Mutate forest type for ", nrow(x), " polygon(s)\n"))
   dict <- data.frame(SB = "black spruce",    LA = "eastern larch",       BW = "white birch",     BF = "balsam fir",
                      CE = "cedar",           SW = "white spruce",        PT = "trembling aspen", PJ = "jack pine",
                      PO = "poplar",          PB = "balsam poplar",       PR = "red pine",        PW = "white pine",

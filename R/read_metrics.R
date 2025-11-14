@@ -12,6 +12,7 @@
 #'                "D:/00_Ontario_eFRI/RMF/metrics/dendro")) -> metrics_infos
 read_metrics <- function(metric_path){
 
+  cat("Read metrics\n")
   description <- c("dem" = "digital elevation model",
                    "dem_5m" = "digital elevation model",
                    "slope" = "slope in percent",

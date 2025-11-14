@@ -14,6 +14,7 @@
 #' fri_polygons_centroids
 mutate_centroid <- function(x){
 
+  cat(paste0("Mutate centroid for ", nrow(x), " polygon(s)\n"))
   x_geom <- sf::st_geometry(x)
   x_points <- sf::st_centroid(x_geom)
   x_coords <- sf::st_coordinates(x_points)

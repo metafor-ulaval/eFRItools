@@ -16,6 +16,7 @@
 mutate_species_order <- function(x,
                                  col_name){
 
+  cat(paste0("Mutate species order for ", nrow(x), " polygon(s)\n"))
   extracted_col <- dplyr::pull(x, col_name)
   extracted_col_list <- stringr::str_match_all(extracted_col, "[A-Z]{2}[ ]+[0-9]+")
   purrr::map(extracted_col_list,

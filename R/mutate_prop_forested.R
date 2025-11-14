@@ -33,6 +33,7 @@ mutate_prop_forested <- function(x,
                                                     "Hedge_Rows",
                                                     "Tallgrass_Woodland")){
 
+  cat(paste0("Mutate proportion forested for ", nrow(x), " polygon(s)\n"))
   x_crs <- sf::st_transform(x, sf::st_crs(y))
   x_sum_cover <- exactextractr::exact_extract(y, x_crs, coverage_area = TRUE, summarize_df = TRUE, fun = sum_cover)
 

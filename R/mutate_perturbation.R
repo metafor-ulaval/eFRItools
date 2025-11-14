@@ -23,6 +23,7 @@ mutate_perturbation <- function(x,
                                 col_name,
                                 threshold = 80){
 
+  cat(paste0("Mutate perturbation for ", nrow(x), " polygon(s)\n"))
   x_col <- as.data.frame(x)[,c(col_name)]
 
   x_perturbation <- apply(x_col,
