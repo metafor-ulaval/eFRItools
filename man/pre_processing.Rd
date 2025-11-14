@@ -10,8 +10,6 @@ pre_processing(layers, masks = NULL)
 \item{layers}{SpatRaster. Multiband raster to segment with \link{generic_region_merging}}
 
 \item{masks}{List of SpatVector objects that will be used to mask the raster}
-
-\item{smooth}{odd integer. 0 to skip the smoothing stage}
 }
 \value{
 A SpatRaster

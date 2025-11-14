@@ -20,6 +20,8 @@ mutate_proportion(
 
 \item{prefix}{character; prefix use for created column for each class}
 
+\item{remove_class}{character; class needed to be removed, like na or 0}
+
 \item{simplify}{logical; compute the most frequent class and its proportion}
 
 \item{keep_all}{logical; keep all column of individual class}

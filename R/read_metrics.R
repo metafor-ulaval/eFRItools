@@ -78,11 +78,11 @@ read_metrics <- function(metric_path){
                    "AGB_ha_FOR" = "above ground biomass normalized per hectare (t C/ha) / mask for RMF",
                    "ba_ha" = "basal area / tree cross sectional area (approximated as a circle) at breast height (1.3 m) (m2/ha)",
                    "ba_ha_FOR" = "basal area / tree cross sectional area (approximated as a circle) at breast height (1.3 m) (m2/ha) / mask for RMF",
-                   "ba_ha_min20" = "basal area / tree cross sectional area (approximated as a circle) at breast height (1.3 m) (m2/ha) / min 20 ??????", # À élucider le min 20
+                   "ba_ha_min20" = "basal area / tree cross sectional area (approximated as a circle) at breast height (1.3 m) (m2/ha) / min 20 ??????", # À elucider le min 20
                    "dens" = "stem density with DBH > 7.1 cm (stems/ha)",
                    "dens_FOR" = "tem density with DBH > 7.1 cm (stems/ha) / mask for RMF",
-                   "lor" = "lorey’s height /	average tree height weighted by basal area (m)",
-                   "lor_FOR" = "lorey’s height /	average tree height weighted by basal area (m) / mask for RMF",
+                   "lor" = "loreys height /	average tree height weighted by basal area (m)",
+                   "lor_FOR" = "loreys height /	average tree height weighted by basal area (m) / mask for RMF",
                    "qmdbh" = "quadratic mean of diameter at breast height (cm)",
                    "qmdbh_FOR" = "quadratic mean of diameter at breast height (cm) / mask for RMF",
                    "top_height" = "maximum height (m)",
