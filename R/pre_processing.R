@@ -5,7 +5,6 @@
 #' in `[0,255]`
 #'
 #' @param layers SpatRaster. Multiband raster to segment with \link{generic_region_merging}
-#' @param smooth odd integer. 0 to skip the smoothing stage
 #' @param masks List of SpatVector objects that will be used to mask the raster
 #'
 #' @return A SpatRaster
