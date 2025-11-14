@@ -76,9 +76,9 @@ read_metrics <- function(metric_path){
                    "NDWI" = "Normalized Difference Water Index ((NIR - SWIR2) / (NIR + SWIR2))",
                    "AGB_ha" = "above ground biomass normalized per hectare (t C/ha)",
                    "AGB_ha_FOR" = "above ground biomass normalized per hectare (t C/ha) / mask for RMF",
-                   "ba_ha" = "basal area / tree cross sectional area (approximated as a circle) at breast height (1.3 m) (m²/ha)",
-                   "ba_ha_FOR" = "basal area / tree cross sectional area (approximated as a circle) at breast height (1.3 m) (m²/ha) / mask for RMF",
-                   "ba_ha_min20" = "basal area / tree cross sectional area (approximated as a circle) at breast height (1.3 m) (m²/ha) / min 20 ??????", # À élucider le min 20
+                   "ba_ha" = "basal area / tree cross sectional area (approximated as a circle) at breast height (1.3 m) (m2/ha)",
+                   "ba_ha_FOR" = "basal area / tree cross sectional area (approximated as a circle) at breast height (1.3 m) (m2/ha) / mask for RMF",
+                   "ba_ha_min20" = "basal area / tree cross sectional area (approximated as a circle) at breast height (1.3 m) (m2/ha) / min 20 ??????", # À élucider le min 20
                    "dens" = "stem density with DBH > 7.1 cm (stems/ha)",
                    "dens_FOR" = "tem density with DBH > 7.1 cm (stems/ha) / mask for RMF",
                    "lor" = "lorey’s height /	average tree height weighted by basal area (m)",
@@ -87,10 +87,10 @@ read_metrics <- function(metric_path){
                    "qmdbh_FOR" = "quadratic mean of diameter at breast height (cm) / mask for RMF",
                    "top_height" = "maximum height (m)",
                    "top_height_FOR" = "maximum height (m) / mask for RMF",
-                   "V_ha" = "total whole stem volume per hectare	(m³/ha)",
-                   "V_ha_FOR" = "total whole stem volume per hectare	(m³/ha) / mask for RMF",
-                   "Vmerch_ha" = "total merchantable volume normalized per hectare where stump height is set to 0.2 m and minimum to diameter to 10 cm (m³/ha)",
-                   "Vmerch_ha_FOR" = "total merchantable volume normalized per hectare where stump height is set to 0.2 m and minimum to diameter to 10 cm (m³/ha) / mask for RMF")
+                   "V_ha" = "total whole stem volume per hectare	(m3/ha)",
+                   "V_ha_FOR" = "total whole stem volume per hectare	(m3/ha) / mask for RMF",
+                   "Vmerch_ha" = "total merchantable volume normalized per hectare where stump height is set to 0.2 m and minimum to diameter to 10 cm (m3/ha)",
+                   "Vmerch_ha_FOR" = "total merchantable volume normalized per hectare where stump height is set to 0.2 m and minimum to diameter to 10 cm (m3/ha) / mask for RMF")
 
   data_info <- lapply(metric_path,
                       function(x){
