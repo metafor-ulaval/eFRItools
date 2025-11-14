@@ -2,7 +2,7 @@
 % Please edit documentation in R/mutate_perturbation.R
 \name{mutate_perturbation}
 \alias{mutate_perturbation}
-\title{Extract perturbation column from existing perturbation coloumns with a pettern.}
+\title{Extract perturbation column from existing perturbation columns with a pattern.}
 \usage{
 mutate_perturbation(x, col_name, threshold = 80)
 }
@@ -17,17 +17,17 @@ mutate_perturbation(x, col_name, threshold = 80)
 Polygons with the follow perturbation columns : YRDEP, DEPTYPE, DEPPROP
 }
 \description{
-Extract perturbation column from existing perturbation coloumns with a pettern.
+Extract perturbation column from existing perturbation columns with a pattern.
 }
 \examples{
 library(sf)
 library(terra)
 
-x <- fri_polygons |>
+fri_polygons_proportion <- fri_polygons |>
   mutate_proportion(rast(forest_fire_1985_2020), "forest_fire") |>
   mutate_proportion(rast(forest_harvest_1985_2020), "forest_harvest")
 
-col_name <- grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(x), value = TRUE)
+col_name <- grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(fri_polygons_proportion), value = TRUE)
 
-threshold <- 20
+fri_polygons_perturbation <- mutate_perturbation(fri_polygons_proportion, col_name, 80)
 }

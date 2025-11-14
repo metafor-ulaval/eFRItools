@@ -1,4 +1,4 @@
-#' Extract perturbation column from existing perturbation coloumns with a pettern.
+#' Extract perturbation column from existing perturbation columns with a pattern.
 #'
 #' @param x spatial features; polygons of Forest Resources Inventory from the `sf` package. proportion of perturbations columns must be present before running the function. see [mutate_proportion]
 #' @param col_name character; name of the column that contains perturbation proportions
@@ -12,13 +12,13 @@
 #' library(sf)
 #' library(terra)
 #'
-#' x <- fri_polygons |>
+#' fri_polygons_proportion <- fri_polygons |>
 #'   mutate_proportion(rast(forest_fire_1985_2020), "forest_fire") |>
 #'   mutate_proportion(rast(forest_harvest_1985_2020), "forest_harvest")
 #'
-#' col_name <- grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(x), value = TRUE)
+#' col_name <- grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(fri_polygons_proportion), value = TRUE)
 #'
-#' threshold <- 20
+#' fri_polygons_perturbation <- mutate_perturbation(fri_polygons_proportion, col_name, 80)
 mutate_perturbation <- function(x,
                                 col_name,
                                 threshold = 80){
@@ -29,15 +29,21 @@ mutate_perturbation <- function(x,
                           MARGIN = 1,
                           function(xx){
 
-                            xx_threshold <- xx[xx > threshold]
-                            xx_years <- as.numeric(gsub("\\D", "", names(xx_threshold)))
-                            xx_max <- xx_threshold[which.max(xx_years)]
-                            xx_type <- sub("_?[0-9]+.*", "", names(xx_max))
-                            xx_years <- as.numeric(gsub("\\D", "", names(xx_max)))
+                            xx_df <- data.frame(YRDEP = as.numeric(gsub("\\D", "", names(xx))),
+                                                DEPTYPE = sub("_?[0-9]+.*", "", names(xx)),
+                                                DEPPROP = as.numeric(xx))
 
-                            data.frame(YRDEP = xx_years,
-                                       DEPTYPE = xx_type,
-                                       DEPPROP = xx_max)
+                            xx_df <- xx_df[order(xx_df$DEPPROP, decreasing = TRUE), ]
+
+                            xx_df_max <- xx_df[1,]
+
+                            if(xx_df_max$DEPPROP < threshold){
+                              data.frame(YRDEP = NA,
+                                         DEPTYPE = NA,
+                                         DEPPROP = NA)
+                            } else {
+                              xx_df_max
+                            }
                           })
 
   x_perturbation <- do.call(rbind, x_perturbation)
@@ -46,4 +52,3 @@ mutate_perturbation <- function(x,
 
   return(x)
 }
-

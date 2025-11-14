@@ -4,7 +4,14 @@
 \alias{mutate_proportion}
 \title{Extract the proportion of each class of a raster in specified polygons}
 \usage{
-mutate_proportion(x, y, prefix, simplify = TRUE, keep_all = TRUE)
+mutate_proportion(
+  x,
+  y,
+  prefix,
+  remove_class = c("NaN", "NA", "0"),
+  simplify = TRUE,
+  keep_all = TRUE
+)
 }
 \arguments{
 \item{x}{spatial features; polygons of Forest Resources Inventory from the \code{sf} package.}

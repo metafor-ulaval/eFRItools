@@ -18,15 +18,9 @@
 #' metrics_pre_processing <- pre_processing(rast(metrics), masks = map(masks, vect))
 #'
 #' metrics_pre_processing
-pre_processing = function(layers, smooth = 0, masks = NULL)
+pre_processing = function(layers, masks = NULL)
 {
   onames = names(layers)
-
-  if (smooth > 0)
-  {
-    cat("Smooth raster\n")
-    terra::focal(layers, w = smooth, fun = "mean")
-  }
 
   if (!is.null(masks))
   {

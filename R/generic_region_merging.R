@@ -20,7 +20,13 @@
 #' library(sf)
 #'
 #' }
-generic_region_merging = function(input, ofile = tempfile(fileext = ".tif"), thresh = 50, spec = 0.5, spat = 0.5,  method = "bs", otb_dir = "C:/OTB/bin")
+generic_region_merging = function(input,
+                                  ofile = tempfile(fileext = ".tif"),
+                                  thresh = 50,
+                                  spec = 0.5,
+                                  spat = 0.5,
+                                  method = "bs",
+                                  otb_dir = "C:/OTB/bin")
 {
   pntr = tryCatch({ input@pntr }, error = function(e) { input@cpp })
 

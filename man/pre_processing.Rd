@@ -4,14 +4,14 @@
 \alias{pre_processing}
 \title{Pre-processing stage}
 \usage{
-pre_processing(layers, smooth = 0, masks = NULL)
+pre_processing(layers, masks = NULL)
 }
 \arguments{
 \item{layers}{SpatRaster. Multiband raster to segment with \link{generic_region_merging}}
 
-\item{smooth}{odd integer. 0 to skip the smoothing stage}
-
 \item{masks}{List of SpatVector objects that will be used to mask the raster}
+
+\item{smooth}{odd integer. 0 to skip the smoothing stage}
 }
 \value{
 A SpatRaster

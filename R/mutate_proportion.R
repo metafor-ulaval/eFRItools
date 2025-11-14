@@ -20,6 +20,7 @@
 mutate_proportion <- function(x,
                               y,
                               prefix,
+                              remove_class = c("NaN" ,"NA", "0"),
                               simplify = TRUE,
                               keep_all = TRUE){
 
@@ -39,7 +40,8 @@ mutate_proportion <- function(x,
                                       tidyr::pivot_wider(values_from = proportion, names_from = value)
 
                                   }) |>
-    dplyr::mutate_all(~tidyr::replace_na(.x, 0))
+    dplyr::mutate_all(~tidyr::replace_na(.x, 0)) |>
+    dplyr::select(-dplyr::any_of(remove_class))
 
   y_class <- terra::cats(y)[[1]]
 
@@ -56,10 +58,13 @@ mutate_proportion <- function(x,
       tibble::rowid_to_column("id") |>
       tidyr::pivot_longer(!id, names_to = "variable", values_to = "value") |>
       dplyr::group_by(id) |>
-      dplyr::slice_max(value) |>
+      dplyr::arrange(dplyr::desc(value)) |>
+      dplyr::slice(1) |>
       dplyr::ungroup() |>
       dplyr::select(-id) |>
-      dplyr::mutate(variable = toupper(variable)) -> x_proportion_simplified
+      dplyr::mutate(variable = toupper(variable)) |>
+      dplyr::mutate(variable = ifelse(value == 0, NA, variable)) |>
+      dplyr::mutate(value = ifelse(value == 0, NA, value)) -> x_proportion_simplified
 
     names(x_proportion_simplified) <- c(paste0("most_frequent_", prefix), paste0("most_frequent_", prefix, "_proportion"))
     names(x_proportion) <- paste0(prefix, "_", names(x_proportion), "_proportion")
