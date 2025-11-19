@@ -19,6 +19,8 @@ eFRI_attribute_table(
 
 \item{metrics}{param}
 
+\item{selected_dendrometrics}{param}
+
 \item{landcover}{param}
 
 \item{forest_fire}{param}

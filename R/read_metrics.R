@@ -96,16 +96,18 @@ read_metrics <- function(metric_path){
   data_info <- lapply(metric_path,
                       function(x){
                         path <- list.files(x, pattern = "\\.tif$", full.names = TRUE)
-                        name <- gsub("\\.tif$", "", basename(path))
-                        resolution <- sapply(path, function(p) {terra::res(terra::rast(p))[1]})
-                        type <- basename(x)
+                        if(length(path) != 0){
+                          name <- gsub("\\.tif$", "", basename(path))
+                          resolution <- sapply(path, function(p) {terra::res(terra::rast(p))[1]})
+                          type <- basename(x)
 
-                        data.frame(path = path,
-                                   name = name,
-                                   resolution = resolution,
-                                   type = type,
-                                   row.names = NULL,
-                                   stringsAsFactors = FALSE)
+                          data.frame(path = path,
+                                     name = name,
+                                     resolution = resolution,
+                                     type = type,
+                                     row.names = NULL,
+                                     stringsAsFactors = FALSE)
+                        }
                       })
 
   data_info <- do.call(rbind, data_info)
