@@ -6,6 +6,7 @@
 \usage{
 eFRI_imputation(
   segmentation,
+  segmentation_id_field,
   forest_polygon,
   metrics,
   landcover,
@@ -22,6 +23,8 @@ eFRI_imputation(
 }
 \arguments{
 \item{segmentation}{param}
+
+\item{segmentation_id_field}{param}
 
 \item{forest_polygon}{param}
 

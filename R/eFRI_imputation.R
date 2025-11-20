@@ -21,6 +21,7 @@
 #' eFRI_imputation
 #'
 #' @param segmentation param
+#' @param segmentation_id_field param
 #' @param forest_polygon param
 #' @param metrics param
 #' @param landcover param
@@ -41,6 +42,7 @@
 #' @examples
 #' eFRI_imputation
 eFRI_imputation <- function(segmentation,
+                            segmentation_id_field,
                             forest_polygon,
                             metrics,
                             landcover,
@@ -92,6 +94,7 @@ eFRI_imputation <- function(segmentation,
   segmentation_data <- mutate_centroid(segmentation_data)
   segmentation_data <- mutate_metrics(segmentation_data, metrics, fun = "median")
 
+  # Perform imputation
   for(i in seq_along(target_var)){
 
     cat(paste0("Imputation of variable : ", target_var[i], "\n"))
@@ -101,14 +104,18 @@ eFRI_imputation <- function(segmentation,
     forest_polygon_temp <- forest_polygon[c(knn_var_temp, target_var[i])]
     forest_polygon_temp <- na.omit(forest_polygon_temp)
 
-    segmentation_temp <- segmentation_data[knn_var_temp]
-    #segmentation_temp <- na.omit(segmentation_temp) # Join by id if it don't work
+    segmentation_temp <- segmentation_data[c(segmentation_id_field, knn_var_temp)]
+    segmentation_temp <- na.omit(segmentation_temp)
 
-    segmentation[target_var[i]] <- knn_inputation(reference_polygons = forest_polygon_temp,
-                                                  target_polygons = segmentation_temp,
-                                                  knn_variables = knn_var_temp,
-                                                  target_variables = target_var[i],
-                                                  k = 5)
+    segmentation_temp[target_var[i]] <- knn_inputation(reference_polygons = forest_polygon_temp,
+                                                       target_polygons = segmentation_temp,
+                                                       knn_variables = knn_var_temp,
+                                                       target_variables = target_var[i],
+                                                       k = 5)
+    segmentation <- merge(segmentation,
+                          sf::st_drop_geometry(segmentation_temp[c(segmentation_id_field, target_var[i])]),
+                          by = "id",
+                          all = TRUE)
   }
 
   return(segmentation)
