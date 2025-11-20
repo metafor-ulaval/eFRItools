@@ -42,7 +42,6 @@ eFRI_segmentation <- function(metrics,
     colnames(segmentation)[1] <- "id_seg"
     segmentation$id <- seq_len(nrow(segmentation))
 
-    sf::st_write(segmentation,
-                 paste0(output_path, "/", output_name, ".shp"))
+    return(segmentation)
 
 }
