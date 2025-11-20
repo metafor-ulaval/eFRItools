@@ -54,7 +54,7 @@ mutate_proportion <- function(x,
 
   }
 
-  if(simplify == TRUE){
+  if(simplify == TRUE & ncol(x_proportion) != 0){
 
     x_proportion |>
       tibble::rowid_to_column("id") |>
