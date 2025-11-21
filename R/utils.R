@@ -7,9 +7,9 @@ get_mode <- function(x) {
 
 sum_cover <- function(x){
 
-  list(x |>
-         dplyr::group_by(value) |>
-         dplyr::summarise(class_area = sum(coverage_area)))
+  list(
+    aggregate(coverage_area ~ value, data = x, FUN = sum)
+  )
 
 }
 
