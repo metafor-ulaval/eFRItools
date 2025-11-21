@@ -24,27 +24,30 @@ mutate_perturbation <- function(x,
                                 threshold = 80){
 
   cat(paste0("Mutate perturbation for ", nrow(x), " polygon(s)\n"))
-  x_col <- as.data.frame(x)[,c(col_name)]
+  x_col <- as.data.frame(x)[,col_name]
 
   x_perturbation <- apply(x_col,
                           MARGIN = 1,
                           function(xx){
 
-                            xx_df <- data.frame(YRDEP = as.numeric(gsub("\\D", "", names(xx))),
-                                                DEPTYPE = sub("_?[0-9]+.*", "", names(xx)),
-                                                DEPPROP = as.numeric(xx))
+                            xx_temp <- xx[which.max(xx)]
+                            xx_temp[xx_temp < threshold] <- NA
 
-                            xx_df <- xx_df[order(xx_df$DEPPROP, decreasing = TRUE), ]
+                            if(all(is.na(xx_temp))){
 
-                            xx_df_max <- xx_df[1,]
+                              xx_temp <- data.frame(YRDEP = NA,
+                                                    DEPTYPE = NA,
+                                                    DEPPROP = NA)
 
-                            if(xx_df_max$DEPPROP < threshold){
-                              data.frame(YRDEP = NA,
-                                         DEPTYPE = NA,
-                                         DEPPROP = NA)
                             } else {
-                              xx_df_max
+
+                              xx_temp <- data.frame(YRDEP = as.numeric(gsub("\\D", "", names(xx_temp))),
+                                                    DEPTYPE = sub("_?[0-9]+.*", "", names(xx_temp)),
+                                                    DEPPROP = as.numeric(xx_temp))
                             }
+
+                            return(xx_temp)
+
                           })
 
   x_perturbation <- do.call(rbind, x_perturbation)
