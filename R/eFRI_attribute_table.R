@@ -63,7 +63,7 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final$POLYTYPE <- segmentation$MOST_FREQUENT_LANDCOVER
   segmentation_final$POLYTYPEPROP <- segmentation$MOST_FREQUENT_LANDCOVER_PROPORTION
   #segmentation_final$YRORG <- segmentation$ # On garde ca?
-  segmentation_final$AGE <- segmentation$age_mean_2025
+  segmentation_final$AGE <- segmentation[paste0("age_mean_", lubridate::year(lubridate::today()))]
   segmentation_final$YRDEP <- segmentation$YRDEP
   segmentation_final$DEPTYPE <- segmentation$DEPTYPE
   segmentation_final$DEPPROP <- segmentation$DEPPROP
@@ -71,7 +71,7 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final$HARVESTPROP <- segmentation$MOST_FREQUENT_FOREST_HARVEST_PROPORTION
   segmentation_final$YRFIRE <- segmentation$MOST_FREQUENT_FOREST_FIRE
   segmentation_final$FIREPROP <- segmentation$MOST_FREQUENT_FOREST_FIRE_PROPORTION
-  segmentation_final[toupper(selected_dendrometrics)] <- sf::st_drop_geometry(segmentation[,selected_dendrometrics])
+  if(!is.null(selected_dendrometrics)){    segmentation_final[toupper(selected_dendrometrics)] <- sf::st_drop_geometry(segmentation[,selected_dendrometrics])    }
   segmentation_final$HEIGHT <- segmentation$z_p95
   segmentation_final$CANOPY_COVER <- segmentation$z_above2
   segmentation_final$DENSITY <- segmentation$fractional_cover_05_2
