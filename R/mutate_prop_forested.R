@@ -42,10 +42,10 @@ mutate_prop_forested <- function(x,
                                   function(xx,yy){
 
                                     tibble::tibble(value = NA,
-                                                   class_area = sf::st_area(yy) - sum(xx$class_area)) |>
+                                                   coverage_area = sf::st_area(yy) - sum(xx$coverage_area)) |>
                                       dplyr::add_row(xx) |>
                                       dplyr::mutate(total_area = sf::st_area(yy)) |>
-                                      dplyr::mutate(proportion = class_area / total_area * 100) |>
+                                      dplyr::mutate(proportion = coverage_area / total_area * 100) |>
                                       dplyr::select(value, proportion) |>
                                       tidyr::pivot_wider(values_from = proportion, names_from = value)
 
