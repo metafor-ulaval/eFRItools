@@ -20,5 +20,5 @@ test_that("sum is correct", {
     exactextractr::exact_extract(raster, ., coverage_area = TRUE, summarize_df = TRUE, fun = sum_cover) %>%
     dplyr::bind_rows() -> raster_proportion
 
-  expect_equal(raster_proportion$class_area[1], 301599.6)
+  expect_equal(raster_proportion$coverage_area[1], 301599.6)
 })
