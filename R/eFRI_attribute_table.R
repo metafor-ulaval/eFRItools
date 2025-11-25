@@ -21,7 +21,7 @@
 #'
 #' @param segmentation param
 #' @param metrics param
-#' @param selected_dendrometrics param
+#' @param summary_metrics param
 #' @param landcover param
 #' @param forest_fire param
 #' @param forest_harvest param
@@ -35,7 +35,7 @@
 #' eFRI_attribute_table
 eFRI_attribute_table <- function(segmentation,
                                  metrics,
-                                 selected_dendrometrics,
+                                 summary_metrics,
                                  landcover,
                                  forest_fire,
                                  forest_harvest,
@@ -71,7 +71,7 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final$HARVESTPROP <- segmentation$MOST_FREQUENT_FOREST_HARVEST_PROPORTION
   segmentation_final$YRFIRE <- segmentation$MOST_FREQUENT_FOREST_FIRE
   segmentation_final$FIREPROP <- segmentation$MOST_FREQUENT_FOREST_FIRE_PROPORTION
-  if(!is.null(selected_dendrometrics)){    segmentation_final[toupper(selected_dendrometrics)] <- sf::st_drop_geometry(segmentation[,selected_dendrometrics])    }
+  if(!is.null(summary_metrics)){    segmentation_final[toupper(summary_metrics)] <- sf::st_drop_geometry(segmentation[,summary_metrics])    }
   segmentation_final$HEIGHT <- segmentation$z_p95
   segmentation_final$CANOPY_COVER <- segmentation$z_above2
   segmentation_final$DENSITY <- segmentation$fractional_cover_05_2
