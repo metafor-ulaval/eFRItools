@@ -7,7 +7,7 @@
 eFRI_attribute_table(
   segmentation,
   metrics,
-  selected_dendrometrics,
+  summary_metrics,
   landcover,
   forest_fire,
   forest_harvest,
@@ -19,7 +19,7 @@ eFRI_attribute_table(
 
 \item{metrics}{param}
 
-\item{selected_dendrometrics}{param}
+\item{summary_metrics}{param}
 
 \item{landcover}{param}
 
