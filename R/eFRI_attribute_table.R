@@ -63,7 +63,7 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final$POLYTYPE <- segmentation$MOST_FREQUENT_LANDCOVER
   segmentation_final$POLYTYPEPROP <- segmentation$MOST_FREQUENT_LANDCOVER_PROPORTION
   #segmentation_final$YRORG <- segmentation$ # On garde ca?
-  segmentation_final$AGE <- segmentation[paste0("age_mean_", lubridate::year(lubridate::today()))]
+  segmentation_final$AGE <- segmentation[[paste0("age_mean_", lubridate::year(lubridate::today()))]]
   segmentation_final$YRDEP <- segmentation$YRDEP
   segmentation_final$DEPTYPE <- segmentation$DEPTYPE
   segmentation_final$DEPPROP <- segmentation$DEPPROP
