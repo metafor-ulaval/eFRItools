@@ -57,26 +57,26 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final <- sf::st_as_sf(segmentation_final)
   segmentation_final$SOURCE <- segmentation$SOURCE
   segmentation_final$YRSOURCE <- segmentation$YRSOURCE
-  segmentation_final$AREA <- segmentation$AREA
-  segmentation_final$PERIMETER <- segmentation$PERIMETER
-  segmentation_final$PROPFORESTED <- segmentation$PROPFORESTED
+  segmentation_final$AREA <- round(segmentation$AREA, 2)
+  segmentation_final$PERIMETER <- round(segmentation$PERIMETER, 2)
+  segmentation_final$PROPFORESTED <-  round(segmentation$PROPFORESTED, 2)
   segmentation_final$POLYTYPE <- segmentation$MOST_FREQUENT_LANDCOVER
-  segmentation_final$POLYTYPEPROP <- segmentation$MOST_FREQUENT_LANDCOVER_PROPORTION
+  segmentation_final$POLYTYPEPROP <-  round(segmentation$MOST_FREQUENT_LANDCOVER_PROPORTION, 2)
   #segmentation_final$YRORG <- segmentation$ # On garde ca?
   segmentation_final$AGE <- segmentation[[paste0("age_mean_", lubridate::year(lubridate::today()))]]
   segmentation_final$YRDEP <- segmentation$YRDEP
   segmentation_final$DEPTYPE <- segmentation$DEPTYPE
-  segmentation_final$DEPPROP <- segmentation$DEPPROP
+  segmentation_final$DEPPROP <- round(segmentation$DEPPROP, 2)
   segmentation_final$YRHARVEST <- segmentation$MOST_FREQUENT_FOREST_HARVEST
-  segmentation_final$HARVESTPROP <- segmentation$MOST_FREQUENT_FOREST_HARVEST_PROPORTION
+  segmentation_final$HARVESTPROP <- round(segmentation$MOST_FREQUENT_FOREST_HARVEST_PROPORTION, 2)
   segmentation_final$YRFIRE <- segmentation$MOST_FREQUENT_FOREST_FIRE
-  segmentation_final$FIREPROP <- segmentation$MOST_FREQUENT_FOREST_FIRE_PROPORTION
-  if(!is.null(summary_metrics)){    segmentation_final[toupper(summary_metrics)] <- sf::st_drop_geometry(segmentation[,summary_metrics])    }
-  segmentation_final$HEIGHT <- segmentation$z_p95
-  segmentation_final$CANOPY_COVER <- segmentation$z_above2
-  segmentation_final$DENSITY <- segmentation$fractional_cover_05_2
-  segmentation_final$SLOPE <- segmentation$slope
-  segmentation_final$MOISTURE <- segmentation$sagawi
+  segmentation_final$FIREPROP <- round(segmentation$MOST_FREQUENT_FOREST_FIRE_PROPORTION, 2)
+  if(!is.null(summary_metrics)){    segmentation_final[toupper(summary_metrics)] <- round(sf::st_drop_geometry(segmentation[,summary_metrics]), 2)    }
+  segmentation_final$HEIGHT <- round(segmentation$z_p95, 2)
+  segmentation_final$CANOPY_COVER <- round(segmentation$z_above2, 2)
+  segmentation_final$DENSITY <- round(segmentation$fractional_cover_05_2, 2)
+  segmentation_final$SLOPE <- round(segmentation$slope, 2)
+  segmentation_final$MOISTURE <- round(segmentation$sagawi, 2)
   segmentation_final$LEADSP <- segmentation$SP_NO_1
   segmentation_final$SECSP <- segmentation$SP_NO_2
   segmentation_final$FUNCTIONAL_GROUP_3 <- segmentation$FUNCTIONAL_GROUP_3
