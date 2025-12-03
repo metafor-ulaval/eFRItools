@@ -11,6 +11,7 @@ generic_region_merging(
   spec = 0.5,
   spat = 0.5,
   method = "bs",
+  clean_nodata = TRUE,
   otb_dir = "C:/OTB/bin"
 )
 }
@@ -24,6 +25,8 @@ generic_region_merging(
 
 \item{method}{string. refer to paper or OTB GRM webpage for description of parameters
 \url{https://www.orfeo-toolbox.org/CookBook-8.0/Applications/app_GenericRegionMerging.html}}
+
+\item{clean_nodata}{bolean. Perform a 3 pixels majority filter to remove nodata of small holes}
 
 \item{otb_dir}{string. Directory location of OTB (where you installed OTB earlier).
 Likely "C:/OTB/bin" on Windows}

@@ -6,11 +6,12 @@
 \usage{
 eFRI_segmentation(
   metrics,
-  masks,
+  masks = NULL,
   thresh = 47,
   spec = 0.6,
   spat = 0.6,
   method = "bs",
+  clean_nodata = TRUE,
   output_path,
   output_name,
   otb_dir
@@ -28,6 +29,8 @@ eFRI_segmentation(
 \item{spat}{param}
 
 \item{method}{param}
+
+\item{clean_nodata}{param}
 
 \item{output_path}{param}
 
