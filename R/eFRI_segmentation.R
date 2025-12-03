@@ -17,7 +17,7 @@
 #' @examples
 #' print("example")
 eFRI_segmentation <- function(metrics,
-                              masks,
+                              masks = NULL,
                               thresh = 47,
                               spec = 0.6,
                               spat = 0.6,
