@@ -6,6 +6,7 @@
 #' @param spec param
 #' @param spat param
 #' @param method param
+#' @param clean_nodata param
 #' @param output_path param
 #' @param output_name param
 #' @param otb_dir param
@@ -22,6 +23,7 @@ eFRI_segmentation <- function(metrics,
                               spec = 0.6,
                               spat = 0.6,
                               method = "bs",
+                              clean_nodata = TRUE,
                               output_path,
                               output_name,
                               otb_dir){
@@ -35,6 +37,7 @@ eFRI_segmentation <- function(metrics,
                                            spec = spec,
                                            spat = spat,
                                            method = method,
+                                           clean_nodata = clean_nodata,
                                            otb_dir = otb_dir)
 
     segmentation <- sf::st_cast(segmentation, "MULTIPOLYGON")
