@@ -61,6 +61,8 @@ generic_region_merging = function(input,
     grm_reduced <- terra::focal(grm_cleaned, w = 3, fun = "modal", na.policy = "omit", na.rm = F)
     grm_reduced[!is.na(grm)] <- grm
     grm <- grm_reduced
+
+    terra::writeRaster(grm, gsub(".tif", "_cleaned.tif", ofile))
   }
 
   # Convert into polygons
