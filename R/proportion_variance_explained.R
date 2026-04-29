@@ -11,7 +11,7 @@
 #' library(sf)
 #' library(terra)
 #'
-#' pve_r2 <- proportion_variance_explained(fri_polygons, rast(metrics)["z_p95"])
+#' pve_r2 <- proportion_variance_explained(fri_polygons, rast(metrics)[["z_p95"]])
 #'
 #' pve_r2
 proportion_variance_explained <- function(x,
