@@ -12,11 +12,14 @@
 #' library(sf)
 #' library(terra)
 #'
-#' fri_polygons_metrics <- mutate_metrics(fri_polygons, rast(metrics))
+#' fri_polygons_metrics <- mutate_metrics(fri_polygons,
+#'                                        rast(metrics))
 #'
 #' fri_polygons_metrics
 #'
-#' fri_polygons_metrics <- mutate_metrics(fri_polygons, rast(metrics)[[c("dens", "lor", "qmdbh", "Vmerch_ha")]], fun = "stdev")
+#' fri_polygons_metrics <- mutate_metrics(fri_polygons,
+#'                                        rast(metrics)[[c("dens", "lor", "qmdbh", "Vmerch_ha")]],
+#'                                        fun = "stdev")
 #'
 #' fri_polygons_metrics
 mutate_metrics <- function(x,

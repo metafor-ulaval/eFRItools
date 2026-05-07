@@ -29,14 +29,16 @@ Extract the proportion of the polygon that are forested
 library(sf)
 library(terra)
 
-fri_polygons_prop_forested <- mutate_prop_forested(fri_polygons, rast(landcover), forested_class = c("Sparse_Treed",
-                                                                                                     "Treed_Upland",
-                                                                                                     "Deciduous_Treed",
-                                                                                                     "Mixed_Treed",
-                                                                                                     "Coniferous_Treed",
-                                                                                                     "Plantations_Treed_Cultivated",
-                                                                                                     "Hedge_Rows",
-                                                                                                     "Tallgrass_Woodland"))
+fri_polygons_prop_forested <- mutate_prop_forested(fri_polygons,
+                                                   rast(landcover),
+                                                   forested_class = c("Sparse_Treed",
+                                                                      "Treed_Upland",
+                                                                      "Deciduous_Treed",
+                                                                      "Mixed_Treed",
+                                                                      "Coniferous_Treed",
+                                                                      "Plantations_Treed_Cultivated",
+                                                                      "Hedge_Rows",
+                                                                      "Tallgrass_Woodland"))
 
 fri_polygons_prop_forested
 }

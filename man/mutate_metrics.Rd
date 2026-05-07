@@ -11,7 +11,7 @@ mutate_metrics(x, y, fun = "median")
 
 \item{y}{metrics; SpatRaster with one or more layers from the \code{terra} package.}
 
-\item{fun}{function to summarize the extracted metrics by polygon.}
+\item{fun}{function available in the \code{exact_extract} function from the \code{exactextractr} package to summarize the extracted metrics by polygon}
 }
 \value{
 Polygons with extracted metrics as individuals columns
@@ -23,7 +23,14 @@ Extract one or multiple metrics from polygons
 library(sf)
 library(terra)
 
-fri_polygons_metrics <- mutate_metrics(fri_polygons, rast(metrics))
+fri_polygons_metrics <- mutate_metrics(fri_polygons,
+                                       rast(metrics))
+
+fri_polygons_metrics
+
+fri_polygons_metrics <- mutate_metrics(fri_polygons,
+                                       rast(metrics)[[c("dens", "lor", "qmdbh", "Vmerch_ha")]],
+                                       fun = "stdev")
 
 fri_polygons_metrics
 }

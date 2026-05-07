@@ -29,18 +29,15 @@ knn_inputation <- function(reference_polygons,
   }
 
   # Extract knn variable used for imputation
-  target_polygons %>%
-    sf::st_drop_geometry() %>%
-    dplyr::select(all_of(knn_variables)) -> target
+  target <- sf::st_drop_geometry(target_polygons)
+  target <- target[, knn_variables, drop = FALSE]
 
-  reference_polygons %>%
-    sf::st_drop_geometry() %>%
-    dplyr::select(all_of(knn_variables)) -> reference
+  reference <- sf::st_drop_geometry(reference_polygons)
+  reference <- reference[, knn_variables, drop = FALSE]
 
   # Combine and scale data
-  dplyr::bind_rows(target,
-                   reference) %>%
-    scale() -> dat_comb_scaled
+  reference <- reference[, names(target), drop = FALSE]
+  dat_comb_scaled <- scale(rbind(target, reference))
 
   # Re-extract data for each dataset into a matrix
   reference <- dat_comb_scaled[(nrow(target)+1):(nrow(target)+nrow(reference)),]
