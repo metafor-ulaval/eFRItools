@@ -101,6 +101,9 @@ eFRI_imputation <- function(segmentation,
 
     knn_var_temp <- strsplit(knn_var[i], ",")[[1]]
 
+    knn_var_temp <- c(paste0(knn_var_temp[knn_var_temp != "X" & knn_var_temp != "Y"], "_median"),
+                      knn_var_temp[knn_var_temp == "X" | knn_var_temp == "Y"])
+
     forest_polygon_temp <- forest_polygon[c(knn_var_temp, target_var[i])]
     forest_polygon_temp <- na.omit(forest_polygon_temp)
 

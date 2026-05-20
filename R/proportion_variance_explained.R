@@ -17,23 +17,22 @@
 proportion_variance_explained <- function(x,
                                           y){
 
-  # convert into dataframe
+  # convert into matrix
   x$id <- seq_len(nrow(x))
   x_raster <- terra::rasterize(x, y, "id")
-  raster_temp <- c(x_raster, y)
-  rater_temp_df <- terra::as.data.frame(raster_temp, na.rm = TRUE)
-  colnames(rater_temp_df) <- c("id", "value")
+  rater_temp_df <- terra::values(c(x_raster, y), na.rm = TRUE)
+  colnames(vals) <- c("id", "value")
 
   # SST
-  mean_global <- mean(rater_temp_df$value)
-  sst <- sum((rater_temp_df$value - mean_global)^2)
+  mean_global <- mean(rater_temp_df[,2])
+  sst <- sum((rater_temp_df[,2] - mean_global)^2)
 
   # SSE
-  mean_by_segment <- tapply(rater_temp_df$value,
-                            rater_temp_df$id,
+  mean_by_segment <- tapply(rater_temp_df[,2],
+                            rater_temp_df[,1],
                             mean)
-  mean_seg_vec <- mean_by_segment[as.character(rater_temp_df$id)]
-  sse <- sum((rater_temp_df$value - mean_seg_vec)^2)
+  mean_seg_vec <- mean_by_segment[as.character(rater_temp_df[,1])]
+  sse <- sum((rater_temp_df[,2] - mean_seg_vec)^2)
 
   # pve in r2
   pve_r2 <- 1 - (sse / sst)
