@@ -72,11 +72,11 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final$YRFIRE <- segmentation$MOST_FREQUENT_FOREST_FIRE
   segmentation_final$FIREPROP <- round(segmentation$MOST_FREQUENT_FOREST_FIRE_PROPORTION, 2)
   if(!is.null(summary_metrics)){    segmentation_final[toupper(summary_metrics)] <- round(sf::st_drop_geometry(segmentation[,summary_metrics]), 2)    }
-  segmentation_final$HEIGHT <- round(segmentation$z_p95, 2)
-  segmentation_final$CANOPY_COVER <- round(segmentation$z_above2, 2)
-  segmentation_final$DENSITY <- round(segmentation$fractional_cover_05_2, 2)
-  segmentation_final$SLOPE <- round(segmentation$slope, 2)
-  segmentation_final$MOISTURE <- round(segmentation$sagawi, 2)
+  segmentation_final$HEIGHT <- round(segmentation$z_p95_median, 2)
+  segmentation_final$CANOPY_COVER <- round(segmentation$z_above2_median, 2)
+  segmentation_final$DENSITY <- round(segmentation$fractional_cover_05_2_median, 2)
+  segmentation_final$SLOPE <- round(segmentation$slope_median, 2)
+  segmentation_final$MOISTURE <- round(segmentation$sagawi_median, 2)
   segmentation_final$LEADSP <- segmentation$SP_NO_1
   segmentation_final$SECSP <- segmentation$SP_NO_2
   segmentation_final$FUNCTIONAL_GROUP_3 <- segmentation$FUNCTIONAL_GROUP_3
