@@ -21,7 +21,7 @@ proportion_variance_explained <- function(x,
   x$id <- seq_len(nrow(x))
   x_raster <- terra::rasterize(x, y, "id")
   rater_temp_df <- terra::values(c(x_raster, y), na.rm = TRUE)
-  colnames(vals) <- c("id", "value")
+  colnames(rater_temp_df) <- c("id", "value")
 
   # SST
   mean_global <- mean(rater_temp_df[,2])
