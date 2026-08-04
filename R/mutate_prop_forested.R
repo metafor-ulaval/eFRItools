@@ -43,10 +43,13 @@ mutate_prop_forested <- function(x,
                                   sf::st_geometry(x_crs),
                                   function(xx,yy){
 
-                                    tibble::tibble(value = NA,
-                                                   coverage_area = sf::st_area(yy) - sum(xx$coverage_area)) |>
-                                      dplyr::add_row(xx) |>
-                                      dplyr::mutate(total_area = sf::st_area(yy)) |>
+                                    x_area <- as.numeric(sf::st_area(yy))
+
+                                    x_coverage_area_na <- tibble::tibble(value = NA,
+                                                                         coverage_area = x_area - sum(xx$coverage_area))
+
+                                    rows_upsert(xx, x_coverage_area_na, by = "value") |>
+                                      dplyr::mutate(total_area = x_area) |>
                                       dplyr::mutate(proportion = coverage_area / total_area * 100) |>
                                       dplyr::select(value, proportion) |>
                                       tidyr::pivot_wider(values_from = proportion, names_from = value)
