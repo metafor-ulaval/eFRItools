@@ -13,6 +13,15 @@ sum_cover <- function(x){
 
 }
 
+sum_cover <- function(x){
+
+  x <- x[!is.na(x$value), ]
+
+  if (nrow(x) == 0) {return(list(data.frame(value = NA_real_, coverage_area = 0)))}
+
+  list(aggregate(coverage_area ~ value, data = x, FUN = sum))
+}
+
 imputation <- function(reference_polygons,
                        var,
                        nn){
