@@ -41,11 +41,7 @@ eFRI_attribute_table <- function(segmentation,
                                  forest_harvest,
                                  forest_age){
 
-  segmentation$SOURCE <- "eFRI"
-  segmentation$YRSOURCE <- lubridate::year(lubridate::today())
-  segmentation$AREA <- as.numeric(sf::st_area(segmentation))
-  segmentation$PERIMETER <- as.numeric(sf::st_perimeter(segmentation))
-  segmentation <- mutate_metrics(segmentation, metrics, fun = "median")
+  segmentation <- mutate_metrics(segmentation, metrics[summary_metrics], fun = "median")
   segmentation <- mutate_proportion(segmentation, landcover, prefix = "landcover", simplify = TRUE, keep_all = TRUE)
   segmentation <- mutate_prop_forested(segmentation, landcover)
   segmentation <- mutate_proportion(segmentation, forest_fire, prefix = "forest_fire", simplify = TRUE, keep_all = TRUE)
@@ -54,15 +50,16 @@ eFRI_attribute_table <- function(segmentation,
   segmentation <- mutate_perturbation(segmentation, col_name = grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(segmentation), value = TRUE), threshold = 80)
 
   segmentation_final <- sf::st_geometry(segmentation)
+  sf::st_geometry(segmentation_final) <- "geometry"
   segmentation_final <- sf::st_as_sf(segmentation_final)
-  segmentation_final$SOURCE <- segmentation$SOURCE
-  segmentation_final$YRSOURCE <- segmentation$YRSOURCE
-  segmentation_final$AREA <- round(segmentation$AREA, 2)
-  segmentation_final$PERIMETER <- round(segmentation$PERIMETER, 2)
+  segmentation_final$SOURCE <- "eFRI"
+  segmentation_final$YRSOURCE <- lubridate::year(lubridate::today())
+  segmentation_final$AREA <- round(as.numeric(sf::st_area(segmentation)), 2)
+  segmentation_final$PERIMETER <- round(as.numeric(sf::st_perimeter(segmentation)), 2)
+
   segmentation_final$PROPFORESTED <-  round(segmentation$PROPFORESTED, 2)
   segmentation_final$POLYTYPE <- segmentation$MOST_FREQUENT_LANDCOVER
   segmentation_final$POLYTYPEPROP <-  round(segmentation$MOST_FREQUENT_LANDCOVER_PROPORTION, 2)
-  #segmentation_final$YRORG <- segmentation$ # On garde ca?
   segmentation_final$AGE <- segmentation[[paste0("age_mean_", lubridate::year(lubridate::today()))]]
   segmentation_final$YRDEP <- segmentation$YRDEP
   segmentation_final$DEPTYPE <- segmentation$DEPTYPE
@@ -72,16 +69,6 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final$YRFIRE <- segmentation$MOST_FREQUENT_FOREST_FIRE
   segmentation_final$FIREPROP <- round(segmentation$MOST_FREQUENT_FOREST_FIRE_PROPORTION, 2)
   if(!is.null(summary_metrics)){    segmentation_final[toupper(summary_metrics)] <- round(sf::st_drop_geometry(segmentation[,summary_metrics]), 2)    }
-  segmentation_final$HEIGHT <- round(segmentation$z_p95_median, 2)
-  segmentation_final$CANOPY_COVER <- round(segmentation$z_above2_median, 2)
-  segmentation_final$DENSITY <- round(segmentation$fractional_cover_05_2_median, 2)
-  segmentation_final$SLOPE <- round(segmentation$slope_median, 2)
-  segmentation_final$MOISTURE <- round(segmentation$sagawi_median, 2)
-  segmentation_final$LEADSP <- segmentation$SP_NO_1
-  segmentation_final$SECSP <- segmentation$SP_NO_2
-  segmentation_final$FUNCTIONAL_GROUP_3 <- segmentation$FUNCTIONAL_GROUP_3
-  segmentation_final$FUNCTIONAL_GROUP_5 <- segmentation$FUNCTIONAL_GROUP_5
-  sf::st_geometry(segmentation_final) <- "geometry"
 
   return(segmentation_final)
 }
