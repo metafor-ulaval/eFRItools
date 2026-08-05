@@ -21,12 +21,20 @@ mutate_species_prop <- function(x,
   cat(paste0("Mutate species proportion for ", nrow(x), " polygon(s)\n"))
   extracted_col <- dplyr::pull(x, !!rlang::sym(col_name))
   extracted_col_list <- stringr::str_match_all(extracted_col, "[A-Z]{2}[ ]+[0-9]+")
-  purrr::map(extracted_col_list,
-             ~{tibble::as_tibble(.x, .name_repair = "unique_quiet") |>
-                 tidyr::separate(1, into = c("SP", "PROP")) |>
-                 dplyr::mutate(PROP = as.numeric(PROP)) |>
-                 tidyr::pivot_wider(names_from = SP, values_from = PROP)}) |>
-    dplyr::bind_rows() |>
+  purrr::map_dfr(extracted_col_list,
+                 function(y){
+                   tibble::as_tibble(y, .name_repair = "unique_quiet") |>
+                     tidyr::separate(1, into = c("SP", "PROP")) |>
+                     dplyr::mutate(PROP = as.numeric(PROP)) |>
+                     tidyr::pivot_wider(names_from = SP, values_from = PROP, values_fn = sum) -> y_species_prop
+
+                   if(nrow(y_species_prop) == 0){
+                     y_species_prop <- dplyr::add_row(y_species_prop)
+                   }
+
+                   return(y_species_prop)
+
+                 }) |>
     dplyr::select(-dplyr::any_of("NA")) |>
     dplyr::mutate_all(~tidyr::replace_na(.x, 0)) -> species_prop
 
