@@ -19,13 +19,21 @@ mutate_species_order <- function(x,
   cat(paste0("Mutate species order for ", nrow(x), " polygon(s)\n"))
   extracted_col <- dplyr::pull(x, col_name)
   extracted_col_list <- stringr::str_match_all(extracted_col, "[A-Z]{2}[ ]+[0-9]+")
-  purrr::map(extracted_col_list,
-             ~{tibble::as_tibble(.x, .name_repair = "unique_quiet") |>
-                 tidyr::separate(1, into = c("SP", "PROP")) |>
-                 tibble::rowid_to_column("no") |>
-                 dplyr::select(-PROP) |>
-                 tidyr::pivot_wider(names_from = no, names_glue = "SP_NO_{no}", values_from = SP)}) |>
-    dplyr::bind_rows() -> species_order
+  purrr::map_dfr(extracted_col_list,
+                 function(y){
+                   tibble::as_tibble(y, .name_repair = "unique_quiet") |>
+                     tidyr::separate(1, into = c("SP", "PROP")) |>
+                     tibble::rowid_to_column("no") |>
+                     dplyr::select(-PROP) |>
+                     tidyr::pivot_wider(names_from = no, names_glue = "SP_NO_{no}", values_from = SP) -> y_species_order
+
+                   if(nrow(y_species_order) == 0){
+                     y_species_order <- dplyr::add_row(y_species_order)
+                   }
+
+                   return(y_species_order)
+
+                 }) -> species_order
   x_species_order <- dplyr::bind_cols(x, species_order)
 
   return(x_species_order)
