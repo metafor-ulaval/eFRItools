@@ -41,7 +41,9 @@ eFRI_attribute_table <- function(segmentation,
                                  forest_harvest,
                                  forest_age){
 
-  segmentation <- mutate_metrics(segmentation, metrics[summary_metrics], fun = "median")
+  segmentation_final <- segmentation
+
+  segmentation <- mutate_metrics(segmentation, metrics[[summary_metrics]], fun = "median")
   segmentation <- mutate_proportion(segmentation, landcover, prefix = "landcover", simplify = TRUE, keep_all = TRUE)
   segmentation <- mutate_prop_forested(segmentation, landcover)
   segmentation <- mutate_proportion(segmentation, forest_fire, prefix = "forest_fire", simplify = TRUE, keep_all = TRUE)
@@ -49,14 +51,10 @@ eFRI_attribute_table <- function(segmentation,
   segmentation <- mutate_age(segmentation, forest_age, 2019, lubridate::year(lubridate::today()), fun = "mean") # PEUT-ETRE MEDIANE?
   segmentation <- mutate_perturbation(segmentation, col_name = grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(segmentation), value = TRUE), threshold = 80)
 
-  segmentation_final <- sf::st_geometry(segmentation)
-  sf::st_geometry(segmentation_final) <- "geometry"
-  segmentation_final <- sf::st_as_sf(segmentation_final)
   segmentation_final$SOURCE <- "eFRI"
   segmentation_final$YRSOURCE <- lubridate::year(lubridate::today())
   segmentation_final$AREA <- round(as.numeric(sf::st_area(segmentation)), 2)
   segmentation_final$PERIMETER <- round(as.numeric(sf::st_perimeter(segmentation)), 2)
-
   segmentation_final$PROPFORESTED <-  round(segmentation$PROPFORESTED, 2)
   segmentation_final$POLYTYPE <- segmentation$MOST_FREQUENT_LANDCOVER
   segmentation_final$POLYTYPEPROP <-  round(segmentation$MOST_FREQUENT_LANDCOVER_PROPORTION, 2)
@@ -68,7 +66,7 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final$HARVESTPROP <- round(segmentation$MOST_FREQUENT_FOREST_HARVEST_PROPORTION, 2)
   segmentation_final$YRFIRE <- segmentation$MOST_FREQUENT_FOREST_FIRE
   segmentation_final$FIREPROP <- round(segmentation$MOST_FREQUENT_FOREST_FIRE_PROPORTION, 2)
-  if(!is.null(summary_metrics)){    segmentation_final[toupper(summary_metrics)] <- round(sf::st_drop_geometry(segmentation[,summary_metrics]), 2)    }
+  if(!is.null(summary_metrics)){    segmentation_final[toupper(summary_metrics)] <- round(sf::st_drop_geometry(segmentation[,paste0(summary_metrics, "_median")]), 2)    }
 
   return(segmentation_final)
 }
