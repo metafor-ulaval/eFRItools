@@ -48,7 +48,7 @@ mutate_prop_forested <- function(x,
                                     x_coverage_area_na <- tibble::tibble(value = NA,
                                                                          coverage_area = x_area - sum(xx$coverage_area))
 
-                                    rows_upsert(xx, x_coverage_area_na, by = "value") |>
+                                    dplyr::rows_upsert(xx, x_coverage_area_na, by = "value") |>
                                       dplyr::mutate(total_area = x_area) |>
                                       dplyr::mutate(proportion = coverage_area / total_area * 100) |>
                                       dplyr::select(value, proportion) |>
