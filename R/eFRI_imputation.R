@@ -21,7 +21,6 @@
 #' eFRI_imputation
 #'
 #' @param segmentation param
-#' @param segmentation_id_field param
 #' @param forest_polygon param
 #' @param metrics param
 #' @param landcover param
@@ -42,7 +41,6 @@
 #' @examples
 #' eFRI_imputation
 eFRI_imputation <- function(segmentation,
-                            segmentation_id_field,
                             forest_polygon,
                             metrics,
                             landcover,
@@ -90,6 +88,7 @@ eFRI_imputation <- function(segmentation,
 
   # Extract data for imputation into segmentation
   cat("Extract data of segmentation\n")
+  segmentation$id <- 1:nrow(segmentation)
   segmentation_data <- segmentation
   segmentation_data <- mutate_centroid(segmentation_data)
   segmentation_data <- mutate_metrics(segmentation_data, metrics, fun = "median")
@@ -107,7 +106,7 @@ eFRI_imputation <- function(segmentation,
     forest_polygon_temp <- forest_polygon[c(knn_var_temp, target_var[i])]
     forest_polygon_temp <- na.omit(forest_polygon_temp)
 
-    segmentation_temp <- segmentation_data[c(segmentation_id_field, knn_var_temp)]
+    segmentation_temp <- segmentation_data[c("id", knn_var_temp)]
     segmentation_temp <- na.omit(segmentation_temp)
 
     segmentation_temp[target_var[i]] <- knn_inputation(reference_polygons = forest_polygon_temp,
@@ -116,7 +115,7 @@ eFRI_imputation <- function(segmentation,
                                                        target_variables = target_var[i],
                                                        k = 5)
     segmentation <- merge(segmentation,
-                          sf::st_drop_geometry(segmentation_temp[c(segmentation_id_field, target_var[i])]),
+                          sf::st_drop_geometry(segmentation_temp[c("id", target_var[i])]),
                           by = "id",
                           all = TRUE)
   }
