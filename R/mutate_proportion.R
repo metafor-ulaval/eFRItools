@@ -52,42 +52,47 @@ mutate_proportion <- function(x,
 
   }
 
-  if(simplify == TRUE & ncol(x_proportion) != 0){
+  if(ncol(x_proportion) != 0){
 
-    x_proportion_simplified <- lapply(seq_len(nrow(x_proportion)),
-                                      function(x){
+    x_proportion_results <- x_proportion
+    names(x_proportion_results) <- paste0(prefix, "_", names(x_proportion_results), "_proportion")
 
-                                        x_proportion_temp <- x_proportion[x,]
-                                        x_simplified <- x_proportion_temp[which.max(x_proportion_temp)]
+    if(simplify == TRUE){
 
-                                        if(all(is.na(x_proportion_temp))){
-                                          x_simplified <- data.frame(name = NA,
-                                                                     value = NA)
-                                        } else {
-                                          x_simplified <- data.frame(name = toupper(names(x_simplified)),
-                                                                     value = as.numeric(x_simplified))
-                                        }
+      x_proportion_simplified <- lapply(seq_len(nrow(x_proportion)),
+                                        function(xx){
 
-                                        names(x_simplified) <- c(paste0("most_frequent_", prefix), paste0("most_frequent_", prefix, "_proportion"))
+                                          x_proportion_temp <- x_proportion[xx, , drop = FALSE]
+                                          x_simplified <- x_proportion_temp[which.max(x_proportion_temp)]
 
-                                        return(x_simplified)
-                                      })
+                                          if(all(is.na(x_proportion_temp))){
+                                            x_simplified <- data.frame(name = NA,
+                                                                       value = NA)
+                                          } else {
+                                            x_simplified <- data.frame(name = toupper(names(x_simplified)),
+                                                                       value = as.numeric(x_simplified))
+                                          }
 
-    x_proportion_simplified <- do.call(rbind, x_proportion_simplified)
+                                          names(x_simplified) <- c(paste0("most_frequent_", prefix), paste0("most_frequent_", prefix, "_proportion"))
 
-    names(x_proportion) <- paste0(prefix, "_", names(x_proportion), "_proportion")
-    x_proportion_results <- dplyr::bind_cols(x_proportion, x_proportion_simplified)
+                                          return(x_simplified)
+                                        })
+
+      x_proportion_simplified <- do.call(rbind, x_proportion_simplified)
+
+      x_proportion_results <- dplyr::bind_cols(x_proportion_results, x_proportion_simplified)
+
+      if(keep_all == FALSE){
+
+        x_proportion_results <- x_proportion_results[,names(x_proportion_simplified)]
+
+      }
+
+    }
 
   } else {
 
-    names(x_proportion) <- paste0(prefix, "_", names(x_proportion), "_proportion")
     x_proportion_results <- x_proportion
-
-  }
-
-  if(keep_all == FALSE){
-
-    x_proportion_results <- x_proportion_results[,!(names(x_proportion_results) %in% names(x_proportion))]
 
   }
 
