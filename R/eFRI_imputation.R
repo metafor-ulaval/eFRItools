@@ -78,46 +78,54 @@ eFRI_imputation <- function(segmentation,
   forest_polygon <- forest_polygon[forest_polygon$z_p95 >= 5,]
   forest_polygon <- forest_polygon[forest_polygon$z_above2 >= 50,]
 
-  # Extract data for imputation into forest polygon
-  cat("Extract data for imputation into forest polygon\n")
-  forest_polygon <- mutate_centroid(forest_polygon)
-  forest_polygon <- mutate_species_prop(forest_polygon, "SPCOMP")
-  forest_polygon <- mutate_species_order(forest_polygon, "SPCOMP")
-  forest_polygon <- mutate_forest_type(forest_polygon)
-  forest_polygon <- mutate_functional_group(forest_polygon)
+  if(nrow(forest_polygon) != 0){
 
-  # Extract data for imputation into segmentation
-  cat("Extract data of segmentation\n")
-  segmentation$id <- 1:nrow(segmentation)
-  segmentation_data <- segmentation
-  segmentation_data <- mutate_centroid(segmentation_data)
-  segmentation_data <- mutate_metrics(segmentation_data, metrics, fun = "median")
+    # Extract data for imputation into forest polygon
+    cat("Extract data for imputation into forest polygon\n")
+    forest_polygon <- mutate_centroid(forest_polygon)
+    forest_polygon <- mutate_species_prop(forest_polygon, "SPCOMP")
+    forest_polygon <- mutate_species_order(forest_polygon, "SPCOMP")
+    forest_polygon <- mutate_forest_type(forest_polygon)
+    forest_polygon <- mutate_functional_group(forest_polygon)
 
-  # Perform imputation
-  for(i in seq_along(target_var)){
+    # Extract data for imputation into segmentation
+    cat("Extract data of segmentation\n")
+    segmentation$id <- 1:nrow(segmentation)
+    segmentation_data <- segmentation
+    segmentation_data <- mutate_centroid(segmentation_data)
+    segmentation_data <- mutate_metrics(segmentation_data, metrics, fun = "median")
 
-    cat(paste0("Imputation of variable : ", target_var[i], "\n"))
+    # Perform imputation
+    for(i in seq_along(target_var)){
 
-    knn_var_temp <- strsplit(knn_var[i], ",")[[1]]
+      cat(paste0("Imputation of variable : ", target_var[i], "\n"))
 
-    knn_var_temp <- c(paste0(knn_var_temp[knn_var_temp != "X" & knn_var_temp != "Y"], "_median"),
-                      knn_var_temp[knn_var_temp == "X" | knn_var_temp == "Y"])
+      knn_var_temp <- strsplit(knn_var[i], ",")[[1]]
 
-    forest_polygon_temp <- forest_polygon[c(knn_var_temp, target_var[i])]
-    forest_polygon_temp <- na.omit(forest_polygon_temp)
+      knn_var_temp <- c(paste0(knn_var_temp[knn_var_temp != "X" & knn_var_temp != "Y"], "_median"),
+                        knn_var_temp[knn_var_temp == "X" | knn_var_temp == "Y"])
 
-    segmentation_temp <- segmentation_data[c("id", knn_var_temp)]
-    segmentation_temp <- na.omit(segmentation_temp)
+      forest_polygon_temp <- forest_polygon[c(knn_var_temp, target_var[i])]
+      forest_polygon_temp <- na.omit(forest_polygon_temp)
 
-    segmentation_temp[target_var[i]] <- knn_inputation(reference_polygons = forest_polygon_temp,
-                                                       target_polygons = segmentation_temp,
-                                                       knn_variables = knn_var_temp,
-                                                       target_variables = target_var[i],
-                                                       k = 5)
-    segmentation <- merge(segmentation,
-                          sf::st_drop_geometry(segmentation_temp[c("id", target_var[i])]),
-                          by = "id",
-                          all = TRUE)
+      segmentation_temp <- segmentation_data[c("id", knn_var_temp)]
+      segmentation_temp <- na.omit(segmentation_temp)
+
+      segmentation_temp[target_var[i]] <- knn_inputation(reference_polygons = forest_polygon_temp,
+                                                         target_polygons = segmentation_temp,
+                                                         knn_variables = knn_var_temp,
+                                                         target_variables = target_var[i],
+                                                         k = 5)
+      segmentation <- merge(segmentation,
+                            sf::st_drop_geometry(segmentation_temp[c("id", target_var[i])]),
+                            by = "id",
+                            all = TRUE)
+    }
+
+  } else {
+
+    cat("No polygon available for imputation\n")
+
   }
 
   return(segmentation)
