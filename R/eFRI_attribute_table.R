@@ -43,7 +43,6 @@ eFRI_attribute_table <- function(segmentation,
 
   segmentation_final <- segmentation
 
-  segmentation <- mutate_metrics(segmentation, metrics[[summary_metrics]], fun = "median")
   segmentation <- mutate_proportion(segmentation, landcover, prefix = "landcover", simplify = TRUE, keep_all = TRUE)
   segmentation <- mutate_prop_forested(segmentation, landcover)
   segmentation <- mutate_proportion(segmentation, forest_fire, prefix = "forest_fire", simplify = TRUE, keep_all = TRUE)
@@ -67,7 +66,10 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final$YRFIRE <- if ("MOST_FREQUENT_FOREST_FIRE" %in% names(segmentation)) {segmentation$MOST_FREQUENT_FOREST_FIRE} else {NA}
   segmentation_final$FIREPROP <- if ("MOST_FREQUENT_FOREST_FIRE_PROPORTION" %in% names(segmentation)) {round(segmentation$MOST_FREQUENT_FOREST_FIRE_PROPORTION, 2)} else {NA}
 
-  if(!is.null(summary_metrics)){    segmentation_final[toupper(summary_metrics)] <- round(sf::st_drop_geometry(segmentation[,paste0(summary_metrics, "_median")]), 2)    } # Will fail if the summary metric is not "median", correct later
+  if(!is.null(summary_metrics)){
+    segmentation <- mutate_metrics(segmentation, metrics[[summary_metrics]], fun = "median")
+    segmentation_final[toupper(summary_metrics)] <- round(sf::st_drop_geometry(segmentation[,paste0(summary_metrics, "_median")]), 2)
+    } # Will fail if the summary metric is not "median", correct later
 
   return(segmentation_final)
 }
