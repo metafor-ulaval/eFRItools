@@ -62,10 +62,11 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final$YRDEP <- segmentation$YRDEP
   segmentation_final$DEPTYPE <- segmentation$DEPTYPE
   segmentation_final$DEPPROP <- round(segmentation$DEPPROP, 2)
-  segmentation_final$YRHARVEST <- segmentation$MOST_FREQUENT_FOREST_HARVEST
-  segmentation_final$HARVESTPROP <- round(segmentation$MOST_FREQUENT_FOREST_HARVEST_PROPORTION, 2)
-  segmentation_final$YRFIRE <- segmentation$MOST_FREQUENT_FOREST_FIRE
-  segmentation_final$FIREPROP <- round(segmentation$MOST_FREQUENT_FOREST_FIRE_PROPORTION, 2)
+  segmentation_final$YRHARVEST <- if ("MOST_FREQUENT_FOREST_HARVEST" %in% names(segmentation)) {segmentation$MOST_FREQUENT_FOREST_HARVEST} else {NA}
+  segmentation_final$HARVESTPROP <- if ("MOST_FREQUENT_FOREST_HARVEST_PROPORTION" %in% names(segmentation)) {round(segmentation$MOST_FREQUENT_FOREST_HARVEST_PROPORTION, 2)} else {NA}
+  segmentation_final$YRFIRE <- if ("MOST_FREQUENT_FOREST_FIRE" %in% names(segmentation)) {segmentation$MOST_FREQUENT_FOREST_FIRE} else {NA}
+  segmentation_final$FIREPROP <- if ("MOST_FREQUENT_FOREST_FIRE_PROPORTION" %in% names(segmentation)) {round(segmentation$MOST_FREQUENT_FOREST_FIRE_PROPORTION, 2)} else {NA}
+
   if(!is.null(summary_metrics)){    segmentation_final[toupper(summary_metrics)] <- round(sf::st_drop_geometry(segmentation[,paste0(summary_metrics, "_median")]), 2)    } # Will fail if the summary metric is not "median", correct later
 
   return(segmentation_final)
