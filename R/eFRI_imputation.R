@@ -61,10 +61,10 @@ eFRI_imputation <- function(segmentation,
   forest_polygon <- mutate_proportion(forest_polygon, forest_harvest, prefix = "forest_harvest", simplify = FALSE, keep_all = TRUE)
   forest_polygon <- mutate_disturbance(forest_polygon, col_name = grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(forest_polygon), value = TRUE), threshold = 50)
   forest_polygon <- sf::st_join(forest_polygon, ctg[lidar_year_field], largest = TRUE)
-  forest_polygon$is_perturbed <- ifelse((forest_polygon[[forest_year_field]] <= forest_polygon$YRDEP & forest_polygon$YRDEP <= forest_polygon[[lidar_year_field]]) |
-                                          (forest_polygon[[lidar_year_field]] <= forest_polygon$YRDEP & forest_polygon$YRDEP <= forest_polygon[[forest_year_field]]), 0, 1)
-  forest_polygon$is_perturbed[is.na(forest_polygon$is_perturbed)] <- 1
-  forest_polygon <- forest_polygon[forest_polygon$is_perturbed != 0,]
+  forest_polygon$is_disturbed <- ifelse((forest_polygon[[forest_year_field]] <= forest_polygon$YRDEP & forest_polygon$YRDEP <= forest_polygon[[lidar_year_field]]) |
+                                          (forest_polygon[[lidar_year_field]] <= forest_polygon$YRDEP & forest_polygon$YRDEP <= forest_polygon[[forest_year_field]]), 1, 0)
+  forest_polygon$is_disturbed[is.na(forest_polygon$is_disturbed)] <- 0
+  forest_polygon <- forest_polygon[forest_polygon$is_disturbed == 0,]
 
   # Extract data for filtering
   cat("Extract data of forest polygon\n")
