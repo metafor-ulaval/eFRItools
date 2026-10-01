@@ -26,7 +26,7 @@ mutate_metrics <- function(x,
                            y,
                            fun = "median"){
 
-  cat(paste0("Mutate ", fun, " value of ", names(y), " for ", nrow(x), " polygon(s)\n"))
+  cat(paste0("Mutate ", fun, " value of ", names(y), " for ", nrow(x), " polygon(s)\n"), sep = "")
   x_crs <- sf::st_transform(x, sf::st_crs(y))
   metrics_extracted <- exactextractr::exact_extract(y, x_crs, fun, progress = FALSE)
   names(metrics_extracted) <- paste0(names(y), "_", fun)

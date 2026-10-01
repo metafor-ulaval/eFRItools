@@ -49,7 +49,7 @@ generic_region_merging = function(input,
   cat(cmd, "\n")
   system(cmd)
 
-  cat("Masking the result")
+  cat("Masking the result\n")
   o <- terra::rast(ofile)
   grm <- terra::mask(o, input[[1]])
 
