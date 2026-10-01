@@ -16,23 +16,22 @@ generic_region_merging(
 )
 }
 \arguments{
-\item{input}{SpatRaster. Multiband raster to segment}
+\item{input}{SpatRaster; multiband raster to segment from the \code{terra} package.}
 
-\item{ofile}{string. The path where to save the output of GRM}
+\item{ofile}{character; path where the GRM raster is saved.}
 
-\item{thresh, spec, spat}{numeric. refer to paper or OTB GRM webpage for description of parameters
+\item{thresh, spec, spat}{numeric; threshold, spectral weight and spatial weight of GRM. See
 \url{https://www.orfeo-toolbox.org/CookBook-8.0/Applications/app_GenericRegionMerging.html}}
 
-\item{method}{string. refer to paper or OTB GRM webpage for description of parameters
+\item{method}{character; homogeneity criterion of GRM. See
 \url{https://www.orfeo-toolbox.org/CookBook-8.0/Applications/app_GenericRegionMerging.html}}
 
-\item{clean_nodata}{bolean. Perform a 3 pixels majority filter to remove nodata of small holes}
+\item{clean_nodata}{logical; perform a 3 pixels majority filter to remove small nodata holes.}
 
-\item{otb_dir}{string. Directory location of OTB (where you installed OTB earlier).
-Likely "C:/OTB/bin" on Windows}
+\item{otb_dir}{character; folder where OTB is installed. Likely "C:/OTB/bin" on Windows.}
 }
 \value{
-the raster produced by OTB
+Polygons of the segmentation from the \code{sf} package
 }
 \description{
 \code{generic_region_merging} calls the GenericRegionMerging software from Orfeo ToolBox (OTB).

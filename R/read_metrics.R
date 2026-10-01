@@ -1,6 +1,6 @@
 #' Create a dataframe with all available metrics informations
 #'
-#' @param metric_path list of folder where metrics are with metric type as folder name
+#' @param metric_path character; folders that contain the metrics as .tif files. Folder names are used as metric type.
 #'
 #' @returns
 #' A dataframe with all available metrics informations

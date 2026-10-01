@@ -15,22 +15,22 @@ eFRI_attribute_table(
 )
 }
 \arguments{
-\item{segmentation}{param}
+\item{segmentation}{sf; polygons from the \code{sf} package produced by \code{\link[=eFRI_segmentation]{eFRI_segmentation()}}.}
 
-\item{metrics}{param}
+\item{metrics}{SpatRaster; metrics with one layer per metric from the \code{terra} package.}
 
-\item{summary_metrics}{param}
+\item{summary_metrics}{character; names of the \code{metrics} layers to summarize (median) as columns. \code{NULL} to skip.}
 
-\item{landcover}{param}
+\item{landcover}{SpatRaster; categorical landcover raster from the \code{terra} package.}
 
-\item{forest_fire}{param}
+\item{forest_fire}{SpatRaster; year of forest fire from the \code{terra} package.}
 
-\item{forest_harvest}{param}
+\item{forest_harvest}{SpatRaster; year of forest harvest from the \code{terra} package.}
 
-\item{forest_age}{param}
+\item{forest_age}{SpatRaster; forest age in 2019 from the \code{terra} package.}
 }
 \value{
-eFRI_attribute_table
+Polygons with the eFRI attribute table as columns
 }
 \description{
 eFRI_attribute_table

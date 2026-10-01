@@ -1,11 +1,11 @@
 #' Extract one or multiple metrics from polygons
 #'
-#' @param x spatial features; polygons from the `sf` package.
-#' @param y metrics; SpatRaster with one or more layers from the `terra` package.
-#' @param fun function available in the `exact_extract` function from the `exactextractr` package to summarize the extracted metrics by polygon
+#' @param x sf; polygons from the `sf` package.
+#' @param y SpatRaster; metrics with one or more layers from the `terra` package.
+#' @param fun character; summary function of `exactextractr::exact_extract()` (e.g. "mean", "median").
 #'
 #' @returns
-#' Polygons with extracted metrics as individuals columns
+#' Polygons with extracted metrics as individual columns
 #' @export
 #'
 #' @examples

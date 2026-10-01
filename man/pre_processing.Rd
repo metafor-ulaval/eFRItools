@@ -7,12 +7,12 @@
 pre_processing(layers, masks = NULL)
 }
 \arguments{
-\item{layers}{SpatRaster. Multiband raster to segment with \link{generic_region_merging}}
+\item{layers}{SpatRaster; multiband raster to segment with \code{\link[=generic_region_merging]{generic_region_merging()}} from the \code{terra} package.}
 
-\item{masks}{List of SpatVector objects that will be used to mask the raster}
+\item{masks}{list; SpatVector objects from the \code{terra} package used to mask the raster. \code{NULL} for no mask.}
 }
 \value{
-A SpatRaster
+Pre-processed SpatRaster from the \code{terra} package
 }
 \description{
 Using a multiband raster that will later be used for polygon segmentation in \link{generic_region_merging},

@@ -1,18 +1,13 @@
 #' Segmentation
 #'
-#' @param metrics param
-#' @param masks param
-#' @param thresh param
-#' @param spec param
-#' @param spat param
-#' @param method param
-#' @param clean_nodata param
-#' @param output_path param
-#' @param output_name param
-#' @param otb_dir param
+#' @param metrics SpatRaster; multiband raster to segment from the `terra` package.
+#' @param output_path character; folder where the segmentation raster is saved.
+#' @param output_name character; file name of the segmentation raster, without extension.
+#' @inheritParams pre_processing
+#' @inheritParams generic_region_merging
 #'
 #' @returns
-#' segmentation
+#' Polygons of the segmentation from the `sf` package
 #' @export
 #'
 #' @examples

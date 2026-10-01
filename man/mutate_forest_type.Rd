@@ -7,10 +7,10 @@
 mutate_forest_type(x)
 }
 \arguments{
-\item{x}{spatial features; polygons of Forest Resources Inventory from the \code{sf} package. species codes with proportion must be present before running the function. see \link{mutate_species_prop}}
+\item{x}{sf; polygons from the \code{sf} package. Species proportion columns must be present, see \code{\link[=mutate_species_prop]{mutate_species_prop()}}.}
 }
 \value{
-Polygons with extracted forest type proportions as two individuals columns : PROP_CONIFEROUS and PROP_DECIDUOUS
+Polygons with extracted forest type proportions as two individual columns: PROP_CONIFEROUS and PROP_DECIDUOUS
 }
 \description{
 Extract forest type proportions from species proportion columns

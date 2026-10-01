@@ -1,11 +1,11 @@
 #' Separate a column of species composition into proportions
 #'
-#' @param x spatial features; polygons of Forest Resources Inventory from the `sf` package.
-#' @param col_name character; name of the column that contains species and proportions
-#' @param update_names logical; if some propportions are already presents, duplicated columns will be updated
+#' @param x sf; polygons from the `sf` package.
+#' @param col_name character; name of the column that contains species and proportions.
+#' @param update_names logical; replace species proportion columns that already exist.
 #'
 #' @returns
-#' Polygons with extracted species proportions as individuals columns
+#' Polygons with extracted species proportions as individual columns
 #' @export
 #'
 #' @examples

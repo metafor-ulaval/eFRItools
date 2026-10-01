@@ -4,10 +4,11 @@
 #' the function masks the unwanted pixel (rivers, lakes, roads, ...), smooth the layers, and normalizes the values to range
 #' in `[0,255]`
 #'
-#' @param layers SpatRaster. Multiband raster to segment with \link{generic_region_merging}
-#' @param masks List of SpatVector objects that will be used to mask the raster
+#' @param layers SpatRaster; multiband raster to segment with [generic_region_merging()] from the `terra` package.
+#' @param masks list; SpatVector objects from the `terra` package used to mask the raster. `NULL` for no mask.
 #'
-#' @return A SpatRaster
+#' @returns
+#' Pre-processed SpatRaster from the `terra` package
 #' @export
 
 #' @examples

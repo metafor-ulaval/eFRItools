@@ -1,11 +1,11 @@
 #' Extract functional group of stand forest
 #'
-#' @param x spatial features; polygons of Forest Resources Inventory from the `sf` package. species codes with prop, order and forest type must be present before running the function. see [mutate_species_prop], [mutate_species_order] and [mutate_forest_type]
-#' @param functional_group_3 logical; compute functional group 3 : Softwood, Hardwood and Mixedwood
-#' @param functional_group_5 logical; compute functional group 3 : Jack Pine Dominated, Black Spruce Dominated, Softwood, Hardwood and Mixedwood
+#' @param x sf; polygons from the `sf` package. Species proportion, species order and forest type columns must be present, see [mutate_species_prop()], [mutate_species_order()] and [mutate_forest_type()].
+#' @param functional_group_3 logical; compute the 3 functional groups: Softwood, Hardwood and Mixedwood.
+#' @param functional_group_5 logical; compute the 5 functional groups: Jack Pine Dominated, Black Spruce Dominated, Mixed Conifer, Hardwood and Mixedwood.
 #'
 #' @returns
-#' Functionnal group
+#' Polygons with functional groups as individual columns: FUNCTIONAL_GROUP_3 and FUNCTIONAL_GROUP_5
 #' @export
 #'
 #' @examples

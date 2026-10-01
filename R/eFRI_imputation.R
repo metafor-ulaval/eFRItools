@@ -20,22 +20,22 @@
 
 #' eFRI_imputation
 #'
-#' @param segmentation param
-#' @param forest_polygon param
-#' @param metrics param
-#' @param landcover param
-#' @param forest_fire param
-#' @param forest_harvest param
-#' @param ctg param
-#' @param lidar_year_field param
-#' @param forest_year_field param
-#' @param forest_composition_field param
-#' @param forest_type_field param
-#' @param target_var param
-#' @param knn_var param
+#' @param segmentation sf; polygons from the `sf` package produced by [eFRI_segmentation()] or [eFRI_attribute_table()].
+#' @param forest_polygon sf; reference polygons of Forest Resources Inventory from the `sf` package.
+#' @param metrics SpatRaster; metrics with one layer per metric from the `terra` package. Must contain `z_p95` and `z_above2`.
+#' @param landcover SpatRaster; categorical landcover raster from the `terra` package.
+#' @param forest_fire SpatRaster; year of forest fire from the `terra` package.
+#' @param forest_harvest SpatRaster; year of forest harvest from the `terra` package.
+#' @param ctg sf; LiDAR acquisition tiles from the `sf` package.
+#' @param lidar_year_field character; name of the column of `ctg` that contains the LiDAR acquisition year.
+#' @param forest_year_field character; name of the column of `forest_polygon` that contains the inventory year.
+#' @param forest_composition_field character; name of the column of `forest_polygon` that contains species and proportions.
+#' @param forest_type_field character; name of the column of `forest_polygon` that contains the polygon type. Only "FOR" polygons are used.
+#' @param target_var character; names of the columns of `forest_polygon` to impute.
+#' @param knn_var character; comma-separated metric names used for the knn of each `target_var`, of the same length as `target_var`.
 #'
 #' @returns
-#' eFRI_imputation
+#' `segmentation` with imputed variables as individual columns
 #' @export
 #'
 #' @examples
@@ -106,10 +106,10 @@ eFRI_imputation <- function(segmentation,
                         knn_var_temp[knn_var_temp == "X" | knn_var_temp == "Y"])
 
       forest_polygon_temp <- forest_polygon[c(knn_var_temp, target_var[i])]
-      forest_polygon_temp <- na.omit(forest_polygon_temp)
+      forest_polygon_temp <- stats::na.omit(forest_polygon_temp)
 
       segmentation_temp <- segmentation_data[c("id", knn_var_temp)]
-      segmentation_temp <- na.omit(segmentation_temp)
+      segmentation_temp <- stats::na.omit(segmentation_temp)
 
       segmentation_temp[target_var[i]] <- knn_inputation(reference_polygons = forest_polygon_temp,
                                                          target_polygons = segmentation_temp,

@@ -1,13 +1,13 @@
 #' Perform knn imputation
 #'
-#' @param reference_polygons spatial features; reference polygons from the `sf` package.
-#' @param target_polygons spatial features; target polygons from the `sf` package.
-#' @param knn_variables Variables to use
-#' @param target_variables Variables to infer
-#' @param k The maximum number of nearest neighbours to compute
+#' @param reference_polygons sf; reference polygons from the `sf` package with known values of `target_variables`.
+#' @param target_polygons sf; polygons from the `sf` package to impute.
+#' @param knn_variables character; names of the columns used to find the nearest neighbours.
+#' @param target_variables character; names of the columns of `reference_polygons` to impute.
+#' @param k numeric; number of nearest neighbours.
 #'
 #' @returns
-#' table of the imputed variable of the same lenght as the target polygons
+#' Data frame of the imputed variables with the same length as `target_polygons`
 #' @export
 #'
 #' @examples

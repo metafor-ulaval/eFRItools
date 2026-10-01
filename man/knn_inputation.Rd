@@ -13,18 +13,18 @@ knn_inputation(
 )
 }
 \arguments{
-\item{reference_polygons}{spatial features; reference polygons from the \code{sf} package.}
+\item{reference_polygons}{sf; reference polygons from the \code{sf} package with known values of \code{target_variables}.}
 
-\item{target_polygons}{spatial features; target polygons from the \code{sf} package.}
+\item{target_polygons}{sf; polygons from the \code{sf} package to impute.}
 
-\item{knn_variables}{Variables to use}
+\item{knn_variables}{character; names of the columns used to find the nearest neighbours.}
 
-\item{target_variables}{Variables to infer}
+\item{target_variables}{character; names of the columns of \code{reference_polygons} to impute.}
 
-\item{k}{The maximum number of nearest neighbours to compute}
+\item{k}{numeric; number of nearest neighbours.}
 }
 \value{
-table of the imputed variable of the same lenght as the target polygons
+Data frame of the imputed variables with the same length as \code{target_polygons}
 }
 \description{
 Perform knn imputation

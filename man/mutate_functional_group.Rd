@@ -11,14 +11,14 @@ mutate_functional_group(
 )
 }
 \arguments{
-\item{x}{spatial features; polygons of Forest Resources Inventory from the \code{sf} package. species codes with prop, order and forest type must be present before running the function. see \link{mutate_species_prop}, \link{mutate_species_order} and \link{mutate_forest_type}}
+\item{x}{sf; polygons from the \code{sf} package. Species proportion, species order and forest type columns must be present, see \code{\link[=mutate_species_prop]{mutate_species_prop()}}, \code{\link[=mutate_species_order]{mutate_species_order()}} and \code{\link[=mutate_forest_type]{mutate_forest_type()}}.}
 
-\item{functional_group_3}{logical; compute functional group 3 : Softwood, Hardwood and Mixedwood}
+\item{functional_group_3}{logical; compute the 3 functional groups: Softwood, Hardwood and Mixedwood.}
 
-\item{functional_group_5}{logical; compute functional group 3 : Jack Pine Dominated, Black Spruce Dominated, Softwood, Hardwood and Mixedwood}
+\item{functional_group_5}{logical; compute the 5 functional groups: Jack Pine Dominated, Black Spruce Dominated, Mixed Conifer, Hardwood and Mixedwood.}
 }
 \value{
-Functionnal group
+Polygons with functional groups as individual columns: FUNCTIONAL_GROUP_3 and FUNCTIONAL_GROUP_5
 }
 \description{
 Extract functional group of stand forest

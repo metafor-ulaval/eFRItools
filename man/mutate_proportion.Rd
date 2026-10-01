@@ -14,20 +14,20 @@ mutate_proportion(
 )
 }
 \arguments{
-\item{x}{spatial features; polygons of Forest Resources Inventory from the \code{sf} package.}
+\item{x}{sf; polygons from the \code{sf} package.}
 
-\item{y}{raster; SpatRaster with categorical values from the \code{terra} package.}
+\item{y}{SpatRaster; categorical raster from the \code{terra} package.}
 
-\item{prefix}{character; prefix use for created column for each class}
+\item{prefix}{character; prefix of the created columns.}
 
-\item{remove_class}{character; class needed to be removed, like na or 0}
+\item{remove_class}{character; classes to remove, like "NA" or "0".}
 
-\item{simplify}{logical; compute the most frequent class and its proportion}
+\item{simplify}{logical; compute the most frequent class and its proportion.}
 
-\item{keep_all}{logical; keep all column of individual class}
+\item{keep_all}{logical; keep the proportion columns of each class when \code{simplify = TRUE}.}
 }
 \value{
-Polygons with extracted class proportions as individuals columns
+Polygons with extracted class proportions as individual columns
 }
 \description{
 Extract the proportion of each class of a raster in specified polygons

@@ -1,11 +1,11 @@
 #' Extract disturbance column from existing disturbance columns with a pattern.
 #'
-#' @param x spatial features; polygons of Forest Resources Inventory from the `sf` package. proportion of disturbances columns must be present before running the function. see [mutate_proportion]
-#' @param col_name character; name of the column that contains disturbance proportions
-#' @param threshold numeric; minimum percentage coverage to consider the disturbance to be significant
+#' @param x sf; polygons from the `sf` package. Disturbance proportion columns must be present, see [mutate_proportion()].
+#' @param col_name character; names of the columns that contain disturbance proportions.
+#' @param threshold numeric; minimum proportion (%) for a disturbance to be considered significant.
 #'
 #' @returns
-#' Polygons with the follow disturbance columns : YRDEP, DEPTYPE, DEPPROP
+#' Polygons with the following disturbance columns: YRDEP, DEPTYPE and DEPPROP
 #' @export
 #'
 #' @examples

@@ -1,9 +1,9 @@
 #' Extract forest type proportions from species proportion columns
 #'
-#' @param x spatial features; polygons of Forest Resources Inventory from the `sf` package. species codes with proportion must be present before running the function. see [mutate_species_prop]
+#' @param x sf; polygons from the `sf` package. Species proportion columns must be present, see [mutate_species_prop()].
 #'
 #' @returns
-#' Polygons with extracted forest type proportions as two individuals columns : PROP_CONIFEROUS and PROP_DECIDUOUS
+#' Polygons with extracted forest type proportions as two individual columns: PROP_CONIFEROUS and PROP_DECIDUOUS
 #' @export
 #'
 #' @examples

@@ -1,10 +1,10 @@
 #' Separate a column of species composition into species orders
 #'
-#' @param x spatial features; polygons of Forest Resources Inventory from the `sf` package.
-#' @param col_name character; name of the column that contains species and proportions
+#' @param x sf; polygons from the `sf` package.
+#' @param col_name character; name of the column that contains species and proportions.
 #'
 #' @returns
-#' Polygons with extracted species orders as individuals columns
+#' Polygons with extracted species orders as individual columns
 #' @export
 #'
 #' @examples

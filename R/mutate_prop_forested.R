@@ -1,11 +1,11 @@
 #' Extract the proportion of the polygon that are forested
 #'
-#' @param x spatial features; polygons of Forest Resources Inventory from the `sf` package.
-#' @param y raster; Landcover SpatRaster from the `terra` package.
-#' @param forested_class vector; all class of the landcover SpatRaster that are forested
+#' @param x sf; polygons from the `sf` package.
+#' @param y SpatRaster; categorical landcover raster from the `terra` package.
+#' @param forested_class character; classes of the landcover raster `y` that are forested.
 #'
 #' @returns
-#' Column "PROPFORESTED"
+#' Polygons with the forested proportion as a single column: PROPFORESTED
 #' @export
 #'
 #' @examples
@@ -61,7 +61,7 @@ mutate_prop_forested <- function(x,
   y_class[nrow(y_class) + 1,] <- "NA"
   names(x_proportion) <- y_class$class[match(names(x_proportion), y_class$value)]
 
-  dplyr::select(x_proportion, any_of(forested_class)) |>
+  dplyr::select(x_proportion, dplyr::any_of(forested_class)) |>
     dplyr::reframe(PROPFORESTED = rowSums(dplyr::across(dplyr::everything()))) -> prop_forested
 
   x_prop_forested <- dplyr::bind_cols(x, prop_forested)

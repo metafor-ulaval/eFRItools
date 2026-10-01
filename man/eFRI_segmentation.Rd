@@ -18,28 +18,26 @@ eFRI_segmentation(
 )
 }
 \arguments{
-\item{metrics}{param}
+\item{metrics}{SpatRaster; multiband raster to segment from the \code{terra} package.}
 
-\item{masks}{param}
+\item{masks}{list; SpatVector objects from the \code{terra} package used to mask the raster. \code{NULL} for no mask.}
 
-\item{thresh}{param}
+\item{thresh, spec, spat}{numeric; threshold, spectral weight and spatial weight of GRM. See
+\url{https://www.orfeo-toolbox.org/CookBook-8.0/Applications/app_GenericRegionMerging.html}}
 
-\item{spec}{param}
+\item{method}{character; homogeneity criterion of GRM. See
+\url{https://www.orfeo-toolbox.org/CookBook-8.0/Applications/app_GenericRegionMerging.html}}
 
-\item{spat}{param}
+\item{clean_nodata}{logical; perform a 3 pixels majority filter to remove small nodata holes.}
 
-\item{method}{param}
+\item{output_path}{character; folder where the segmentation raster is saved.}
 
-\item{clean_nodata}{param}
+\item{output_name}{character; file name of the segmentation raster, without extension.}
 
-\item{output_path}{param}
-
-\item{output_name}{param}
-
-\item{otb_dir}{param}
+\item{otb_dir}{character; folder where OTB is installed. Likely "C:/OTB/bin" on Windows.}
 }
 \value{
-segmentation
+Polygons of the segmentation from the \code{sf} package
 }
 \description{
 Segmentation

@@ -2,20 +2,20 @@
 % Please edit documentation in R/proportion_variance_explained.R
 \name{proportion_variance_explained}
 \alias{proportion_variance_explained}
-\title{Title}
+\title{Proportion of the variance of a metric explained by polygons}
 \usage{
 proportion_variance_explained(x, y)
 }
 \arguments{
-\item{x}{spatial features; polygons from the \code{sf} package.}
+\item{x}{sf; polygons from the \code{sf} package.}
 
-\item{y}{metric; SpatRaster with one from the \code{terra} package.}
+\item{y}{SpatRaster; single metric layer from the \code{terra} package.}
 }
 \value{
-proportion of explained variance in r2
+Proportion of explained variance (r2)
 }
 \description{
-Title
+Proportion of the variance of a metric explained by polygons
 }
 \examples{
 library(sf)

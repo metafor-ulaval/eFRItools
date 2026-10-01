@@ -21,34 +21,34 @@ eFRI_imputation(
 )
 }
 \arguments{
-\item{segmentation}{param}
+\item{segmentation}{sf; polygons from the \code{sf} package produced by \code{\link[=eFRI_segmentation]{eFRI_segmentation()}} or \code{\link[=eFRI_attribute_table]{eFRI_attribute_table()}}.}
 
-\item{forest_polygon}{param}
+\item{forest_polygon}{sf; reference polygons of Forest Resources Inventory from the \code{sf} package.}
 
-\item{metrics}{param}
+\item{metrics}{SpatRaster; metrics with one layer per metric from the \code{terra} package. Must contain \code{z_p95} and \code{z_above2}.}
 
-\item{landcover}{param}
+\item{landcover}{SpatRaster; categorical landcover raster from the \code{terra} package.}
 
-\item{forest_fire}{param}
+\item{forest_fire}{SpatRaster; year of forest fire from the \code{terra} package.}
 
-\item{forest_harvest}{param}
+\item{forest_harvest}{SpatRaster; year of forest harvest from the \code{terra} package.}
 
-\item{ctg}{param}
+\item{ctg}{sf; LiDAR acquisition tiles from the \code{sf} package.}
 
-\item{lidar_year_field}{param}
+\item{lidar_year_field}{character; name of the column of \code{ctg} that contains the LiDAR acquisition year.}
 
-\item{forest_year_field}{param}
+\item{forest_year_field}{character; name of the column of \code{forest_polygon} that contains the inventory year.}
 
-\item{forest_composition_field}{param}
+\item{forest_composition_field}{character; name of the column of \code{forest_polygon} that contains species and proportions.}
 
-\item{forest_type_field}{param}
+\item{forest_type_field}{character; name of the column of \code{forest_polygon} that contains the polygon type. Only "FOR" polygons are used.}
 
-\item{target_var}{param}
+\item{target_var}{character; names of the columns of \code{forest_polygon} to impute.}
 
-\item{knn_var}{param}
+\item{knn_var}{character; comma-separated metric names used for the knn of each \code{target_var}, of the same length as \code{target_var}.}
 }
 \value{
-eFRI_imputation
+\code{segmentation} with imputed variables as individual columns
 }
 \description{
 eFRI_imputation

@@ -1,10 +1,10 @@
-#' Title
+#' Proportion of the variance of a metric explained by polygons
 #'
-#' @param x spatial features; polygons from the `sf` package.
-#' @param y metric; SpatRaster with one from the `terra` package.
+#' @param x sf; polygons from the `sf` package.
+#' @param y SpatRaster; single metric layer from the `terra` package.
 #'
 #' @returns
-#' proportion of explained variance in r2
+#' Proportion of explained variance (r2)
 #' @export
 #'
 #' @examples

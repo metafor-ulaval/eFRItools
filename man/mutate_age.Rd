@@ -7,18 +7,18 @@
 mutate_age(x, y, current_year, target_year, fun)
 }
 \arguments{
-\item{x}{spatial features; polygons from the \code{sf} package of forest stands.}
+\item{x}{sf; polygons from the \code{sf} package.}
 
-\item{y}{forest age; SpatRaster from the \code{terra} package.}
+\item{y}{SpatRaster; forest age from the \code{terra} package.}
 
-\item{current_year}{year of the SpatRaster forest age.}
+\item{current_year}{numeric; year of the forest age raster \code{y}.}
 
-\item{target_year}{target year desired; usually the current year.}
+\item{target_year}{numeric; year for which the age is computed, usually the current year.}
 
-\item{fun}{function to summarize the extracted age by polygon.}
+\item{fun}{character; summary function of \code{exactextractr::exact_extract()} (e.g. "mean", "median").}
 }
 \value{
-#' Polygons with extracted age as a single column
+Polygons with extracted age as a single column
 }
 \description{
 Extract age of forest stand

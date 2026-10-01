@@ -7,14 +7,14 @@
 mutate_disturbance(x, col_name, threshold = 80)
 }
 \arguments{
-\item{x}{spatial features; polygons of Forest Resources Inventory from the \code{sf} package. proportion of disturbances columns must be present before running the function. see \link{mutate_proportion}}
+\item{x}{sf; polygons from the \code{sf} package. Disturbance proportion columns must be present, see \code{\link[=mutate_proportion]{mutate_proportion()}}.}
 
-\item{col_name}{character; name of the column that contains disturbance proportions}
+\item{col_name}{character; names of the columns that contain disturbance proportions.}
 
-\item{threshold}{numeric; minimum percentage coverage to consider the disturbance to be significant}
+\item{threshold}{numeric; minimum proportion (\%) for a disturbance to be considered significant.}
 }
 \value{
-Polygons with the follow disturbance columns : YRDEP, DEPTYPE, DEPPROP
+Polygons with the following disturbance columns: YRDEP, DEPTYPE and DEPPROP
 }
 \description{
 Extract disturbance column from existing disturbance columns with a pattern.

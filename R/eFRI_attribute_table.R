@@ -19,16 +19,16 @@
 
 #' eFRI_attribute_table
 #'
-#' @param segmentation param
-#' @param metrics param
-#' @param summary_metrics param
-#' @param landcover param
-#' @param forest_fire param
-#' @param forest_harvest param
-#' @param forest_age param
+#' @param segmentation sf; polygons from the `sf` package produced by [eFRI_segmentation()].
+#' @param metrics SpatRaster; metrics with one layer per metric from the `terra` package.
+#' @param summary_metrics character; names of the `metrics` layers to summarize (median) as columns. `NULL` to skip.
+#' @param landcover SpatRaster; categorical landcover raster from the `terra` package.
+#' @param forest_fire SpatRaster; year of forest fire from the `terra` package.
+#' @param forest_harvest SpatRaster; year of forest harvest from the `terra` package.
+#' @param forest_age SpatRaster; forest age in 2019 from the `terra` package.
 #'
 #' @returns
-#' eFRI_attribute_table
+#' Polygons with the eFRI attribute table as columns
 #' @export
 #'
 #' @examples

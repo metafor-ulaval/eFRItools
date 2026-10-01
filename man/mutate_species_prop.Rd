@@ -7,14 +7,14 @@
 mutate_species_prop(x, col_name, update_names = TRUE)
 }
 \arguments{
-\item{x}{spatial features; polygons of Forest Resources Inventory from the \code{sf} package.}
+\item{x}{sf; polygons from the \code{sf} package.}
 
-\item{col_name}{character; name of the column that contains species and proportions}
+\item{col_name}{character; name of the column that contains species and proportions.}
 
-\item{update_names}{logical; if some propportions are already presents, duplicated columns will be updated}
+\item{update_names}{logical; replace species proportion columns that already exist.}
 }
 \value{
-Polygons with extracted species proportions as individuals columns
+Polygons with extracted species proportions as individual columns
 }
 \description{
 Separate a column of species composition into proportions

@@ -7,7 +7,7 @@
 read_metrics(metric_path)
 }
 \arguments{
-\item{metric_path}{list of folder where metrics are with metric type as folder name}
+\item{metric_path}{character; folders that contain the metrics as .tif files. Folder names are used as metric type.}
 }
 \value{
 A dataframe with all available metrics informations

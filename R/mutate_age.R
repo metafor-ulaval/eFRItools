@@ -1,13 +1,13 @@
 #' Extract age of forest stand
 #'
-#' @param x spatial features; polygons from the `sf` package of forest stands.
-#' @param y forest age; SpatRaster from the `terra` package.
-#' @param current_year year of the SpatRaster forest age.
-#' @param target_year target year desired; usually the current year.
-#' @param fun function to summarize the extracted age by polygon.
+#' @param x sf; polygons from the `sf` package.
+#' @param y SpatRaster; forest age from the `terra` package.
+#' @param current_year numeric; year of the forest age raster `y`.
+#' @param target_year numeric; year for which the age is computed, usually the current year.
+#' @param fun character; summary function of `exactextractr::exact_extract()` (e.g. "mean", "median").
 #'
 #' @returns
-#' #' Polygons with extracted age as a single column
+#' Polygons with extracted age as a single column
 #' @export
 #'
 #' @examples

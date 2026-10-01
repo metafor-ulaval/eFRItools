@@ -7,10 +7,10 @@
 mutate_centroid(x)
 }
 \arguments{
-\item{x}{spatial features; polygons from the \code{sf} package.}
+\item{x}{sf; polygons from the \code{sf} package.}
 }
 \value{
-Polygons with extracted X and Y coordinates as individuals columns
+Polygons with extracted X and Y coordinates as individual columns
 }
 \description{
 Extract the X and Y coordinates of the polygon centroids

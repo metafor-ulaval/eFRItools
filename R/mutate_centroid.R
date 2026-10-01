@@ -1,9 +1,9 @@
 #' Extract the X and Y coordinates of the polygon centroids
 #'
-#' @param x spatial features; polygons from the `sf` package.
+#' @param x sf; polygons from the `sf` package.
 #'
 #' @returns
-#' Polygons with extracted X and Y coordinates as individuals columns
+#' Polygons with extracted X and Y coordinates as individual columns
 #' @export
 #'
 #' @examples

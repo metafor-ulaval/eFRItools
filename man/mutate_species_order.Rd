@@ -7,12 +7,12 @@
 mutate_species_order(x, col_name)
 }
 \arguments{
-\item{x}{spatial features; polygons of Forest Resources Inventory from the \code{sf} package.}
+\item{x}{sf; polygons from the \code{sf} package.}
 
-\item{col_name}{character; name of the column that contains species and proportions}
+\item{col_name}{character; name of the column that contains species and proportions.}
 }
 \value{
-Polygons with extracted species orders as individuals columns
+Polygons with extracted species orders as individual columns
 }
 \description{
 Separate a column of species composition into species orders

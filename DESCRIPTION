@@ -27,6 +27,7 @@ Imports:
     RANN,
     rlang,
     sf,
+    stats,
     stringr,
     terra,
     tibble,

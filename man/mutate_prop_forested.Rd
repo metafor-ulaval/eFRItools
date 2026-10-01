@@ -13,14 +13,14 @@ mutate_prop_forested(
 )
 }
 \arguments{
-\item{x}{spatial features; polygons of Forest Resources Inventory from the \code{sf} package.}
+\item{x}{sf; polygons from the \code{sf} package.}
 
-\item{y}{raster; Landcover SpatRaster from the \code{terra} package.}
+\item{y}{SpatRaster; categorical landcover raster from the \code{terra} package.}
 
-\item{forested_class}{vector; all class of the landcover SpatRaster that are forested}
+\item{forested_class}{character; classes of the landcover raster \code{y} that are forested.}
 }
 \value{
-Column "PROPFORESTED"
+Polygons with the forested proportion as a single column: PROPFORESTED
 }
 \description{
 Extract the proportion of the polygon that are forested
