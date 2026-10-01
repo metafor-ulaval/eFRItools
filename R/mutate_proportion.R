@@ -27,16 +27,18 @@ mutate_proportion <- function(x,
 
   cat(paste0("Mutate proportion for ", nrow(x), " polygon(s) of raster ", names(y), "\n"))
   x_crs <- sf::st_transform(x, sf::st_crs(y))
-  x_sum_cover <- exactextractr::exact_extract(y, x_crs, coverage_area = TRUE, summarize_df = TRUE, fun = sum_cover)
+  x_sum_cover <- exactextractr::exact_extract(y, x_crs, coverage_area = TRUE, summarize_df = TRUE, fun = sum_cover, progress = FALSE)
 
   x_proportion <- lapply(seq_along(x_sum_cover),
                          function(x){
                            area <- sf::st_area(x_crs[x,])
                            area <- as.numeric(area)
-                           coverage_proportion <- t(x_sum_cover[[x]]$coverage_area / area * 100)
+                           # NA pixels are counted in the NA column with the area not covered by the raster
+                           x_cover <- x_sum_cover[[x]][!is.na(x_sum_cover[[x]]$value), , drop = FALSE]
+                           coverage_proportion <- t(x_cover$coverage_area / area * 100)
                            coverage_proportion <- as.data.frame(coverage_proportion)
-                           colnames(coverage_proportion) <- x_sum_cover[[x]]$value
-                           coverage_proportion$`NA` <- (area-sum(x_sum_cover[[x]]$coverage_area)) / area * 100
+                           colnames(coverage_proportion) <- x_cover$value
+                           coverage_proportion$`NA` <- (area-sum(x_cover$coverage_area)) / area * 100
                            return(coverage_proportion)
                          })
 

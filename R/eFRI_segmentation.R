@@ -30,7 +30,7 @@ eFRI_segmentation <- function(metrics,
 
     metrics_preprocessed <- pre_processing(metrics, masks)
 
-    cat("Segmentation/n")
+    cat("Segmentation\n")
     segmentation <- generic_region_merging(metrics_preprocessed,
                                            ofile = paste0(output_path, "/", output_name, ".tif"),
                                            thresh = thresh,
