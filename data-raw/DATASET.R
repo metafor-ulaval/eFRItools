@@ -16,7 +16,7 @@ library(tidyverse)
 
 # Parameters ----
 epsg <- "EPSG:2958"
-otb_dir <- "D:/00_Ontario_eFRI/logiciels/OTB-9.1.0-Win64/bin"
+otb_dir <- "D:/00_Ontario_eFRI/00_logiciels/OTB-9.1.0-Win64/bin"
 
 segmentation_metrics <- c("z_p95", "z_cv", "z_above2", "sagawi", "fractional_cover_05_2")
 
