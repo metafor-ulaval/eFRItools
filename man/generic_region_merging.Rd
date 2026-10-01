@@ -5,18 +5,18 @@
 \title{Segmentation of a raster into polygons}
 \usage{
 generic_region_merging(
-  input,
+  metrics,
   ofile = tempfile(fileext = ".tif"),
   thresh = 50,
   spec = 0.5,
   spat = 0.5,
   method = "bs",
   clean_nodata = TRUE,
-  otb_dir = "C:/OTB/bin"
+  otb_dir
 )
 }
 \arguments{
-\item{input}{SpatRaster; multiband raster to segment from the \code{terra} package.}
+\item{metrics}{SpatRaster; multiband raster to segment from the \code{terra} package.}
 
 \item{ofile}{character; path where the GRM raster is saved.}
 

@@ -4,12 +4,12 @@
 \alias{mutate_species_order}
 \title{Separate a column of species composition into species orders}
 \usage{
-mutate_species_order(x, col_name)
+mutate_species_order(x, column_name)
 }
 \arguments{
 \item{x}{sf; polygons from the \code{sf} package.}
 
-\item{col_name}{character; name of the column that contains species and proportions.}
+\item{column_name}{character; name of the column that contains species and proportions.}
 }
 \value{
 Polygons with extracted species orders as individual columns

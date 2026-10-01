@@ -7,19 +7,17 @@
 eFRI_attribute_table(
   segmentation,
   metrics,
-  summary_metrics,
   landcover,
   forest_fire,
   forest_harvest,
-  forest_age
+  forest_age,
+  summary_metrics = NULL
 )
 }
 \arguments{
 \item{segmentation}{sf; polygons from the \code{sf} package produced by \code{\link[=eFRI_segmentation]{eFRI_segmentation()}}.}
 
 \item{metrics}{SpatRaster; metrics with one layer per metric from the \code{terra} package.}
-
-\item{summary_metrics}{character; names of the \code{metrics} layers to summarize (median) as columns. \code{NULL} to skip.}
 
 \item{landcover}{SpatRaster; categorical landcover raster from the \code{terra} package.}
 
@@ -28,6 +26,8 @@ eFRI_attribute_table(
 \item{forest_harvest}{SpatRaster; year of forest harvest from the \code{terra} package.}
 
 \item{forest_age}{SpatRaster; forest age in 2019 from the \code{terra} package.}
+
+\item{summary_metrics}{character; names of the \code{metrics} layers to summarize (median) as columns. \code{NULL} to skip.}
 }
 \value{
 Polygons with the eFRI attribute table as columns

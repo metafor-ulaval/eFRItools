@@ -4,17 +4,15 @@
 \alias{mutate_species_prop}
 \title{Separate a column of species composition into proportions}
 \usage{
-mutate_species_prop(x, col_name, update_names = TRUE)
+mutate_species_prop(x, column_name)
 }
 \arguments{
 \item{x}{sf; polygons from the \code{sf} package.}
 
-\item{col_name}{character; name of the column that contains species and proportions.}
-
-\item{update_names}{logical; replace species proportion columns that already exist.}
+\item{column_name}{character; name of the column that contains species and proportions.}
 }
 \value{
-Polygons with extracted species proportions as individual columns
+Polygons with extracted species proportions as individual columns. Existing species columns are replaced.
 }
 \description{
 Separate a column of species composition into proportions

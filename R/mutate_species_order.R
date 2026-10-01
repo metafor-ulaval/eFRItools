@@ -1,7 +1,7 @@
 #' Separate a column of species composition into species orders
 #'
 #' @param x sf; polygons from the `sf` package.
-#' @param col_name character; name of the column that contains species and proportions.
+#' @param column_name character; name of the column that contains species and proportions.
 #'
 #' @returns
 #' Polygons with extracted species orders as individual columns
@@ -14,27 +14,21 @@
 #'
 #' fri_polygons_species_order
 mutate_species_order <- function(x,
-                                 col_name){
+                                 column_name){
 
   cat(paste0("Mutate species order for ", nrow(x), " polygon(s)\n"))
-  extracted_col <- dplyr::pull(x, col_name)
-  extracted_col_list <- stringr::str_match_all(extracted_col, "[A-Z]{2}[ ]+[0-9]+")
-  purrr::map_dfr(extracted_col_list,
-                 function(y){
-                   tibble::as_tibble(y, .name_repair = "unique_quiet") |>
-                     tidyr::separate(1, into = c("SP", "PROP")) |>
-                     tibble::rowid_to_column("no") |>
-                     dplyr::select(-PROP) |>
-                     tidyr::pivot_wider(names_from = no, names_glue = "SP_NO_{no}", values_from = SP) -> y_species_order
+  # List of species with proportion for each polygon, e.g. c("BW  40", "SB  40", "PT  20")
+  species <- regmatches(x[[column_name]], gregexpr("[A-Z]{2} +[0-9]+", x[[column_name]]))
 
-                   if(nrow(y_species_order) == 0){
-                     y_species_order <- dplyr::add_row(y_species_order)
-                   }
+  # One row per polygon with the species codes in order, padded with NA
+  n_max <- max(lengths(species))
+  species_order <- lapply(species, function(xx){ substr(xx, 1, 2)[seq_len(n_max)] })
+  species_order <- as.data.frame(do.call(rbind, species_order))
+  names(species_order) <- paste0("SP_NO_", seq_len(n_max))
 
-                   return(y_species_order)
+  # Existing species order columns are replaced
+  x <- dplyr::select(x, -dplyr::any_of(names(species_order)))
+  x <- dplyr::bind_cols(x, species_order)
 
-                 }) -> species_order
-  x_species_order <- dplyr::bind_cols(x, species_order)
-
-  return(x_species_order)
+  return(x)
 }

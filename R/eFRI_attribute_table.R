@@ -1,31 +1,12 @@
-# x <- segmentation
-# y <- landcover
-#
-#
-#
-# segmentation <- st_read("D:/00_Ontario_eFRI/Test_Shiny/grm1.shp")
-# metrics <- rast(metrics)
-# landcover <- rast(landcover)
-# forest_fire <- rast(forest_fire_1985_2020)
-# forest_harvest <- rast(forest_harvest_1985_2020)
-# forest_age <- rast(forest_age_2019)
-#
-# forest_fire %>% plot
-# forest_harvest %>% plot
-# metrics[[1]] %>% plot
-
-
-
-
 #' eFRI_attribute_table
 #'
 #' @param segmentation sf; polygons from the `sf` package produced by [eFRI_segmentation()].
 #' @param metrics SpatRaster; metrics with one layer per metric from the `terra` package.
-#' @param summary_metrics character; names of the `metrics` layers to summarize (median) as columns. `NULL` to skip.
 #' @param landcover SpatRaster; categorical landcover raster from the `terra` package.
 #' @param forest_fire SpatRaster; year of forest fire from the `terra` package.
 #' @param forest_harvest SpatRaster; year of forest harvest from the `terra` package.
 #' @param forest_age SpatRaster; forest age in 2019 from the `terra` package.
+#' @param summary_metrics character; names of the `metrics` layers to summarize (median) as columns. `NULL` to skip.
 #'
 #' @returns
 #' Polygons with the eFRI attribute table as columns
@@ -35,11 +16,13 @@
 #' eFRI_attribute_table
 eFRI_attribute_table <- function(segmentation,
                                  metrics,
-                                 summary_metrics,
                                  landcover,
                                  forest_fire,
                                  forest_harvest,
-                                 forest_age){
+                                 forest_age,
+                                 summary_metrics = NULL){
+
+  current_year <- as.numeric(format(Sys.Date(), "%Y"))
 
   segmentation_final <- segmentation
 
@@ -47,17 +30,17 @@ eFRI_attribute_table <- function(segmentation,
   segmentation <- mutate_prop_forested(segmentation, landcover)
   segmentation <- mutate_proportion(segmentation, forest_fire, prefix = "forest_fire", simplify = TRUE, keep_all = TRUE)
   segmentation <- mutate_proportion(segmentation, forest_harvest, prefix = "forest_harvest", simplify = TRUE, keep_all = TRUE)
-  segmentation <- mutate_age(segmentation, forest_age, 2019, lubridate::year(lubridate::today()), fun = "mean") # PEUT-ETRE MEDIANE?
-  segmentation <- mutate_disturbance(segmentation, col_name = grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(segmentation), value = TRUE), threshold = 80)
+  segmentation <- mutate_age(segmentation, forest_age, 2019, current_year, fun = "mean") # PEUT-ETRE MEDIANE?
+  segmentation <- mutate_disturbance(segmentation, column_name = grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(segmentation), value = TRUE), threshold = 80)
 
   segmentation_final$SOURCE <- "eFRI"
-  segmentation_final$YRSOURCE <- lubridate::year(lubridate::today())
+  segmentation_final$YRSOURCE <- current_year
   segmentation_final$AREA <- round(as.numeric(sf::st_area(segmentation)), 2)
   segmentation_final$PERIMETER <- round(as.numeric(sf::st_perimeter(segmentation)), 2)
   segmentation_final$PROPFORESTED <-  round(segmentation$PROPFORESTED, 2)
   segmentation_final$POLYTYPE <- segmentation$MOST_FREQUENT_LANDCOVER
   segmentation_final$POLYTYPEPROP <-  round(segmentation$MOST_FREQUENT_LANDCOVER_PROPORTION, 2)
-  segmentation_final$AGE <- segmentation[[paste0("age_mean_", lubridate::year(lubridate::today()))]]
+  segmentation_final$AGE <- segmentation[[paste0("age_mean_", current_year)]]
   segmentation_final$YRDEP <- segmentation$YRDEP
   segmentation_final$DEPTYPE <- segmentation$DEPTYPE
   segmentation_final$DEPPROP <- round(segmentation$DEPPROP, 2)

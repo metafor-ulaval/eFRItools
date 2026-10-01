@@ -1,7 +1,7 @@
 #' Extract disturbance column from existing disturbance columns with a pattern.
 #'
 #' @param x sf; polygons from the `sf` package. Disturbance proportion columns must be present, see [mutate_proportion()].
-#' @param col_name character; names of the columns that contain disturbance proportions.
+#' @param column_name character; names of the columns that contain disturbance proportions.
 #' @param threshold numeric; minimum proportion (%) for a disturbance to be considered significant.
 #'
 #' @returns
@@ -16,15 +16,15 @@
 #'   mutate_proportion(rast(forest_fire_1985_2020), "forest_fire") |>
 #'   mutate_proportion(rast(forest_harvest_1985_2020), "forest_harvest")
 #'
-#' col_name <- grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(fri_polygons_proportion), value = TRUE)
+#' column_name <- grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(fri_polygons_proportion), value = TRUE)
 #'
-#' fri_polygons_disturbance <- mutate_disturbance(fri_polygons_proportion, col_name, 80)
+#' fri_polygons_disturbance <- mutate_disturbance(fri_polygons_proportion, column_name, 80)
 mutate_disturbance <- function(x,
-                              col_name,
+                              column_name,
                               threshold = 80){
 
   cat(paste0("Mutate disturbance for ", nrow(x), " polygon(s)\n"))
-  x_col <- as.data.frame(x)[,col_name]
+  x_col <- as.data.frame(x)[, column_name, drop = FALSE]
 
   x_disturbance <- apply(x_col,
                          MARGIN = 1,

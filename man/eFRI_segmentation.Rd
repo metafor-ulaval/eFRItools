@@ -7,20 +7,21 @@
 eFRI_segmentation(
   metrics,
   masks = NULL,
-  thresh = 47,
-  spec = 0.6,
-  spat = 0.6,
+  ofile,
+  thresh = 50,
+  spec = 0.5,
+  spat = 0.5,
   method = "bs",
   clean_nodata = TRUE,
-  output_path,
-  output_name,
   otb_dir
 )
 }
 \arguments{
-\item{metrics}{SpatRaster; multiband raster to segment from the \code{terra} package.}
+\item{metrics}{SpatRaster; multiband raster to segment with \code{\link[=generic_region_merging]{generic_region_merging()}} from the \code{terra} package.}
 
 \item{masks}{list; SpatVector objects from the \code{terra} package used to mask the raster. \code{NULL} for no mask.}
+
+\item{ofile}{character; path where the GRM raster is saved.}
 
 \item{thresh, spec, spat}{numeric; threshold, spectral weight and spatial weight of GRM. See
 \url{https://www.orfeo-toolbox.org/CookBook-8.0/Applications/app_GenericRegionMerging.html}}
@@ -29,10 +30,6 @@ eFRI_segmentation(
 \url{https://www.orfeo-toolbox.org/CookBook-8.0/Applications/app_GenericRegionMerging.html}}
 
 \item{clean_nodata}{logical; perform a 3 pixels majority filter to remove small nodata holes.}
-
-\item{output_path}{character; folder where the segmentation raster is saved.}
-
-\item{output_name}{character; file name of the segmentation raster, without extension.}
 
 \item{otb_dir}{character; folder where OTB is installed. Likely "C:/OTB/bin" on Windows.}
 }

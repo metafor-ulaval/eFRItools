@@ -12,12 +12,12 @@ eFRI_imputation(
   forest_fire,
   forest_harvest,
   ctg,
-  lidar_year_field,
-  forest_year_field,
-  forest_composition_field,
-  forest_type_field,
-  target_var,
-  knn_var
+  lidar_year_column,
+  forest_year_column,
+  forest_composition_column,
+  forest_type_column,
+  target_variables,
+  knn_variables
 )
 }
 \arguments{
@@ -35,17 +35,17 @@ eFRI_imputation(
 
 \item{ctg}{sf; LiDAR acquisition tiles from the \code{sf} package.}
 
-\item{lidar_year_field}{character; name of the column of \code{ctg} that contains the LiDAR acquisition year.}
+\item{lidar_year_column}{character; name of the column of \code{ctg} that contains the LiDAR acquisition year.}
 
-\item{forest_year_field}{character; name of the column of \code{forest_polygon} that contains the inventory year.}
+\item{forest_year_column}{character; name of the column of \code{forest_polygon} that contains the inventory year.}
 
-\item{forest_composition_field}{character; name of the column of \code{forest_polygon} that contains species and proportions.}
+\item{forest_composition_column}{character; name of the column of \code{forest_polygon} that contains species and proportions.}
 
-\item{forest_type_field}{character; name of the column of \code{forest_polygon} that contains the polygon type. Only "FOR" polygons are used.}
+\item{forest_type_column}{character; name of the column of \code{forest_polygon} that contains the polygon type. Only "FOR" polygons are used.}
 
-\item{target_var}{character; names of the columns of \code{forest_polygon} to impute.}
+\item{target_variables}{character; names of the columns of \code{forest_polygon} to impute.}
 
-\item{knn_var}{character; comma-separated metric names used for the knn of each \code{target_var}, of the same length as \code{target_var}.}
+\item{knn_variables}{character; comma-separated metric names used for the knn of each \code{target_variables}, of the same length as \code{target_variables}.}
 }
 \value{
 \code{segmentation} with imputed variables as individual columns

@@ -30,9 +30,9 @@ mutate_forest_type <- function(x){
                      SN = 'norway spruce',   PE = 'silver poplar',       HI = 'hickory',         AX = 'ash')
 
 
-  coniferous <- names(dict[stringr::str_detect(dict, pattern = "pine|spruce|fir|cedar|larch|conifers|hemlock")])
+  coniferous <- names(dict[grepl("pine|spruce|fir|cedar|larch|conifers|hemlock", dict)])
 
-  deciduous <- names(dict[!stringr::str_detect(dict, pattern = "pine|spruce|fir|cedar|larch|conifers|hemlock")])
+  deciduous <- names(dict[!grepl("pine|spruce|fir|cedar|larch|conifers|hemlock", dict)])
 
   x |>
     dplyr::mutate(PROP_CONIFEROUS = rowSums(dplyr::across(dplyr::any_of(coniferous)))) |>

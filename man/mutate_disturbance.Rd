@@ -4,12 +4,12 @@
 \alias{mutate_disturbance}
 \title{Extract disturbance column from existing disturbance columns with a pattern.}
 \usage{
-mutate_disturbance(x, col_name, threshold = 80)
+mutate_disturbance(x, column_name, threshold = 80)
 }
 \arguments{
 \item{x}{sf; polygons from the \code{sf} package. Disturbance proportion columns must be present, see \code{\link[=mutate_proportion]{mutate_proportion()}}.}
 
-\item{col_name}{character; names of the columns that contain disturbance proportions.}
+\item{column_name}{character; names of the columns that contain disturbance proportions.}
 
 \item{threshold}{numeric; minimum proportion (\%) for a disturbance to be considered significant.}
 }
@@ -27,7 +27,7 @@ fri_polygons_proportion <- fri_polygons |>
   mutate_proportion(rast(forest_fire_1985_2020), "forest_fire") |>
   mutate_proportion(rast(forest_harvest_1985_2020), "forest_harvest")
 
-col_name <- grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(fri_polygons_proportion), value = TRUE)
+column_name <- grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(fri_polygons_proportion), value = TRUE)
 
-fri_polygons_disturbance <- mutate_disturbance(fri_polygons_proportion, col_name, 80)
+fri_polygons_disturbance <- mutate_disturbance(fri_polygons_proportion, column_name, 80)
 }

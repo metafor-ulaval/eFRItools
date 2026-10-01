@@ -4,10 +4,10 @@
 \alias{pre_processing}
 \title{Pre-processing stage}
 \usage{
-pre_processing(layers, masks = NULL)
+pre_processing(metrics, masks = NULL)
 }
 \arguments{
-\item{layers}{SpatRaster; multiband raster to segment with \code{\link[=generic_region_merging]{generic_region_merging()}} from the \code{terra} package.}
+\item{metrics}{SpatRaster; multiband raster to segment with \code{\link[=generic_region_merging]{generic_region_merging()}} from the \code{terra} package.}
 
 \item{masks}{list; SpatVector objects from the \code{terra} package used to mask the raster. \code{NULL} for no mask.}
 }
@@ -21,9 +21,8 @@ in \verb{[0,255]}
 }
 \examples{
 library(terra)
-library(purrr)
 
-metrics_pre_processing <- pre_processing(rast(metrics), masks = map(masks, vect))
+metrics_pre_processing <- pre_processing(rast(metrics), masks = lapply(masks, vect))
 
 metrics_pre_processing
 }

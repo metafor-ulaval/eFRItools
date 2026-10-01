@@ -1,7 +1,7 @@
 #' Perform knn imputation
 #'
 #' @param reference_polygons sf; reference polygons from the `sf` package with known values of `target_variables`.
-#' @param target_polygons sf; polygons from the `sf` package to impute.
+#' @param target_polygons sf; polygons from the `sf` package to impute. If identical to `reference_polygons`, each polygon is excluded from its own neighbours.
 #' @param knn_variables character; names of the columns used to find the nearest neighbours.
 #' @param target_variables character; names of the columns of `reference_polygons` to impute.
 #' @param k numeric; number of nearest neighbours.
@@ -12,17 +12,16 @@
 #'
 #' @examples
 #' "ex"
-knn_inputation <- function(reference_polygons,
+knn_imputation <- function(reference_polygons,
                            target_polygons,
                            knn_variables,
                            target_variables,
                            k = 5){
 
-  # Extract adress (unique value) of the object to see if the reference is the same as the target
-  addr1 <- data.table::address(reference_polygons)
-  addr2 <- data.table::address(target_polygons)
+  # If the reference is the same as the target, the polygon itself must not be used as a neighbour
+  self_search <- identical(reference_polygons, target_polygons)
 
-  if (addr1 == addr2)
+  if (self_search)
   {
     cat("Self search mode\n")
     k = k+1
@@ -36,12 +35,11 @@ knn_inputation <- function(reference_polygons,
   reference <- reference[, knn_variables, drop = FALSE]
 
   # Combine and scale data
-  reference <- reference[, names(target), drop = FALSE]
   dat_comb_scaled <- scale(rbind(target, reference))
 
   # Re-extract data for each dataset into a matrix
-  reference <- dat_comb_scaled[(nrow(target)+1):(nrow(target)+nrow(reference)),]
-  target <- dat_comb_scaled[1:nrow(target),]
+  reference <- dat_comb_scaled[(nrow(target)+1):(nrow(target)+nrow(reference)), , drop = FALSE]
+  target <- dat_comb_scaled[1:nrow(target), , drop = FALSE]
 
   # Run knn algorithm
   nn <- RANN::nn2(reference, target, k = k)
@@ -50,14 +48,14 @@ knn_inputation <- function(reference_polygons,
   nn <- nn[[1]]
 
   # If the reference is the same as the target, the first nearest neighbours is removed
-  if (addr1 == addr2)
+  if (self_search)
   {
-    nn <- nn[, 2:k]
+    nn <- nn[, 2:k, drop = FALSE]
   }
 
-  knn_inputation_result <- lapply(target_variables, imputation, nn = nn, reference_polygons = reference_polygons)
-  knn_inputation_result <- as.data.frame(knn_inputation_result)
-  names(knn_inputation_result) <- target_variables
+  knn_imputation_result <- lapply(target_variables, imputation, nn = nn, reference_polygons = reference_polygons)
+  knn_imputation_result <- as.data.frame(knn_imputation_result)
+  names(knn_imputation_result) <- target_variables
 
-  return(knn_inputation_result)
+  return(knn_imputation_result)
 }

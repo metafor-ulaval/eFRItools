@@ -4,14 +4,14 @@
 \alias{mutate_age}
 \title{Extract age of forest stand}
 \usage{
-mutate_age(x, y, current_year, target_year, fun)
+mutate_age(x, y, raster_year, target_year, fun = "mean")
 }
 \arguments{
 \item{x}{sf; polygons from the \code{sf} package.}
 
 \item{y}{SpatRaster; forest age from the \code{terra} package.}
 
-\item{current_year}{numeric; year of the forest age raster \code{y}.}
+\item{raster_year}{numeric; year of the forest age raster \code{y}.}
 
 \item{target_year}{numeric; year for which the age is computed, usually the current year.}
 

@@ -4,7 +4,7 @@
 #' the function masks the unwanted pixel (rivers, lakes, roads, ...), smooth the layers, and normalizes the values to range
 #' in `[0,255]`
 #'
-#' @param layers SpatRaster; multiband raster to segment with [generic_region_merging()] from the `terra` package.
+#' @param metrics SpatRaster; multiband raster to segment with [generic_region_merging()] from the `terra` package.
 #' @param masks list; SpatVector objects from the `terra` package used to mask the raster. `NULL` for no mask.
 #'
 #' @returns
@@ -13,33 +13,32 @@
 
 #' @examples
 #' library(terra)
-#' library(purrr)
 #'
-#' metrics_pre_processing <- pre_processing(rast(metrics), masks = map(masks, vect))
+#' metrics_pre_processing <- pre_processing(rast(metrics), masks = lapply(masks, vect))
 #'
 #' metrics_pre_processing
-pre_processing = function(layers, masks = NULL)
+pre_processing = function(metrics, masks = NULL)
 {
-  onames = names(layers)
+  onames = names(metrics)
 
   if (!is.null(masks))
   {
     cat("Masks\n")
     for (mask in masks)
     {
-      if (terra::crs(mask) != terra::crs(layers))
-        mask <- terra::project(mask, layers)
+      if (terra::crs(mask) != terra::crs(metrics))
+        mask <- terra::project(mask, metrics)
 
-      layers <- terra::mask(layers, mask, inverse = T, touches = T)
+      metrics <- terra::mask(metrics, mask, inverse = T, touches = T)
     }
   }
 
   cat("Deal with missing data\n")
-  layers[anyNA(layers)] <- NA
+  metrics[anyNA(metrics)] <- NA
 
   cat("Rescale in [0, 255]\n")
-  layers = terra::stretch(layers, maxv = 255, minq = 0.01, maxq = 0.99)
+  metrics = terra::stretch(metrics, maxv = 255, minq = 0.01, maxq = 0.99)
 
-  names(layers) = onames
-  return(layers)
+  names(metrics) = onames
+  return(metrics)
 }
