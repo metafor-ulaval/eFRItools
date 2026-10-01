@@ -44,7 +44,8 @@ generic_region_merging = function(input,
   ofile <- normalizePath(ofile, mustWork = FALSE, winslash = "/")
   otb_dir <- normalizePath(otb_dir, mustWork = FALSE, winslash = "/")
 
-  cmd <- paste0(otb_dir, "/otbcli_GenericRegionMerging -in ", ifile, " -out ", ofile, " -criterion ", method, " -threshold ", thresh, " -cw ", spec, " -sw ", spat)
+  # Paths are quoted to support spaces
+  cmd <- paste0(shQuote(paste0(otb_dir, "/otbcli_GenericRegionMerging"), type = "cmd"), " -in ", shQuote(ifile, type = "cmd"), " -out ", shQuote(ofile, type = "cmd"), " -criterion ", method, " -threshold ", thresh, " -cw ", spec, " -sw ", spat)
   cat(cmd, "\n")
   system(cmd)
 
