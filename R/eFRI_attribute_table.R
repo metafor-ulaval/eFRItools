@@ -48,7 +48,7 @@ eFRI_attribute_table <- function(segmentation,
   segmentation <- mutate_proportion(segmentation, forest_fire, prefix = "forest_fire", simplify = TRUE, keep_all = TRUE)
   segmentation <- mutate_proportion(segmentation, forest_harvest, prefix = "forest_harvest", simplify = TRUE, keep_all = TRUE)
   segmentation <- mutate_age(segmentation, forest_age, 2019, lubridate::year(lubridate::today()), fun = "mean") # PEUT-ETRE MEDIANE?
-  segmentation <- mutate_perturbation(segmentation, col_name = grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(segmentation), value = TRUE), threshold = 80)
+  segmentation <- mutate_disturbance(segmentation, col_name = grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(segmentation), value = TRUE), threshold = 80)
 
   segmentation_final$SOURCE <- "eFRI"
   segmentation_final$YRSOURCE <- lubridate::year(lubridate::today())
