@@ -4,7 +4,7 @@
 \alias{mutate_age}
 \title{Extract age of forest stand}
 \usage{
-mutate_age(x, y, raster_year, target_year, fun = "median")
+mutate_age(x, y, raster_year, target_year, fun = "median", disturbance = NULL)
 }
 \arguments{
 \item{x}{sf; polygons from the \code{sf} package.}
@@ -16,6 +16,10 @@ mutate_age(x, y, raster_year, target_year, fun = "median")
 \item{target_year}{numeric; year for which the age is computed, usually the current year.}
 
 \item{fun}{character; summary function of \code{exactextractr::exact_extract()} (e.g. "median", "mean").}
+
+\item{disturbance}{SpatRaster; year of the last stand-replacing disturbance (0 or \code{NA} when none) from the \code{terra} package.
+When given, disturbed pixels take the time since disturbance (\code{target_year} minus the disturbance year) instead of the age of \code{y}.
+\code{NULL} to use \code{y} only.}
 }
 \value{
 Polygons with extracted age as a single column
@@ -28,6 +32,13 @@ library(sf)
 library(terra)
 
 fri_polygons_age <- mutate_age(fri_polygons, rast(forest_age_2019), 2019, 2025, "median")
+
+fri_polygons_age
+
+# Give priority to the disturbance layers
+disturbance <- max(rast(forest_fire_1985_2020), rast(forest_harvest_1985_2020))
+fri_polygons_age <- mutate_age(fri_polygons, rast(forest_age_2019), 2019, 2025, "median",
+                               disturbance = disturbance)
 
 fri_polygons_age
 }

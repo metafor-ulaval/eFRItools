@@ -29,7 +29,7 @@ eFRI_attribute_table(
 
 \item{forest_harvest}{SpatRaster; year of forest harvest from the \code{terra} package.}
 
-\item{forest_age}{SpatRaster; forest age at \code{raster_year} from the \code{terra} package.}
+\item{forest_age}{SpatRaster; forest age at \code{raster_year} from the \code{terra} package. Pixels burned or harvested take the time since that disturbance instead (see \code{\link[=mutate_age]{mutate_age()}}).}
 
 \item{raster_year}{numeric; reference year of the \code{forest_age} raster (e.g. 2022 for the NTEMS 2022 forest age).}
 

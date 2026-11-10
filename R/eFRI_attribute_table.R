@@ -5,7 +5,7 @@
 #' @param landcover SpatRaster; categorical landcover raster from the `terra` package.
 #' @param forest_fire SpatRaster; year of forest fire from the `terra` package.
 #' @param forest_harvest SpatRaster; year of forest harvest from the `terra` package.
-#' @param forest_age SpatRaster; forest age at `raster_year` from the `terra` package.
+#' @param forest_age SpatRaster; forest age at `raster_year` from the `terra` package. Pixels burned or harvested take the time since that disturbance instead (see [mutate_age()]).
 #' @param raster_year numeric; reference year of the `forest_age` raster (e.g. 2022 for the NTEMS 2022 forest age).
 #' @param target_year numeric; year the ages are brought forward to, also written as `YRSOURCE`. Defaults to the current year.
 #' @param age_fun character; summary function of `exactextractr::exact_extract()` used for the polygon age (e.g. "median", "mean").
@@ -36,7 +36,11 @@ eFRI_attribute_table <- function(segmentation,
   segmentation <- mutate_prop_forested(segmentation, landcover)
   segmentation <- mutate_proportion(segmentation, forest_fire, prefix = "forest_fire", simplify = TRUE, keep_all = TRUE)
   segmentation <- mutate_proportion(segmentation, forest_harvest, prefix = "forest_harvest", simplify = TRUE, keep_all = TRUE)
-  segmentation <- mutate_age(segmentation, forest_age, raster_year, target_year, fun = age_fun)
+  if(!terra::compareGeom(forest_harvest, forest_fire, stopOnError = FALSE)){
+    forest_harvest <- terra::project(forest_harvest, forest_fire, method = "near")
+  }
+  disturbance <- max(forest_fire, forest_harvest, na.rm = TRUE) # Year of the last fire or harvest
+  segmentation <- mutate_age(segmentation, forest_age, raster_year, target_year, fun = age_fun, disturbance = disturbance)
   segmentation <- mutate_disturbance(segmentation, column_name = grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(segmentation), value = TRUE), threshold = 80)
 
   segmentation_final$SOURCE <- "eFRI"
