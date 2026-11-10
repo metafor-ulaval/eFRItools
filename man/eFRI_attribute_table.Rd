@@ -11,6 +11,8 @@ eFRI_attribute_table(
   forest_fire,
   forest_harvest,
   forest_age,
+  raster_year,
+  target_year = as.numeric(format(Sys.Date(), "\%Y")),
   summary_metrics = NULL
 )
 }
@@ -25,7 +27,11 @@ eFRI_attribute_table(
 
 \item{forest_harvest}{SpatRaster; year of forest harvest from the \code{terra} package.}
 
-\item{forest_age}{SpatRaster; forest age in 2019 from the \code{terra} package.}
+\item{forest_age}{SpatRaster; forest age at \code{raster_year} from the \code{terra} package.}
+
+\item{raster_year}{numeric; reference year of the \code{forest_age} raster (e.g. 2022 for the NTEMS 2022 forest age).}
+
+\item{target_year}{numeric; year the ages are brought forward to, also written as \code{YRSOURCE}. Defaults to the current year.}
 
 \item{summary_metrics}{character; names of the \code{metrics} layers to summarize (median) as columns. \code{NULL} to skip.}
 }

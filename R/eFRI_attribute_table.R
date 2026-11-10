@@ -5,7 +5,9 @@
 #' @param landcover SpatRaster; categorical landcover raster from the `terra` package.
 #' @param forest_fire SpatRaster; year of forest fire from the `terra` package.
 #' @param forest_harvest SpatRaster; year of forest harvest from the `terra` package.
-#' @param forest_age SpatRaster; forest age in 2019 from the `terra` package.
+#' @param forest_age SpatRaster; forest age at `raster_year` from the `terra` package.
+#' @param raster_year numeric; reference year of the `forest_age` raster (e.g. 2022 for the NTEMS 2022 forest age).
+#' @param target_year numeric; year the ages are brought forward to, also written as `YRSOURCE`. Defaults to the current year.
 #' @param summary_metrics character; names of the `metrics` layers to summarize (median) as columns. `NULL` to skip.
 #'
 #' @returns
@@ -20,9 +22,9 @@ eFRI_attribute_table <- function(segmentation,
                                  forest_fire,
                                  forest_harvest,
                                  forest_age,
+                                 raster_year,
+                                 target_year = as.numeric(format(Sys.Date(), "%Y")),
                                  summary_metrics = NULL){
-
-  current_year <- as.numeric(format(Sys.Date(), "%Y"))
 
   segmentation_final <- segmentation
 
@@ -30,17 +32,17 @@ eFRI_attribute_table <- function(segmentation,
   segmentation <- mutate_prop_forested(segmentation, landcover)
   segmentation <- mutate_proportion(segmentation, forest_fire, prefix = "forest_fire", simplify = TRUE, keep_all = TRUE)
   segmentation <- mutate_proportion(segmentation, forest_harvest, prefix = "forest_harvest", simplify = TRUE, keep_all = TRUE)
-  segmentation <- mutate_age(segmentation, forest_age, 2019, current_year, fun = "mean") # PEUT-ETRE MEDIANE?
+  segmentation <- mutate_age(segmentation, forest_age, raster_year, target_year, fun = "mean") # PEUT-ETRE MEDIANE?
   segmentation <- mutate_disturbance(segmentation, column_name = grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(segmentation), value = TRUE), threshold = 80)
 
   segmentation_final$SOURCE <- "eFRI"
-  segmentation_final$YRSOURCE <- current_year
+  segmentation_final$YRSOURCE <- target_year
   segmentation_final$AREA <- round(as.numeric(sf::st_area(segmentation)), 2)
   segmentation_final$PERIMETER <- round(as.numeric(sf::st_perimeter(segmentation)), 2)
   segmentation_final$PROPFORESTED <-  round(segmentation$PROPFORESTED, 2)
   segmentation_final$POLYTYPE <- segmentation$MOST_FREQUENT_LANDCOVER
   segmentation_final$POLYTYPEPROP <-  round(segmentation$MOST_FREQUENT_LANDCOVER_PROPORTION, 2)
-  segmentation_final$AGE <- segmentation[[paste0("age_mean_", current_year)]]
+  segmentation_final$AGE <- segmentation[[paste0("age_mean_", target_year)]]
   segmentation_final$YRDEP <- segmentation$YRDEP
   segmentation_final$DEPTYPE <- segmentation$DEPTYPE
   segmentation_final$DEPPROP <- round(segmentation$DEPPROP, 2)
