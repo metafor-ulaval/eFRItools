@@ -13,7 +13,9 @@ eFRI_attribute_table(
   forest_age,
   raster_year,
   target_year = as.numeric(format(Sys.Date(), "\%Y")),
-  summary_metrics = NULL
+  age_fun = "median",
+  summary_metrics = NULL,
+  summary_fun = "median"
 )
 }
 \arguments{
@@ -33,7 +35,11 @@ eFRI_attribute_table(
 
 \item{target_year}{numeric; year the ages are brought forward to, also written as \code{YRSOURCE}. Defaults to the current year.}
 
-\item{summary_metrics}{character; names of the \code{metrics} layers to summarize (median) as columns. \code{NULL} to skip.}
+\item{age_fun}{character; summary function of \code{exactextractr::exact_extract()} used for the polygon age (e.g. "median", "mean").}
+
+\item{summary_metrics}{character; names of the \code{metrics} layers to summarize as columns. \code{NULL} to skip.}
+
+\item{summary_fun}{character; summary function of \code{exactextractr::exact_extract()} used for \code{summary_metrics} (e.g. "median", "mean").}
 }
 \value{
 Polygons with the eFRI attribute table as columns

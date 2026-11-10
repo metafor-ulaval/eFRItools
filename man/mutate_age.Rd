@@ -4,7 +4,7 @@
 \alias{mutate_age}
 \title{Extract age of forest stand}
 \usage{
-mutate_age(x, y, raster_year, target_year, fun = "mean")
+mutate_age(x, y, raster_year, target_year, fun = "median")
 }
 \arguments{
 \item{x}{sf; polygons from the \code{sf} package.}
@@ -15,7 +15,7 @@ mutate_age(x, y, raster_year, target_year, fun = "mean")
 
 \item{target_year}{numeric; year for which the age is computed, usually the current year.}
 
-\item{fun}{character; summary function of \code{exactextractr::exact_extract()} (e.g. "mean", "median").}
+\item{fun}{character; summary function of \code{exactextractr::exact_extract()} (e.g. "median", "mean").}
 }
 \value{
 Polygons with extracted age as a single column
@@ -27,7 +27,7 @@ Extract age of forest stand
 library(sf)
 library(terra)
 
-fri_polygons_age <- mutate_age(fri_polygons, rast(forest_age_2019), 2019, 2025, "mean")
+fri_polygons_age <- mutate_age(fri_polygons, rast(forest_age_2019), 2019, 2025, "median")
 
 fri_polygons_age
 }
