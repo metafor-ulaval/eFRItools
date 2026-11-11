@@ -11,7 +11,9 @@ mutate_metrics(x, y, fun = "median")
 
 \item{y}{SpatRaster; metrics with one or more layers from the \code{terra} package.}
 
-\item{fun}{character; summary function of \code{exactextractr::exact_extract()} (e.g. "mean", "median").}
+\item{fun}{character; summary function of \code{exactextractr::exact_extract()} (e.g. "median", "mean", "stdev").
+"median" is computed by eFRItools as the coverage-weighted median of the cells, because the median of
+\code{exactextractr} is biased when many cells share the same value.}
 }
 \value{
 Polygons with extracted metrics as individual columns

@@ -15,7 +15,9 @@ mutate_age(x, y, raster_year, target_year, fun = "median", disturbance = NULL)
 
 \item{target_year}{numeric; year for which the age is computed, usually the current year.}
 
-\item{fun}{character; summary function of \code{exactextractr::exact_extract()} (e.g. "median", "mean").}
+\item{fun}{character; summary function of \code{exactextractr::exact_extract()} (e.g. "median", "mean", "majority").
+"median" is computed by eFRItools as the coverage-weighted median of the cells, because the median of
+\code{exactextractr} is biased when many cells share the same value.}
 
 \item{disturbance}{SpatRaster; year of the last stand-replacing disturbance (0 or \code{NA} when none) from the \code{terra} package.
 When given, disturbed pixels take the time since disturbance (\code{target_year} minus the disturbance year) instead of the age of \code{y}.

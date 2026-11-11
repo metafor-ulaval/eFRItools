@@ -4,7 +4,9 @@
 #' @param y SpatRaster; forest age from the `terra` package.
 #' @param raster_year numeric; year of the forest age raster `y`.
 #' @param target_year numeric; year for which the age is computed, usually the current year.
-#' @param fun character; summary function of `exactextractr::exact_extract()` (e.g. "median", "mean").
+#' @param fun character; summary function of `exactextractr::exact_extract()` (e.g. "median", "mean", "majority").
+#'   "median" is computed by eFRItools as the coverage-weighted median of the cells, because the median of
+#'   `exactextractr` is biased when many cells share the same value.
 #' @param disturbance SpatRaster; year of the last stand-replacing disturbance (0 or `NA` when none) from the `terra` package.
 #'   When given, disturbed pixels take the time since disturbance (`target_year` minus the disturbance year) instead of the age of `y`.
 #'   `NULL` to use `y` only.
@@ -47,7 +49,7 @@ mutate_age <- function(x,
   }
 
   x_crs <- sf::st_transform(x, sf::st_crs(y))
-  age_extracted <- exactextractr::exact_extract(age, x_crs, fun, progress = FALSE)
+  age_extracted <- extract_summary(age, x_crs, fun)
   x[[paste0("age_", fun, "_", target_year)]] <- round(age_extracted, 0)
 
   return(x)

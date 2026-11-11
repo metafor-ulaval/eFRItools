@@ -5,6 +5,43 @@ get_mode <- function(x) {
 
 }
 
+# Median of the cell values weighted by their coverage fraction.
+# exactextractr merges equal values before interpolating its quantiles, which
+# biases the median when many cells share the same value (e.g. 0, 0, 0, 10 gives 5).
+# Here each cell keeps its own weight: the median is the first value reaching half
+# of the total weight, or the mean of the two middle values when a cell ends exactly
+# at half (same result as stats::median() when all weights are equal).
+weighted_median <- function(values, coverage_fraction){
+
+  keep <- !is.na(values) & coverage_fraction > 0
+  values <- values[keep]
+  coverage_fraction <- coverage_fraction[keep]
+
+  if (length(values) == 0) {return(NA_real_)}
+
+  ord <- order(values)
+  values <- values[ord]
+  cum_weight <- cumsum(coverage_fraction[ord]) / sum(coverage_fraction)
+
+  i <- which(cum_weight >= 0.5 - 1e-9)[1]
+  if (abs(cum_weight[i] - 0.5) < 1e-9 && i < length(values)) {
+    (values[i] + values[i + 1]) / 2
+  } else {
+    values[i]
+  }
+}
+
+# Summarize the cells of y in each polygon of x.
+# "median" uses weighted_median(); any other exactextractr summary is passed as is.
+extract_summary <- function(y, x, fun){
+
+  if (identical(fun, "median")) {
+    exactextractr::exact_extract(y, x, fun = weighted_median, stack_apply = TRUE, progress = FALSE)
+  } else {
+    exactextractr::exact_extract(y, x, fun = fun, progress = FALSE)
+  }
+}
+
 sum_cover <- function(x){
 
   x <- x[!is.na(x$value), ]
