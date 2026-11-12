@@ -29,20 +29,24 @@ mutate_proportion <- function(x,
   x_crs <- sf::st_transform(x, sf::st_crs(y))
   x_sum_cover <- exactextractr::exact_extract(y, x_crs, coverage_area = TRUE, summarize_df = TRUE, fun = sum_cover, progress = FALSE)
 
-  x_proportion <- lapply(seq_along(x_sum_cover),
-                         function(x){
-                           area <- sf::st_area(x_crs[x,])
-                           area <- as.numeric(area)
-                           # NA pixels are counted in the NA column with the area not covered by the raster
-                           x_cover <- x_sum_cover[[x]][!is.na(x_sum_cover[[x]]$value), , drop = FALSE]
-                           coverage_proportion <- t(x_cover$coverage_area / area * 100)
-                           coverage_proportion <- as.data.frame(coverage_proportion)
-                           colnames(coverage_proportion) <- x_cover$value
-                           coverage_proportion$`NA` <- (area-sum(x_cover$coverage_area)) / area * 100
-                           return(coverage_proportion)
-                         })
+  # Proportion of each class in each polygon (one row per polygon, one column per class).
+  # Areas are computed once for all polygons, and the table is filled in one step.
+  # A class absent from a polygon is NA.
+  area <- as.numeric(sf::st_area(x_crs))
+  cover <- dplyr::bind_rows(x_sum_cover, .id = "polygon")
+  cover <- cover[!is.na(cover$value), , drop = FALSE]
+  polygon <- as.integer(cover$polygon)
+  cover_class <- as.character(cover$value)
+  classes <- unique(cover_class)
 
-  x_proportion <- dplyr::bind_rows(x_proportion)
+  x_proportion <- matrix(NA_real_, nrow = length(x_sum_cover), ncol = length(classes), dimnames = list(NULL, classes))
+  x_proportion[cbind(polygon, match(cover_class, classes))] <- cover$coverage_area / area[polygon] * 100
+  x_proportion <- as.data.frame(x_proportion)
+
+  # NA pixels are counted in the NA column with the area not covered by the raster
+  covered <- vapply(x_sum_cover, function(xx) sum(xx$coverage_area[!is.na(xx$value)]), numeric(1))
+  x_proportion$`NA` <- (area - covered) / area * 100
+
   x_proportion <- x_proportion[,!(names(x_proportion) %in% remove_class), drop = FALSE]
 
   # Columns are sorted by class value: bind_rows() orders them by first appearance across
@@ -67,26 +71,12 @@ mutate_proportion <- function(x,
 
     if(simplify == TRUE){
 
-      x_proportion_simplified <- lapply(seq_len(nrow(x_proportion)),
-                                        function(xx){
-
-                                          x_proportion_temp <- x_proportion[xx, , drop = FALSE]
-                                          x_simplified <- x_proportion_temp[which.max(x_proportion_temp)]
-
-                                          if(all(is.na(x_proportion_temp))){
-                                            x_simplified <- data.frame(name = NA,
-                                                                       value = NA)
-                                          } else {
-                                            x_simplified <- data.frame(name = toupper(names(x_simplified)),
-                                                                       value = as.numeric(x_simplified))
-                                          }
-
-                                          names(x_simplified) <- c(paste0("most_frequent_", prefix), paste0("most_frequent_", prefix, "_proportion"))
-
-                                          return(x_simplified)
-                                        })
-
-      x_proportion_simplified <- do.call(rbind, x_proportion_simplified)
+      # Most frequent class of each polygon (NA when the polygon has no class)
+      x_proportion_matrix <- as.matrix(x_proportion)
+      column <- which_max_row(x_proportion_matrix)
+      x_proportion_simplified <- data.frame(name = toupper(names(x_proportion)[column]),
+                                            value = x_proportion_matrix[cbind(seq_along(column), column)])
+      names(x_proportion_simplified) <- c(paste0("most_frequent_", prefix), paste0("most_frequent_", prefix, "_proportion"))
 
       x_proportion_results <- dplyr::bind_cols(x_proportion_results, x_proportion_simplified)
 

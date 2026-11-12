@@ -24,33 +24,19 @@ mutate_disturbance <- function(x,
                               threshold = 80){
 
   cat(paste0("Mutate disturbance for ", nrow(x), " polygon(s)\n"))
-  x_col <- as.data.frame(x)[, column_name, drop = FALSE]
+  x_col <- as.matrix(as.data.frame(x)[, column_name, drop = FALSE])
 
-  x_disturbance <- apply(x_col,
-                         MARGIN = 1,
-                         function(xx){
+  # Largest disturbance of each polygon, kept only when it reaches the threshold
+  column <- which_max_row(x_col)
+  proportion <- x_col[cbind(seq_along(column), column)]
+  significant <- !is.na(proportion) & proportion >= threshold
+  column[!significant] <- NA
+  proportion[!significant] <- NA
+  name <- colnames(x_col)[column]
 
-                           xx_temp <- xx[which.max(xx)]
-                           xx_temp[xx_temp < threshold] <- NA
-
-                           if(all(is.na(xx_temp))){
-
-                             xx_temp <- data.frame(YRDEP = NA,
-                                                   DEPTYPE = NA,
-                                                   DEPPROP = NA)
-
-                           } else {
-
-                             xx_temp <- data.frame(YRDEP = as.numeric(gsub("\\D", "", names(xx_temp))),
-                                                   DEPTYPE = sub("_?[0-9]+.*", "", names(xx_temp)),
-                                                   DEPPROP = as.numeric(xx_temp))
-                           }
-
-                           return(xx_temp)
-
-                         })
-
-  x_disturbance <- do.call(rbind, x_disturbance)
+  x_disturbance <- data.frame(YRDEP = as.numeric(gsub("\\D", "", name)),
+                              DEPTYPE = sub("_?[0-9]+.*", "", name),
+                              DEPPROP = as.numeric(proportion))
 
   x[names(x_disturbance)] <- x_disturbance[names(x_disturbance)]
 

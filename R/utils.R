@@ -42,6 +42,23 @@ extract_summary <- function(y, x, fun){
   }
 }
 
+# Column of the maximum of each row of a numeric matrix, ignoring NA.
+# Same result as which.max() applied to each row: ties go to the first column,
+# and rows with only NA give NA.
+which_max_row <- function(m){
+
+  best <- rep(-Inf, nrow(m))
+  column <- rep(NA_integer_, nrow(m))
+
+  for (j in seq_len(ncol(m))) {
+    larger <- !is.na(m[, j]) & (is.na(column) | m[, j] > best)
+    best[larger] <- m[larger, j]
+    column[larger] <- j
+  }
+
+  column
+}
+
 sum_cover <- function(x){
 
   x <- x[!is.na(x$value), ]

@@ -21,10 +21,8 @@ LazyData: true
 Imports: 
     dplyr,
     exactextractr,
-    purrr,
     RANN,
     sf,
     stats,
     terra,
-    tibble,
-    tidyr
+    tibble

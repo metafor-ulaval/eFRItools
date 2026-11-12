@@ -39,30 +39,21 @@ mutate_prop_forested <- function(x,
   x_crs <- sf::st_transform(x, sf::st_crs(y))
   x_sum_cover <- exactextractr::exact_extract(y, x_crs, coverage_area = TRUE, summarize_df = TRUE, fun = sum_cover, progress = FALSE)
 
-  x_proportion <- purrr::map2_dfr(x_sum_cover,
-                                  sf::st_geometry(x_crs),
-                                  function(xx,yy){
-
-                                    x_area <- as.numeric(sf::st_area(yy))
-
-                                    x_coverage_area_na <- tibble::tibble(value = NA,
-                                                                         coverage_area = x_area - sum(xx$coverage_area))
-
-                                    dplyr::rows_upsert(xx, x_coverage_area_na, by = "value") |>
-                                      dplyr::mutate(total_area = x_area) |>
-                                      dplyr::mutate(proportion = coverage_area / total_area * 100) |>
-                                      dplyr::select(value, proportion) |>
-                                      tidyr::pivot_wider(values_from = proportion, names_from = value)
-
-                                  }) |>
-    dplyr::mutate_all(~tidyr::replace_na(.x, 0))
+  # Proportion of each forested class in each polygon (0 when absent), filled in one step
+  area <- as.numeric(sf::st_area(x_crs))
+  cover <- dplyr::bind_rows(x_sum_cover, .id = "polygon")
+  cover <- cover[!is.na(cover$value), , drop = FALSE]
+  polygon <- as.integer(cover$polygon)
 
   y_class <- terra::cats(y)[[1]]
-  y_class[nrow(y_class) + 1,] <- "NA"
-  names(x_proportion) <- y_class$class[match(names(x_proportion), y_class$value)]
+  cover_class <- y_class$class[match(cover$value, y_class$value)]
+  forested <- cover_class %in% forested_class
 
-  dplyr::select(x_proportion, dplyr::any_of(forested_class)) |>
-    dplyr::reframe(PROPFORESTED = rowSums(dplyr::across(dplyr::everything()))) -> prop_forested
+  x_proportion <- matrix(0, nrow = length(x_sum_cover), ncol = length(forested_class))
+  x_proportion[cbind(polygon[forested], match(cover_class[forested], forested_class))] <-
+    cover$coverage_area[forested] / area[polygon[forested]] * 100
+
+  prop_forested <- tibble::tibble(PROPFORESTED = rowSums(x_proportion))
 
   x_prop_forested <- dplyr::bind_cols(x, prop_forested)
 
