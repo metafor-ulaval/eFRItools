@@ -9,21 +9,22 @@ eFRI_imputation(
   reference,
   target_variables,
   knn_variables,
-  metrics_fun = "median"
+  knn_variables_fun = "median"
 )
 }
 \arguments{
 \item{segmentation}{sf; polygons from the \code{sf} package produced by \code{\link[=eFRI_segmentation]{eFRI_segmentation()}} or \code{\link[=eFRI_attribute_table]{eFRI_attribute_table()}}, with the
-metrics used in \code{knn_variables} already extracted by \code{\link[=mutate_metrics]{mutate_metrics()}} (e.g. "z_p95_median").}
+\code{knn_variables} already extracted by \code{\link[=mutate_metrics]{mutate_metrics()}}.}
 
 \item{reference}{sf; reference polygons built by \code{\link[=eFRI_build_imputation_reference]{eFRI_build_imputation_reference()}}.}
 
 \item{target_variables}{character; names of the columns of \code{reference} to impute.}
 
 \item{knn_variables}{character; comma-separated metric names used for the knn of each \code{target_variables}, of the same length as \code{target_variables}.
-Each metric is read in the \verb{<metric>_<metrics_fun>} column of \code{segmentation} and \code{reference}. "X" and "Y" are the polygon centroid.}
+Each metric is read in the \verb{<knn_variables>_<knn_variables_fun>} column of \code{segmentation} and \code{reference}. "X" and "Y" are the polygon centroid.}
 
-\item{metrics_fun}{character; summary function given to \code{\link[=mutate_metrics]{mutate_metrics()}}, i.e. the suffix of the metric columns (e.g. "median" for "z_p95_median").}
+\item{knn_variables_fun}{character; \code{fun} of \code{\link[=mutate_metrics]{mutate_metrics()}} used to extract the \code{knn_variables}, i.e. the suffix of their columns
+(e.g. "median" for "z_p95_median"). Must be the \code{metrics_fun} used to build the \code{reference}.}
 }
 \value{
 \code{segmentation} with imputed variables as individual columns

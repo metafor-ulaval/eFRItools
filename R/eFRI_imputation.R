@@ -4,12 +4,13 @@
 #' using the reference polygons built by [eFRI_build_imputation_reference()].
 #'
 #' @param segmentation sf; polygons from the `sf` package produced by [eFRI_segmentation()] or [eFRI_attribute_table()], with the
-#' metrics used in `knn_variables` already extracted by [mutate_metrics()] (e.g. "z_p95_median").
+#' `knn_variables` already extracted by [mutate_metrics()].
 #' @param reference sf; reference polygons built by [eFRI_build_imputation_reference()].
 #' @param target_variables character; names of the columns of `reference` to impute.
 #' @param knn_variables character; comma-separated metric names used for the knn of each `target_variables`, of the same length as `target_variables`.
-#' Each metric is read in the `<metric>_<metrics_fun>` column of `segmentation` and `reference`. "X" and "Y" are the polygon centroid.
-#' @param metrics_fun character; summary function given to [mutate_metrics()], i.e. the suffix of the metric columns (e.g. "median" for "z_p95_median").
+#' Each metric is read in the `<knn_variables>_<knn_variables_fun>` column of `segmentation` and `reference`. "X" and "Y" are the polygon centroid.
+#' @param knn_variables_fun character; `fun` of [mutate_metrics()] used to extract the `knn_variables`, i.e. the suffix of their columns
+#' (e.g. "median" for "z_p95_median"). Must be the `metrics_fun` used to build the `reference`.
 #'
 #' @returns
 #' `segmentation` with imputed variables as individual columns
@@ -21,7 +22,7 @@ eFRI_imputation <- function(segmentation,
                             reference,
                             target_variables,
                             knn_variables,
-                            metrics_fun = "median"){
+                            knn_variables_fun = "median"){
 
   if(nrow(reference) == 0){
     cat("No polygon available for imputation\n")
@@ -30,19 +31,19 @@ eFRI_imputation <- function(segmentation,
 
   # knn variables, as named in the reference and segmentation columns
   knn_columns <- lapply(strsplit(knn_variables, ","), function(v){
-    c(paste0(v[v != "X" & v != "Y"], "_", metrics_fun), v[v == "X" | v == "Y"])
+    c(paste0(v[v != "X" & v != "Y"], "_", knn_variables_fun), v[v == "X" | v == "Y"])
   })
 
   missing <- setdiff(c(unlist(knn_columns), target_variables), names(reference))
   if(length(missing) > 0){
     stop("Columns missing in reference: ", paste(missing, collapse = ", "),
-         ". Build the reference with eFRI_build_imputation_reference() using metrics that contain the knn variables.")
+         ". Build the reference with eFRI_build_imputation_reference() with metrics that contain the knn_variables and metrics_fun = \"", knn_variables_fun, "\".")
   }
 
   missing <- setdiff(unlist(knn_columns), c(names(segmentation), "X", "Y"))
   if(length(missing) > 0){
     stop("Columns missing in segmentation: ", paste(missing, collapse = ", "),
-         ". Extract them first with mutate_metrics(segmentation, metrics, fun = \"", metrics_fun, "\").")
+         ". Extract the knn_variables first with mutate_metrics(fun = \"", knn_variables_fun, "\").")
   }
 
   # Centroid of the segmentation polygons (the metrics are already extracted)

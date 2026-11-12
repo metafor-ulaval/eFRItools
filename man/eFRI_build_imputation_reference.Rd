@@ -19,14 +19,14 @@ eFRI_build_imputation_reference(
 )
 }
 \arguments{
-\item{forest_polygon}{sf; reference polygons of Forest Resources Inventory from the \code{sf} package, with the metric columns
-already extracted by \code{\link[=mutate_metrics]{mutate_metrics()}}.}
+\item{forest_polygon}{sf; reference polygons of Forest Resources Inventory from the \code{sf} package, with the \code{metrics}
+(and "z_p95" and "z_above2") already extracted by \code{\link[=mutate_metrics]{mutate_metrics()}}.}
 
-\item{metrics}{character; names of the metrics kept in the reference (e.g. "z_p95"), read in the \verb{<metric>_<metrics_fun>}
+\item{metrics}{character; names of the metrics kept in the reference (e.g. "z_p95"), read in the \verb{<metrics>_<metrics_fun>}
 columns of \code{forest_polygon}. Must contain the metrics later used as \code{knn_variables} in \code{\link[=eFRI_imputation]{eFRI_imputation()}}. "z_p95" and
 "z_above2" are always kept: they remove the polygons with low height or canopy cover.}
 
-\item{metrics_fun}{character; summary function given to \code{\link[=mutate_metrics]{mutate_metrics()}}, i.e. the suffix of the metric columns
+\item{metrics_fun}{character; \code{fun} of \code{\link[=mutate_metrics]{mutate_metrics()}} used to extract the \code{metrics}, i.e. the suffix of their columns
 (e.g. "median" for "z_p95_median").}
 
 \item{landcover}{SpatRaster; categorical landcover raster from the \code{terra} package.}

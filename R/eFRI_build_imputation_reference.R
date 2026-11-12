@@ -9,12 +9,12 @@
 #' The reference only depends on the inventory and on the rasters, not on the segmentation, so it
 #' can be built once and saved (e.g. with `sf::st_write()`) to be reused by several imputations.
 #'
-#' @param forest_polygon sf; reference polygons of Forest Resources Inventory from the `sf` package, with the metric columns
-#' already extracted by [mutate_metrics()].
-#' @param metrics character; names of the metrics kept in the reference (e.g. "z_p95"), read in the `<metric>_<metrics_fun>`
+#' @param forest_polygon sf; reference polygons of Forest Resources Inventory from the `sf` package, with the `metrics`
+#' (and "z_p95" and "z_above2") already extracted by [mutate_metrics()].
+#' @param metrics character; names of the metrics kept in the reference (e.g. "z_p95"), read in the `<metrics>_<metrics_fun>`
 #' columns of `forest_polygon`. Must contain the metrics later used as `knn_variables` in [eFRI_imputation()]. "z_p95" and
 #' "z_above2" are always kept: they remove the polygons with low height or canopy cover.
-#' @param metrics_fun character; summary function given to [mutate_metrics()], i.e. the suffix of the metric columns
+#' @param metrics_fun character; `fun` of [mutate_metrics()] used to extract the `metrics`, i.e. the suffix of their columns
 #' (e.g. "median" for "z_p95_median").
 #' @param landcover SpatRaster; categorical landcover raster from the `terra` package.
 #' @param forest_fire SpatRaster; year of forest fire from the `terra` package.
@@ -51,7 +51,7 @@ eFRI_build_imputation_reference <- function(forest_polygon,
   missing <- setdiff(metrics_columns, names(forest_polygon))
   if(length(missing) > 0){
     stop("Columns missing in forest_polygon: ", paste(missing, collapse = ", "),
-         ". Extract them first with mutate_metrics(forest_polygon, metrics, fun = \"", metrics_fun, "\").")
+         ". Extract the metrics first with mutate_metrics(fun = \"", metrics_fun, "\").")
   }
 
   # Remove forest polygon that have a disturbance between interpretation year and lidar year
