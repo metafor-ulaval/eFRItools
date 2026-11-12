@@ -59,6 +59,35 @@ which_max_row <- function(m){
   column
 }
 
+# Add the column of y that has the largest overlap with each polygon of x.
+# Same result as sf::st_join(x, y[column], largest = TRUE), but the intersection areas
+# are only computed when they change the result: a polygon whose touching polygons of y
+# all have the same value takes that value directly, and a polygon that touches none gets NA.
+st_join_largest <- function(x, y, column){
+
+  hits <- sf::st_intersects(x, y)
+  y_value <- y[[column]]
+
+  value <- y_value[rep(NA_integer_, nrow(x))] # NA of the type of the column
+  n_values <- vapply(hits, function(i) length(unique(y_value[i])), integer(1))
+
+  one <- n_values == 1
+  value[one] <- y_value[vapply(hits[one], `[`, integer(1), 1)]
+
+  several <- which(n_values > 1)
+  if (length(several) > 0) {
+    x_several <- sf::st_sf(geometry = sf::st_geometry(x)[several])
+    value[several] <- suppressWarnings(sf::st_join(x_several, y[column], largest = TRUE))[[column]]
+  }
+
+  # New column before the geometry, as with sf::st_join()
+  geometry <- attr(x, "sf_column")
+  x[[column]] <- value
+  x <- x[c(setdiff(names(x), c(geometry, column)), column, geometry)]
+
+  return(x)
+}
+
 sum_cover <- function(x){
 
   x <- x[!is.na(x$value), ]

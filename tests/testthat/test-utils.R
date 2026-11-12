@@ -22,6 +22,23 @@ test_that("sum is correct", {
   expect_equal(raster_proportion$coverage_area[1], 301599.6)
 })
 
+test_that("st_join_largest gives the same result as st_join(largest = TRUE)", {
+  square <- function(xmin, xmax, ymin = 0, ymax = 10) sf::st_polygon(list(rbind(c(xmin, ymin), c(xmax, ymin), c(xmax, ymax), c(xmin, ymax), c(xmin, ymin))))
+  # Tiles: A [0, 10] 2017, B [10, 20] 2018, C [20, 30] 2018
+  tiles <- sf::st_sf(year = c(2017, 2018, 2018), geometry = sf::st_sfc(square(0, 10), square(10, 20), square(20, 30), crs = 32617))
+  polygons <- sf::st_sf(id = 1:4,
+                        geometry = sf::st_sfc(square(2, 8),    # Inside A
+                                              square(7, 17),   # 30 % in A, 70 % in B
+                                              square(15, 25),  # B and C, same year
+                                              square(40, 50),  # No tile
+                                              crs = 32617))
+
+  joined <- st_join_largest(polygons, tiles, "year")
+
+  expect_equal(joined$year, c(2017, 2018, 2018, NA))
+  expect_identical(joined, suppressWarnings(sf::st_join(polygons, tiles["year"], largest = TRUE)))
+})
+
 test_that("weighted median handles repeated values", {
   expect_equal(weighted_median(c(0, 0, 0, 10), rep(1, 4)), 0)
   expect_equal(weighted_median(c(14, 14, 14, 60, 90), rep(1, 5)), 14)

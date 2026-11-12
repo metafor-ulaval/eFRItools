@@ -43,7 +43,7 @@ eFRI_build_imputation_reference <- function(forest_polygon,
   forest_polygon <- mutate_proportion(forest_polygon, forest_fire, prefix = "forest_fire", simplify = FALSE, keep_all = TRUE)
   forest_polygon <- mutate_proportion(forest_polygon, forest_harvest, prefix = "forest_harvest", simplify = FALSE, keep_all = TRUE)
   forest_polygon <- mutate_disturbance(forest_polygon, column_name = grep("^FOREST_FIRE_|^FOREST_HARVEST_", names(forest_polygon), value = TRUE), threshold = 50)
-  forest_polygon <- sf::st_join(forest_polygon, ctg[lidar_year_column], largest = TRUE)
+  forest_polygon <- st_join_largest(forest_polygon, ctg, lidar_year_column)
   forest_polygon$is_disturbed <- ifelse((forest_polygon[[forest_year_column]] <= forest_polygon$YRDEP & forest_polygon$YRDEP <= forest_polygon[[lidar_year_column]]) |
                                           (forest_polygon[[lidar_year_column]] <= forest_polygon$YRDEP & forest_polygon$YRDEP <= forest_polygon[[forest_year_column]]), 1, 0)
   forest_polygon$is_disturbed[is.na(forest_polygon$is_disturbed)] <- 0
