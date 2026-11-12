@@ -71,8 +71,24 @@ generic_region_merging = function(metrics,
   polygons$grm <- NULL
 
   # Clean one pixel polygons
-  areas <- terra::expanse(polygons)
-  small <- areas < prod(terra::res(metrics))*1.5
+  polygons <- clean_small_polygons(polygons, min_area = prod(terra::res(metrics))*1.5)
+
+  polygons <- sf::st_as_sf(polygons)
+
+  return(polygons)
+}
+
+# Remove the polygons smaller than min_area.
+# Polygons are first split into single parts, so that pixels connected by a corner only
+# are cleaned here instead of coming back when the polygons are cast to POLYGON later.
+# Small polygons are merged into a neighbour; the pieces still smaller than min_area after
+# the merge touched the other polygons by a corner only (e.g. lone pixels next to nodata)
+# and are removed.
+clean_small_polygons <- function(polygons, min_area)
+{
+  polygons <- terra::disagg(polygons)
+  small <- terra::expanse(polygons) < min_area
+
   if (any(small))
   {
     polygons <- terra::combineGeoms(polygons[!small], polygons[small])
@@ -80,9 +96,10 @@ generic_region_merging = function(metrics,
     polygons <- terra::aggregate(polygons, by = "ID")
     polygons$ID <- NULL
     polygons$agg_n <- NULL
-  }
 
-  polygons <- sf::st_as_sf(polygons)
+    polygons <- terra::disagg(polygons)
+    polygons <- polygons[terra::expanse(polygons) >= min_area]
+  }
 
   return(polygons)
 }
