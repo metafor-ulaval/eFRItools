@@ -37,7 +37,13 @@ pre_processing = function(metrics, masks = NULL)
   metrics[anyNA(metrics)] <- NA
 
   cat("Rescale in [0, 255]\n")
-  metrics = terra::stretch(metrics, maxv = 255, minq = 0.01, maxq = 0.99)
+  # Quantiles are computed on all cells: terra::stretch(minq, maxq) estimates them on a
+  # sample whose result changes between terra versions, which changes the segmentation
+  metrics = terra::rast(lapply(seq_len(terra::nlyr(metrics)), function(i)
+  {
+    q <- stats::quantile(terra::values(metrics[[i]], mat = FALSE), probs = c(0.01, 0.99), na.rm = TRUE, names = FALSE)
+    terra::stretch(metrics[[i]], maxv = 255, smin = q[1], smax = q[2])
+  }))
 
   names(metrics) = onames
   return(metrics)
