@@ -6,16 +6,8 @@
 \usage{
 eFRI_imputation(
   segmentation,
-  forest_polygon,
+  reference,
   metrics,
-  landcover,
-  forest_fire,
-  forest_harvest,
-  ctg,
-  lidar_year_column,
-  forest_year_column,
-  forest_composition_column,
-  forest_type_column,
   target_variables,
   knn_variables
 )
@@ -23,35 +15,20 @@ eFRI_imputation(
 \arguments{
 \item{segmentation}{sf; polygons from the \code{sf} package produced by \code{\link[=eFRI_segmentation]{eFRI_segmentation()}} or \code{\link[=eFRI_attribute_table]{eFRI_attribute_table()}}.}
 
-\item{forest_polygon}{sf; reference polygons of Forest Resources Inventory from the \code{sf} package.}
+\item{reference}{sf; reference polygons built by \code{\link[=eFRI_build_imputation_reference]{eFRI_build_imputation_reference()}}.}
 
-\item{metrics}{SpatRaster; metrics with one layer per metric from the \code{terra} package. Must contain \code{z_p95} and \code{z_above2}.}
+\item{metrics}{SpatRaster; metrics with one layer per metric from the \code{terra} package. Must contain the metrics used in \code{knn_variables}.}
 
-\item{landcover}{SpatRaster; categorical landcover raster from the \code{terra} package.}
+\item{target_variables}{character; names of the columns of \code{reference} to impute.}
 
-\item{forest_fire}{SpatRaster; year of forest fire from the \code{terra} package.}
-
-\item{forest_harvest}{SpatRaster; year of forest harvest from the \code{terra} package.}
-
-\item{ctg}{sf; LiDAR acquisition tiles from the \code{sf} package.}
-
-\item{lidar_year_column}{character; name of the column of \code{ctg} that contains the LiDAR acquisition year.}
-
-\item{forest_year_column}{character; name of the column of \code{forest_polygon} that contains the inventory year.}
-
-\item{forest_composition_column}{character; name of the column of \code{forest_polygon} that contains species and proportions.}
-
-\item{forest_type_column}{character; name of the column of \code{forest_polygon} that contains the polygon type. Only "FOR" polygons are used.}
-
-\item{target_variables}{character; names of the columns of \code{forest_polygon} to impute.}
-
-\item{knn_variables}{character; comma-separated metric names used for the knn of each \code{target_variables}, of the same length as \code{target_variables}.}
+\item{knn_variables}{character; comma-separated metric names used for the knn of each \code{target_variables}, of the same length as \code{target_variables}. "X" and "Y" are the polygon centroid.}
 }
 \value{
 \code{segmentation} with imputed variables as individual columns
 }
 \description{
-eFRI_imputation
+Imputes forest attributes into the segmentation polygons with a k-nearest neighbour approach,
+using the reference polygons built by \code{\link[=eFRI_build_imputation_reference]{eFRI_build_imputation_reference()}}.
 }
 \examples{
 eFRI_imputation
