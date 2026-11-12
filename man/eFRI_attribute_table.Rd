@@ -6,22 +6,23 @@
 \usage{
 eFRI_attribute_table(
   segmentation,
-  metrics,
+  summary_metrics = NULL,
   landcover,
   forest_fire,
   forest_harvest,
   forest_age,
   raster_year,
   target_year = as.numeric(format(Sys.Date(), "\%Y")),
-  age_fun = "median",
-  summary_metrics = NULL,
-  summary_fun = "median"
+  age_fun = "median"
 )
 }
 \arguments{
-\item{segmentation}{sf; polygons from the \code{sf} package produced by \code{\link[=eFRI_segmentation]{eFRI_segmentation()}}.}
+\item{segmentation}{sf; polygons from the \code{sf} package produced by \code{\link[=eFRI_segmentation]{eFRI_segmentation()}}. The columns given in \code{summary_metrics}
+must already be extracted, e.g. with \code{\link[=mutate_metrics]{mutate_metrics()}}.}
 
-\item{metrics}{SpatRaster; metrics with one layer per metric from the \code{terra} package.}
+\item{summary_metrics}{character; names of the columns of \code{segmentation} copied (rounded to 2 decimals) into the attribute table
+(e.g. "z_p95_median"). The names of the vector give the names of the attribute table columns (e.g. \code{c(HEIGHT = "z_p95_median")});
+an unnamed column keeps its name in upper case. \code{NULL} to skip.}
 
 \item{landcover}{SpatRaster; categorical landcover raster from the \code{terra} package.}
 
@@ -36,10 +37,6 @@ eFRI_attribute_table(
 \item{target_year}{numeric; year the ages are brought forward to, also written as \code{YRSOURCE}. Defaults to the current year.}
 
 \item{age_fun}{character; summary function of \code{exactextractr::exact_extract()} used for the polygon age (e.g. "median", "mean").}
-
-\item{summary_metrics}{character; names of the \code{metrics} layers to summarize as columns. \code{NULL} to skip.}
-
-\item{summary_fun}{character; summary function of \code{exactextractr::exact_extract()} used for \code{summary_metrics} (e.g. "median", "mean").}
 }
 \value{
 Polygons with the eFRI attribute table as columns

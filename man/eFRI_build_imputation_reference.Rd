@@ -7,6 +7,7 @@
 eFRI_build_imputation_reference(
   forest_polygon,
   metrics,
+  metrics_fun = "median",
   landcover,
   forest_fire,
   forest_harvest,
@@ -18,9 +19,15 @@ eFRI_build_imputation_reference(
 )
 }
 \arguments{
-\item{forest_polygon}{sf; reference polygons of Forest Resources Inventory from the \code{sf} package.}
+\item{forest_polygon}{sf; reference polygons of Forest Resources Inventory from the \code{sf} package, with the metric columns
+already extracted by \code{\link[=mutate_metrics]{mutate_metrics()}}.}
 
-\item{metrics}{SpatRaster; metrics with one layer per metric from the \code{terra} package. Must contain \code{z_p95}, \code{z_above2} and the metrics later used as \code{knn_variables} in \code{\link[=eFRI_imputation]{eFRI_imputation()}}.}
+\item{metrics}{character; names of the metrics kept in the reference (e.g. "z_p95"), read in the \verb{<metric>_<metrics_fun>}
+columns of \code{forest_polygon}. Must contain the metrics later used as \code{knn_variables} in \code{\link[=eFRI_imputation]{eFRI_imputation()}}. "z_p95" and
+"z_above2" are always kept: they remove the polygons with low height or canopy cover.}
+
+\item{metrics_fun}{character; summary function given to \code{\link[=mutate_metrics]{mutate_metrics()}}, i.e. the suffix of the metric columns
+(e.g. "median" for "z_p95_median").}
 
 \item{landcover}{SpatRaster; categorical landcover raster from the \code{terra} package.}
 
@@ -44,8 +51,8 @@ Reference polygons (\code{sf}) to pass to \code{\link[=eFRI_imputation]{eFRI_imp
 \description{
 Builds the reference polygons used by \code{\link[=eFRI_imputation]{eFRI_imputation()}} from the Forest Resources Inventory.
 Polygons disturbed between the inventory year and the LiDAR year, non-forested polygons and
-polygons with low height or canopy cover are removed. The remaining polygons get the median of
-each metric, their centroid, their species proportions and order, their forest type and their
+polygons with low height or canopy cover are removed. The remaining polygons keep the metric
+columns of \code{metrics} and get their centroid, their species proportions and order, their forest type and their
 functional group.
 }
 \details{

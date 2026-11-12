@@ -7,21 +7,23 @@
 eFRI_imputation(
   segmentation,
   reference,
-  metrics,
   target_variables,
-  knn_variables
+  knn_variables,
+  metrics_fun = "median"
 )
 }
 \arguments{
-\item{segmentation}{sf; polygons from the \code{sf} package produced by \code{\link[=eFRI_segmentation]{eFRI_segmentation()}} or \code{\link[=eFRI_attribute_table]{eFRI_attribute_table()}}.}
+\item{segmentation}{sf; polygons from the \code{sf} package produced by \code{\link[=eFRI_segmentation]{eFRI_segmentation()}} or \code{\link[=eFRI_attribute_table]{eFRI_attribute_table()}}, with the
+metrics used in \code{knn_variables} already extracted by \code{\link[=mutate_metrics]{mutate_metrics()}} (e.g. "z_p95_median").}
 
 \item{reference}{sf; reference polygons built by \code{\link[=eFRI_build_imputation_reference]{eFRI_build_imputation_reference()}}.}
 
-\item{metrics}{SpatRaster; metrics with one layer per metric from the \code{terra} package. Must contain the metrics used in \code{knn_variables}.}
-
 \item{target_variables}{character; names of the columns of \code{reference} to impute.}
 
-\item{knn_variables}{character; comma-separated metric names used for the knn of each \code{target_variables}, of the same length as \code{target_variables}. "X" and "Y" are the polygon centroid.}
+\item{knn_variables}{character; comma-separated metric names used for the knn of each \code{target_variables}, of the same length as \code{target_variables}.
+Each metric is read in the \verb{<metric>_<metrics_fun>} column of \code{segmentation} and \code{reference}. "X" and "Y" are the polygon centroid.}
+
+\item{metrics_fun}{character; summary function given to \code{\link[=mutate_metrics]{mutate_metrics()}}, i.e. the suffix of the metric columns (e.g. "median" for "z_p95_median").}
 }
 \value{
 \code{segmentation} with imputed variables as individual columns

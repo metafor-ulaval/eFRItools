@@ -1,7 +1,10 @@
 #' eFRI_attribute_table
 #'
-#' @param segmentation sf; polygons from the `sf` package produced by [eFRI_segmentation()].
-#' @param metrics SpatRaster; metrics with one layer per metric from the `terra` package.
+#' @param segmentation sf; polygons from the `sf` package produced by [eFRI_segmentation()]. The columns given in `summary_metrics`
+#' must already be extracted, e.g. with [mutate_metrics()].
+#' @param summary_metrics character; names of the columns of `segmentation` copied (rounded to 2 decimals) into the attribute table
+#' (e.g. "z_p95_median"). The names of the vector give the names of the attribute table columns (e.g. `c(HEIGHT = "z_p95_median")`);
+#' an unnamed column keeps its name in upper case. `NULL` to skip.
 #' @param landcover SpatRaster; categorical landcover raster from the `terra` package.
 #' @param forest_fire SpatRaster; year of forest fire from the `terra` package.
 #' @param forest_harvest SpatRaster; year of forest harvest from the `terra` package.
@@ -9,8 +12,6 @@
 #' @param raster_year numeric; reference year of the `forest_age` raster (e.g. 2022 for the NTEMS 2022 forest age).
 #' @param target_year numeric; year the ages are brought forward to, also written as `YRSOURCE`. Defaults to the current year.
 #' @param age_fun character; summary function of `exactextractr::exact_extract()` used for the polygon age (e.g. "median", "mean").
-#' @param summary_metrics character; names of the `metrics` layers to summarize as columns. `NULL` to skip.
-#' @param summary_fun character; summary function of `exactextractr::exact_extract()` used for `summary_metrics` (e.g. "median", "mean").
 #'
 #' @returns
 #' Polygons with the eFRI attribute table as columns
@@ -19,16 +20,20 @@
 #' @examples
 #' eFRI_attribute_table
 eFRI_attribute_table <- function(segmentation,
-                                 metrics,
+                                 summary_metrics = NULL,
                                  landcover,
                                  forest_fire,
                                  forest_harvest,
                                  forest_age,
                                  raster_year,
                                  target_year = as.numeric(format(Sys.Date(), "%Y")),
-                                 age_fun = "median",
-                                 summary_metrics = NULL,
-                                 summary_fun = "median"){
+                                 age_fun = "median"){
+
+  missing <- setdiff(summary_metrics, names(segmentation))
+  if(length(missing) > 0){
+    stop("Columns missing in segmentation: ", paste(missing, collapse = ", "),
+         ". Extract them first with mutate_metrics().")
+  }
 
   segmentation_final <- segmentation
 
@@ -59,9 +64,11 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final$YRFIRE <- if ("MOST_FREQUENT_FOREST_FIRE" %in% names(segmentation)) {segmentation$MOST_FREQUENT_FOREST_FIRE} else {NA}
   segmentation_final$FIREPROP <- if ("MOST_FREQUENT_FOREST_FIRE_PROPORTION" %in% names(segmentation)) {round(segmentation$MOST_FREQUENT_FOREST_FIRE_PROPORTION, 2)} else {NA}
 
-  if(!is.null(summary_metrics)){
-    segmentation <- mutate_metrics(segmentation, metrics[[summary_metrics]], fun = summary_fun)
-    segmentation_final[toupper(summary_metrics)] <- round(sf::st_drop_geometry(segmentation[, paste0(summary_metrics, "_", summary_fun)]), 2)
+  if(length(summary_metrics) > 0){
+    metrics_names <- names(summary_metrics)
+    if(is.null(metrics_names)) metrics_names <- rep("", length(summary_metrics))
+    metrics_names[metrics_names == ""] <- toupper(summary_metrics[metrics_names == ""])
+    segmentation_final[metrics_names] <- round(sf::st_drop_geometry(segmentation)[unname(summary_metrics)], 2)
   }
 
   return(segmentation_final)
