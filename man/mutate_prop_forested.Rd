@@ -2,35 +2,46 @@
 % Please edit documentation in R/mutate_prop_forested.R
 \name{mutate_prop_forested}
 \alias{mutate_prop_forested}
-\title{Extract the proportion of the polygon that are forested}
+\title{Compute the proportion of the polygon that are forested}
 \usage{
 mutate_prop_forested(
   x,
-  y,
+  prefix,
   forested_class = c("Sparse_Treed", "Treed_Upland", "Deciduous_Treed", "Mixed_Treed",
     "Coniferous_Treed", "Plantations_Treed_Cultivated", "Hedge_Rows",
     "Tallgrass_Woodland")
 )
 }
 \arguments{
-\item{x}{sf; polygons from the \code{sf} package.}
+\item{x}{sf; polygons from the \code{sf} package with the class proportion columns of \code{\link[=mutate_proportion]{mutate_proportion()}}.}
 
-\item{y}{SpatRaster; categorical landcover raster from the \code{terra} package.}
+\item{prefix}{character; prefix given to \code{\link[=mutate_proportion]{mutate_proportion()}} (e.g. "landcover" for \code{LANDCOVER_SPARSE_TREED_PROPORTION}).}
 
-\item{forested_class}{character; classes of the landcover raster \code{y} that are forested.}
+\item{forested_class}{character; classes of the landcover raster that are forested.}
 }
 \value{
 Polygons with the forested proportion as a single column: PROPFORESTED
 }
 \description{
-Extract the proportion of the polygon that are forested
+The forested proportion is the sum of the class proportions already added to \code{x} by
+\code{\link[=mutate_proportion]{mutate_proportion()}} (with \code{keep_all = TRUE}), so the landcover raster is not extracted again.
 }
 \examples{
 library(sf)
 library(terra)
 
-fri_polygons_prop_forested <- mutate_prop_forested(fri_polygons,
-                                                   rast(landcover),
+# 1. Proportion of each landcover class in each polygon (LANDCOVER_<CLASS>_PROPORTION columns)
+fri_polygons_landcover_prop <- mutate_proportion(fri_polygons,
+                                                 rast(landcover),
+                                                 prefix = "landcover",
+                                                 simplify = FALSE,
+                                                 keep_all = TRUE)
+
+grep("^LANDCOVER_", names(fri_polygons_landcover_prop), value = TRUE)
+
+# 2. Sum of the forested class proportions, without extracting the landcover again
+fri_polygons_prop_forested <- mutate_prop_forested(fri_polygons_landcover_prop,
+                                                   prefix = "landcover",
                                                    forested_class = c("Sparse_Treed",
                                                                       "Treed_Upland",
                                                                       "Deciduous_Treed",
@@ -40,5 +51,5 @@ fri_polygons_prop_forested <- mutate_prop_forested(fri_polygons,
                                                                       "Hedge_Rows",
                                                                       "Tallgrass_Woodland"))
 
-fri_polygons_prop_forested
+fri_polygons_prop_forested["PROPFORESTED"]
 }

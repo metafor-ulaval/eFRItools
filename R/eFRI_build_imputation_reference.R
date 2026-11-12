@@ -52,7 +52,9 @@ eFRI_build_imputation_reference <- function(forest_polygon,
   # Extract data for filtering
   cat("Extract data of forest polygon\n")
   forest_polygon <- mutate_metrics(forest_polygon, metrics, fun = "median")
-  forest_polygon <- mutate_prop_forested(forest_polygon, landcover)
+  forest_polygon <- mutate_proportion(forest_polygon, landcover, prefix = "landcover", simplify = FALSE, keep_all = TRUE)
+  forest_polygon <- mutate_prop_forested(forest_polygon, prefix = "landcover")
+  forest_polygon <- forest_polygon[!grepl("^LANDCOVER_", names(forest_polygon))] # Only PROPFORESTED is kept
 
   # Filter non forested forest polygon (which() drops polygons with NA values)
   cat("Filter non forested forest polygon\n")

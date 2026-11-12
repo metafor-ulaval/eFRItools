@@ -33,7 +33,7 @@ eFRI_attribute_table <- function(segmentation,
   segmentation_final <- segmentation
 
   segmentation <- mutate_proportion(segmentation, landcover, prefix = "landcover", simplify = TRUE, keep_all = TRUE)
-  segmentation <- mutate_prop_forested(segmentation, landcover)
+  segmentation <- mutate_prop_forested(segmentation, prefix = "landcover")
   segmentation <- mutate_proportion(segmentation, forest_fire, prefix = "forest_fire", simplify = TRUE, keep_all = TRUE)
   segmentation <- mutate_proportion(segmentation, forest_harvest, prefix = "forest_harvest", simplify = TRUE, keep_all = TRUE)
   if(!terra::compareGeom(forest_harvest, forest_fire, stopOnError = FALSE)){
