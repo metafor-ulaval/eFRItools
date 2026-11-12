@@ -22,7 +22,7 @@ mutate_proportion(
 
 \item{remove_class}{character; classes to remove, like "NA" or "0".}
 
-\item{simplify}{logical; compute the most frequent class and its proportion.}
+\item{simplify}{logical; compute the most frequent class and its proportion. When several classes have the same proportion, the lowest class value is kept.}
 
 \item{keep_all}{logical; keep the proportion columns of each class when \code{simplify = TRUE}.}
 }

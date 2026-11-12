@@ -4,7 +4,7 @@
 #' @param y SpatRaster; categorical raster from the `terra` package.
 #' @param prefix character; prefix of the created columns.
 #' @param remove_class character; classes to remove, like "NA" or "0".
-#' @param simplify logical; compute the most frequent class and its proportion.
+#' @param simplify logical; compute the most frequent class and its proportion. When several classes have the same proportion, the lowest class value is kept.
 #' @param keep_all logical; keep the proportion columns of each class when `simplify = TRUE`.
 #'
 #' @returns
@@ -44,6 +44,12 @@ mutate_proportion <- function(x,
 
   x_proportion <- dplyr::bind_rows(x_proportion)
   x_proportion <- x_proportion[,!(names(x_proportion) %in% remove_class), drop = FALSE]
+
+  # Columns are sorted by class value: bind_rows() orders them by first appearance across
+  # the polygons, so a tie for the most frequent class would depend on the other polygons.
+  # Sorted, a tie always goes to the lowest class value.
+  class_value <- suppressWarnings(as.numeric(names(x_proportion)))
+  x_proportion <- x_proportion[, order(class_value, names(x_proportion)), drop = FALSE]
 
   y_class <- terra::cats(y)[[1]]
 
