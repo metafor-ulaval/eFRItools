@@ -17,22 +17,25 @@
 proportion_variance_explained <- function(x,
                                           y){
 
-  # convert into matrix
+  # polygon id and metric value of the cells covered by a polygon
+  # (only these cells are read, not the full grid)
   x$id <- seq_len(nrow(x))
   x_raster <- terra::rasterize(x, y, "id")
-  rater_temp_df <- terra::values(c(x_raster, y), na.rm = TRUE)
-  colnames(rater_temp_df) <- c("id", "value")
+  cells <- terra::cells(x_raster)
+  id <- as.integer(x_raster[cells][, 1])
+  value <- y[cells][, 1]
+  keep <- !is.na(value)
+  id <- id[keep]
+  value <- value[keep]
 
   # SST
-  mean_global <- mean(rater_temp_df[,2])
-  sst <- sum((rater_temp_df[,2] - mean_global)^2)
+  sst <- sum((value - mean(value))^2)
 
   # SSE
-  mean_by_segment <- tapply(rater_temp_df[,2],
-                            rater_temp_df[,1],
-                            mean)
-  mean_seg_vec <- mean_by_segment[as.character(rater_temp_df[,1])]
-  sse <- sum((rater_temp_df[,2] - mean_seg_vec)^2)
+  ids <- sort(unique(id))
+  mean_by_segment <- numeric(nrow(x))
+  mean_by_segment[ids] <- rowsum(value, id)[, 1] / tabulate(id)[ids]
+  sse <- sum((value - mean_by_segment[id])^2)
 
   # pve in r2
   pve_r2 <- 1 - (sse / sst)
